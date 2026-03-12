@@ -129,3 +129,4 @@ git pull origin main
 
 This keeps your branch up to date and reduces merge conflicts.
 
+This Project is owned by Amaan, Billy, Dennis, Sebastian and Susan.
