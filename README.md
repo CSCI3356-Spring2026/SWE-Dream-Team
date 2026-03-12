@@ -129,4 +129,3 @@ git pull origin main
 
 This keeps your branch up to date and reduces merge conflicts.
 
-Amaan is the best!
