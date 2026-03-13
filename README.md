@@ -4,12 +4,6 @@ Use this workflow when adding new features or fixes. It keeps the `main` branch 
 
 ---
 
-
-
-
-
-
-
 # Workflow Overview
 
 | Phase | Action | Command |
