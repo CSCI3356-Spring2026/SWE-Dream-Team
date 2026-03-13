@@ -83,6 +83,55 @@
   font-size: 0.9rem;
 }
 
+/* Match scores under photo (roommate / housing, out of 10) */
+.profile-card__matches {
+  width: 100%;
+  max-width: 280px;
+  margin: 1rem auto 0;
+  text-align: left;
+}
+
+.profile-card__match-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.profile-card__match-row:last-child {
+  margin-bottom: 0;
+}
+
+.profile-card__match-label {
+  font-weight: 700;
+}
+
+.profile-card__match-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.profile-card__match-icon {
+  flex-shrink: 0;
+  color: #333;
+  vertical-align: middle;
+}
+
+.profile-card__match-score {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.profile-card__match-outof {
+  font-weight: 500;
+  color: #555;
+  font-size: 0.85em;
+}
+
 .profile-card__edit-btn {
   display: inline-block;
   margin-top: 1rem;

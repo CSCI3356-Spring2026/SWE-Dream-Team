@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
@@ -30,6 +31,21 @@ class Profile(models.Model):
         blank=True,
         null=True,
         help_text="Profile picture (requires Pillow installed).",
+    )
+    # Match scores shown under profile photo (0–10, one decimal)
+    roommate_match = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+    )
+    housing_match = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
     )
 
     def __str__(self):
