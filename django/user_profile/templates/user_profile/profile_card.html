@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile</title>
+  {# profile_card.css linked below #}
+  <link rel="stylesheet" href="{% static 'user_profile/profile_card.css' %}">
+</head>
+<body>
+  <header class="profile-topbar" aria-hidden="true"></header>
+
+  <main class="profile-page">
+    <article class="profile-card">
+      <div class="profile-card__main">
+        <section class="profile-card__left">
+          <h1 class="profile-card__name">Name</h1>
+          <p class="profile-card__meta">School — Year — Major</p>
+
+          <h2 class="profile-card__section-title">Bio</h2>
+          <div class="profile-card__bio">
+            <p>Body text for the bios once we hookup the model.</p>
+            <p>Hi my name is Amaan and I like to play and watch soccer. I would love to room with people who like to play and watch soccer.</p>
+          </div>
+
+          <h2 class="profile-card__section-title">Contact me</h2>
+          <div class="profile-card__contacts">
+            <p class="profile-card__outreach-label">My outreach preference:</p>
+            <p class="profile-card__outreach">Placeholder preference text.</p>
+            <p class="profile-card__contact">Phone: 333-333-3334</p>
+            <p class="profile-card__contact">Email: johndoe@example.edu</p>
+            <p class="profile-card__contact">Instagram: @handle</p>
+          </div>
+        </section>
+
+        <aside class="profile-card__right">
+          <div class="profile-card__photo-wrap">
+            {# When we get profile picture: {% if profile.photo %}<img src="{{ profile.photo.url }}" alt="">{% else %}…{% endif %} #}
+            <div class="profile-card__photo profile-card__photo--placeholder" role="img" aria-label="Profile photo">
+              Photo
+            </div>
+          </div>
+          <p class="profile-card__actions">
+            <a class="profile-card__edit-btn" href="#">Edit My Profile</a>
+          </p>
+        </aside>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
