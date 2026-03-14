@@ -1,147 +1,82 @@
-/* Minimal layout; refine to match your mockup */
-.profile-topbar {
-  height: 6px;
-  background: #c8e6c9;
+/* Container for the mid-section */
+.profile-container {
+    max-width: var(--container-width);
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 400px; /* Left takes space, right is fixed */
+    gap: 60px;
+    align-items: start;
 }
 
-.profile-page {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+/* Typography Overrides */
+.profile-name {
+    font-size: 3.5rem;
+    color: var(--color-text-main);
+    margin-bottom: 5px;
 }
 
-.profile-card__main {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  align-items: flex-start;
+.profile-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+    margin-bottom: 30px;
 }
 
-.profile-card__left {
-  flex: 1 1 320px;
+.profile-bio h3, .profile-contact h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: var(--font-weight-bold);
 }
 
-.profile-card__right {
-  flex: 0 0 280px;
-  text-align: center;
+.profile-bio p {
+    margin-bottom: 20px;
+    color: var(--color-text-main);
 }
 
-.profile-card__name {
-  margin: 0 0 0.25rem;
-  font-size: 1.75rem;
+.profile-contact ul {
+    list-style: none;
+    line-height: 1.8;
 }
 
-.profile-card__meta {
-  margin: 0 0 1.5rem;
-  color: #666;
-  font-size: 0.95rem;
+/* Right Side: Image & Stats */
+.profile-img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
 }
 
-.profile-card__section-title {
-  margin: 1.25rem 0 0.5rem;
-  font-size: 1.1rem;
+.stats-container {
+    margin-top: 25px;
 }
 
-/* Bio: larger area + readable type (no box) */
-.profile-card__bio {
-  min-height: 12rem;
-  font-size: 1.08rem;
-  line-height: 1.65;
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-weight: var(--font-weight-bold);
+    font-size: 1.1rem;
 }
 
-.profile-card__bio p {
-  margin: 0 0 0.85rem;
-  line-height: 1.65;
+.stat-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.profile-card__bio p:last-child {
-  margin-bottom: 0;
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
 }
 
-/* Contact block: no vertical gap between lines */
-.profile-card__contacts {
-  margin-top: 0.35rem;
-}
-
-.profile-card__contacts p {
-  margin: 0;
-  padding: 0;
-  line-height: 1.25;
-}
-
-.profile-card__photo--placeholder {
-  width: 100%;
-  max-width: 280px;
-  aspect-ratio: 3 / 4;
-  margin: 0 auto;
-  background: #e0e0e0;
-  border: 1px solid #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #888;
-  font-size: 0.9rem;
-}
-
-/* Match scores under photo (roommate / housing, out of 10) */
-.profile-card__matches {
-  width: 100%;
-  max-width: 280px;
-  margin: 1rem auto 0;
-  text-align: left;
-}
-
-.profile-card__match-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.profile-card__match-row:last-child {
-  margin-bottom: 0;
-}
-
-.profile-card__match-label {
-  font-weight: 700;
-}
-
-.profile-card__match-right {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-shrink: 0;
-}
-
-.profile-card__match-icon {
-  flex-shrink: 0;
-  color: #333;
-  vertical-align: middle;
-}
-
-.profile-card__match-score {
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-.profile-card__match-outof {
-  font-weight: 500;
-  color: #555;
-  font-size: 0.85em;
-}
-
-.profile-card__edit-btn {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.5rem 1.25rem;
-  background: #424242;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.profile-card__edit-btn:hover {
-  background: #333;
+.action-icon {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text-muted);
 }
