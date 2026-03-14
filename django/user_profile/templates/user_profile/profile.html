@@ -1,78 +1,49 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Profile</title>
-  {# profile_card.css linked below #}
-  <link rel="stylesheet" href="{% static 'user_profile/profile_card.css' %}">
-</head>
-<body>
-  <header class="profile-topbar" aria-hidden="true"></header>
 
-  <main class="profile-page">
-    <article class="profile-card">
-      <div class="profile-card__main">
-        <section class="profile-card__left">
-          <h1 class="profile-card__name">Name</h1>
-          <p class="profile-card__meta">School — Year — Major</p>
+{% block content %}
+<section class="profile-container">
+    <div class="profile-info">
+        <h1 class="profile-name">Name</h1>
+        <p class="profile-subtitle">School - Year - Major</p>
+        
+        <div class="profile-bio">
+            <h3>Billy's Bio:</h3>
+            <p>Body text for your whole article or post. We'll put in some lorem ipsum to show how a filled-out page might look...</p>
+            <p>Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation...</p>
+        </div>
 
-          <h2 class="profile-card__section-title">Bio</h2>
-          <div class="profile-card__bio">
-            <p>Body text for the bios once we hookup the model.</p>
-            <p>Hi my name is Amaan and I like to play and watch soccer. I would love to room with people who like to play and watch soccer.</p>
-          </div>
+        <div class="profile-contact">
+            <h3>Contact me</h3>
+            <ul>
+                <li>My outreach preference:</li>
+                <li>Phone: 333-333-3334</li>
+                <li>Email: billyrulez@bc.edu</li>
+                <li>Instagram: billy_petrik</li>
+            </ul>
+        </div>
+    </div>
 
-          <h2 class="profile-card__section-title">Contact me</h2>
-          <div class="profile-card__contacts">
-            <p class="profile-card__outreach-label">My outreach preference:</p>
-            <p class="profile-card__outreach">Placeholder preference text.</p>
-            <p class="profile-card__contact">Phone: 333-333-3334</p>
-            <p class="profile-card__contact">Email: johndoe@example.edu</p>
-            <p class="profile-card__contact">Instagram: @handle</p>
-          </div>
-        </section>
-
-        <aside class="profile-card__right">
-          <div class="profile-card__photo-wrap">
-            {# When we get profile picture: {% if profile.photo %}<img src="{{ profile.photo.url }}" alt="">{% else %}…{% endif %} #}
-            <div class="profile-card__photo profile-card__photo--placeholder" role="img" aria-label="Profile photo">
-              Photo
+    <div class="profile-card-column">
+        <div class="profile-image-wrapper">
+            <img src="{% static 'images/sample_profile.jpg' %}" alt="Profile Picture" class="profile-img">
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-row">
+                <span>Roommate match</span>
+                <span class="stat-value">👤 9.5</span>
             </div>
-          </div>
-
-          <div class="profile-card__matches" aria-label="Match scores">
-            <div class="profile-card__match-row">
-              <span class="profile-card__match-label">Roommate match</span>
-              <span class="profile-card__match-right">
-                <svg class="profile-card__match-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-                </svg>
-                <span class="profile-card__match-score">
-                  {% if roommate_match is not None %}{{ roommate_match|floatformat:1 }}{% else %}—{% endif %}<span class="profile-card__match-outof">/10</span>
-                </span>
-              </span>
+            <div class="stat-row">
+                <span>Housing match</span>
+                <span class="stat-value">👤 9.5</span>
             </div>
-            <div class="profile-card__match-row">
-              <span class="profile-card__match-label">Housing match</span>
-              <span class="profile-card__match-right">
-                <svg class="profile-card__match-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-                <span class="profile-card__match-score">
-                  {% if housing_match is not None %}{{ housing_match|floatformat:1 }}{% else %}—{% endif %}<span class="profile-card__match-outof">/10</span>
-                </span>
-              </span>
-            </div>
-          </div>
+        </div>
 
-          <p class="profile-card__actions">
-            <a class="profile-card__edit-btn" href="#">Edit My Profile</a>
-          </p>
-        </aside>
-      </div>
-    </article>
-  </main>
-</body>
-</html>
+        <div class="profile-actions">
+            <button class="action-icon">⏏️</button>
+            <button class="action-icon">•••</button>
+        </div>
+    </div>
+</section>
+{% endblock %}
