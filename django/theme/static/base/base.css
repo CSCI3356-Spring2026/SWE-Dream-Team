@@ -39,3 +39,29 @@ body {
     line-height: 1.5;
 }
 
+/* Typography Scale */
+h1 {
+    font-size: 4rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.btn {
+    padding: 10px 24px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--color-primary-green);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--color-accent-green);
+    color: var(--color-text-main);
+}
