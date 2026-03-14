@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'user_profile/profile.css' %}">
+{% endblock %}
+
+
 {% block content %}
+
 <section class="profile-container">
     <div class="profile-info">
-        <h1 class="profile-name">Name</h1>
+        <h1 class="profile-name">Billy Petrik</h1>
         <p class="profile-subtitle">School - Year - Major</p>
         
         <div class="profile-bio">
