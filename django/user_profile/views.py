@@ -15,7 +15,7 @@ def profile_card_preview(request):
             housing_match = profile.housing_match
     return render(
         request,
-        "user_profile/profile_card.html",
+        "user_profile/profile.html",
         {
             "roommate_match": roommate_match,
             "housing_match": housing_match,
