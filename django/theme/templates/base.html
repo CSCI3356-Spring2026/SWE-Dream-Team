@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SubLink{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header style="background: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));">
+        </header>
+
+    <main>
+        {% block content LOAD IN LANDING PAGE HERE FAM %}{% endblock %}
+    </main>
+
+    <footer>
+        {% This is just a temp footer I'm putting here for right now, but feel free to change it Billy %}
+        <p class="text-muted">Made by Boston College Students</p>
+    </footer>
+</body>
+</html>
