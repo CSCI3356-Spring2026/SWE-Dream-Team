@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'user_profile/profile.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<section class="profile-container">
+    <div class="profile-info">
+        <h1 class="profile-name">Billy Petrik</h1>
+        <p class="profile-subtitle">School - Year - Major</p>
+        
+        <div class="profile-bio">
+            <h3>Billy's Bio:</h3>
+            <p>Body text for your whole article or post. We'll put in some lorem ipsum to show how a filled-out page might look...</p>
+            <p>Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation...</p>
+        </div>
+
+        <div class="profile-contact">
+            <h3>Contact me</h3>
+            <ul>
+                <li>My outreach preference:</li>
+                <li>Phone: 333-333-3334</li>
+                <li>Email: billyrulez@bc.edu</li>
+                <li>Instagram: billy_petrik</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="profile-card-column">
+        <div class="profile-image-wrapper">
+            <img src="{% static 'images/billy.jpeg' %}" alt="Profile Picture" class="profile-img">
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-row">
+                <span>Roommate match</span>
+                <span class="stat-value">👤 9.5</span>
+            </div>
+            <div class="stat-row">
+                <span>Housing match</span>
+                <span class="stat-value">👤 9.5</span>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <button class="action-icon">⏏️</button>
+            <button class="action-icon">•••</button>
+        </div>
+    </div>
+</section>
+{% endblock %}
