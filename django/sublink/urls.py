@@ -24,9 +24,9 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", include("landing_page.urls")),
     path("", TemplateView.as_view(template_name="base.html"), name="home"), # Temp for now until we get landing page up
     path("", include("user_profile.urls")),
-    path("", include("landing_page.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
