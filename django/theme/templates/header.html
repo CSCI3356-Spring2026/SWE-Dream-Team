@@ -1,19 +1,41 @@
 {% load static %}
-<a href="/">
-    <img src="{% static 'images/SubLink Logo.svg' %}" alt="SubLink Logo" height="40">
-</a>
-<div class="nav-dropdown">
-    <button class="dropbtn" onclick="toggleMenu()">Profile</button>
-    <div id="dropdown-menu" class="dropdown-content">
-      <a href="/myprofile">My Profile</a> 
-      <a href="/editprofile">Edit Profile</a>
-      <a href="/settings">Settings</a>
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/" class="logo">
+            <img src="{% static 'images/SubLink Logo.svg' %}" alt="SubLink Logo" height="45">
+        </a>
+
+        <div class="nav-dropdown">
+            <button class="dropbtn" onclick="toggleMenu()">
+                My Profile
+                <svg class="profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </button>
+            <div id="dropdown-menu" class="dropdown-content">
+                <a href="/myprofile">My Profile</a> 
+                <a href="/editprofile">Edit Profile</a>
+                <a href="/settings">Settings</a>
+            </div>
+        </div>
     </div>
-</div>
+</nav>
+
 <script>
   function toggleMenu() {
-    document
-      .getElementById("dropdown-menu")
-      .classList.toggle("show");
+    document.getElementById("dropdown-menu").classList.toggle("show");
+  }
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
   }
 </script>
