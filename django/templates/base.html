@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}My Site{% endblock title %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
+  <script src="https://kit.fontawesome.com/e867f74e8d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    {% include "components/header.html" %}
+  </header>
+  <main>
+    {% block content %}
+    {% endblock content %}
+  </main>
+  <footer>
+   
+  </footer>
+</body>
+</html>
