@@ -11,38 +11,39 @@ SubLink
 
 {% block content %}
 
-<div class="container">
-
+<div class = "split-screen">
     <div class="left">
-        <h1 class = "logo">SubLink</h1>
-        <p class = "tagline">Start Here to Stop the Search</p>
+        <div class = "content-wrapper">
+            <h1 class = "logo">SubLink</h1>
+            <p class = "tagline">Start Here to Stop the Search</p>
+        </div>
     </div>
 
     <div class="right">
-
     <div class = "auth-box">
+
+        <input type = "radio" id="loginToggle" name = "authToggle" checked>
+        <input type = "radio" id="signupToggle" name = "authToggle">
+
         <h2>Your next home awaits...</h2>
       
-        <div class="toggle-bar">
-            <input type = "radio" id="loginToggle" name = "authToggle" checked>
+        <div class = "toggle-bar">
             <label for = "loginToggle" class = "toggle-btn">Log In</label>
-
-            <input type = "radio" id="signupToggle" name = "authToggle">
             <label for = "signupToggle" class = "toggle-btn">Sign Up</label>
         </div>
 
         <div class = "auth-forms">
-            <form class = "form login-form>"
-                <input type = "text" placeholder="Email">
-                <input type = "password" placeholder = "Password">
-                <button type = "submit" class = "btn btn-primary">Log In</button>
+            <form class = "form login-form">
+                <input type = "email" placeholder = "Email" class = "input-field" required>
+                <input type = "password" placeholder = "Password" class = "input-field" required>
+                <button type = "submit" class = "submit-btn">Log In</button>
             </form>
 
             <form class = "form signup-Form">
-                <input type = "text" placeholder = "Name">
-                <input type = "text" placeholder = "Email">
-                <input type = "password" placeholder = "Password">
-                <button type = "submit" class = "btn btn-primary">Sign Up</button>
+                <input type = "text" placeholder = "Name" class = "input-field" required>
+                <input type = "email" placeholder = "Email" class = "input-field" required>
+                <input type = "password" placeholder = "Password" class = "input-field" required>
+                <button type = "submit" class = "submit-btn">Sign Up</button>
             </form>
         </div>
 
@@ -50,14 +51,11 @@ SubLink
             <span>or</span>
         </div>
 
-        <a href="/accounts/google/login/">
-            <button>Log in with Google</button>
-        </a>
-        
+        <button class="google-btn">
+            <img src="{% static 'images/google-icon.png' %}" alt=""> Log in with Google
+        </button>
+        </div>
     </div>
-
-    </div>
-
 </div>
 
 {% endblock %}

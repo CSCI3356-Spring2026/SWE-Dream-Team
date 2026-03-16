@@ -1,101 +1,152 @@
-.toggle-bar input[type = "radio"] {
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+}
+
+.split-screen {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+
+.left {
+    flex: 1.2;
+    background-color: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.logo {
+    font-size: 5rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.tagline {
+    font-size: 1.5 rem;
+    opacity: 0.9;
+}
+
+.right {
+    flex: 1;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+}
+
+.auth-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+#login-form, #signupToggle {
     display: none;
 }
 
-.toggle-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.2s;
-    background-color: rgb(56,120,95);
-    color: white;
-    margin-right: 5px;
+.toggle-bar {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee
 }
 
-#loginToggle:checked + label[for="loginToggle"],
-#signupToggle:checked + label[for="signupToggle"] {
-    background-color: rgb(204,243,223);
-    color: black;
+.toggle-btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #888;
+    transition: 0.3s;
+}
+
+#loginToggle:checked ~ .toggle-bar label[for="loginToggle"],
+#signupToggle:checked ~ .toggle-bar label[for="signupToggle"] {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
 }
 
 .form {
     display: none;
-    margin-top: 20px;
+    flex-direction: column;
+    gap: 15px;
 }
 
 #loginToggle:checked ~ .auth-forms .login-form {
-    display: block;
+    display: flex !important;
 }
 
 #signupToggle:checked ~ .auth-forms .signup-form {
-    display: block;
+    display: flex !important;
 }
 
-.landing-container {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 80px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 60px;
+.input-field {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
 }
 
-.landing-text {
-    max-width: 550 px;
+.submit-btn {
+    padding: 12px;
+    background-color: #004d40;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-.landing-text h1 {
-    font-size: 4rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary-blue);
-}
-
-.landing-text p {
-    margin-top: 16px;
-    font-size: 1.1rem;
-    color: var(--color-text-main);
-}
-
-.landing-buttons {
-    margin-top: 30px;
-    display: flex;
-    gap: 16px;
-}
-
-.landing-image {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-.landing-image img {
-    max-width: 420 px;
-    width: 100%;
-}
-
-footer {
+.divider {
     text-align: center;
-    margin-top: 80px;
-    padding-bottom: 20px;
-    color: var(--color-text-muted);
+    margin: 20px 0;
+    position: relative;
 }
 
-@media (max-width: 900px) {
-    .landing-container {
-        flex-direction: column;
-        text-align: center;
-        padding: 60px 20px;
-    }
+.divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #eee;
+    z-index: 1;
+}
 
-    .landing-buttons {
-        justify-content: center;
-    }
+.divider span {
+    background: white;
+    padding: 0 10px;
+    position: relative;
+    z-index: 2;
+    color: #888;
+}
 
-    .landing-image img {
-        max-width: 300px;
-    }
-
+.google-btn {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
 }
