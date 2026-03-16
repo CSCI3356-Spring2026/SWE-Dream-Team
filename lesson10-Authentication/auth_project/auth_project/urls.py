@@ -1,5 +1,5 @@
 """
-URL configuration for sublink project.
+URL configuration for auth_project project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -14,24 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
-from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
+from auth_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')),
-from django.urls import include, path
-
-from django.views.generic import TemplateView
-
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", TemplateView.as_view(template_name="base.html"), name="home"), # Temp for now until we get landing page up
-    path('', include('home.urls')),
-    path("", include("user_profile.urls")),
+    path('', include('auth_app.urls')),
+    path('accounts/login/', views.login_view,name='login'),
+    path('accounts/logout/', views.logout_view,name='logout'),
+    path('accounts/register/', views.register_view,name='register'),
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

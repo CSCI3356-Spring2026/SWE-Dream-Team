@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SubLink{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+        ADD HEADER IN HERE
+    <main>
+        {% block content %}
+            
+        We'll load in the main landing page here fam!
+
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p class="text-muted">Made by Boston College Students</p>
+        Add real footer App here
+    </footer>
+</body>
+</html>
