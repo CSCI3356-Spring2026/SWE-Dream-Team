@@ -1,12 +1,50 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-<title>Landing Page</title>
-</head>
 
-<body>
-<h1>SubLink Landing Page</h1>
-</body>
+{% block title %}
+SubLink
+{% endblock %}
 
-</html>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'landing_page/style.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="left">
+        <h1>SubLink</h1>
+        <p>Start Here to Stop the Search</p>
+    </div>
+
+    <div class="right">
+
+        <h2>Your next home awaits...</h2>
+
+        <div class="toggle">
+            <button id="loginBtn">Log In</button>
+            <button id="signupBtn">Sign Up</button>
+        </div>
+
+        <form>
+
+            <label>Email Address</label>
+            <input type="email" name="email">
+
+            <label>Password</label>
+            <input type="password" name="password">
+
+            <button type="submit">Log In</button>
+
+        </form>
+
+        <a href="/accounts/google/login/">
+            <button>Log in with Google</button>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
