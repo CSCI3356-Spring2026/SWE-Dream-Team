@@ -14,16 +14,17 @@ SubLink
 <div class="container">
 
     <div class="left">
-        <h1>SubLink</h1>
-        <p>Start Here to Stop the Search</p>
+        <h1 class = "logo">SubLink</h1>
+        <p class = "tagline">Start Here to Stop the Search</p>
     </div>
 
     <div class="right">
 
+    <div class = "auth-box">
         <h2>Your next home awaits...</h2>
-
+      
         <div class="toggle">
-            <button id="loginBtn">Log In</button>
+            <button id="loginBtn" class = "active">Log In</button>
             <button id="signupBtn">Sign Up</button>
         </div>
 
@@ -39,12 +40,38 @@ SubLink
 
         </form>
 
+        <div class = "divider">
+            <span>or</span>
+        </div>
+
         <a href="/accounts/google/login/">
             <button>Log in with Google</button>
         </a>
+        
+    </div>
 
     </div>
 
 </div>
+
+<script>
+
+const loginBtn = document.getElementById("loginBtn");
+const signupBtn = document.getElementById("signupBtn");
+const submitBtn = document.querySelector(".submit-btn");
+
+loginBtn.onclick = function(){
+    loginBtn.classList.add("active");
+    signupBtn.classList.remove("active");
+    submitBtn.innerText = "Log In";
+}
+
+signupBtn.onclick = function(){
+    signupBtn.classList.add("active");
+    loginBtn.classList.remove("active");
+    submitBtn.innerText = "Sign Up";
+}
+
+</script>
 
 {% endblock %}
