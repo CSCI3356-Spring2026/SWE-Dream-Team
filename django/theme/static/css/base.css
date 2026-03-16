@@ -1,4 +1,3 @@
-
 :root {
     /* Brand Colors extracted from your UI */
     --color-primary-green: #147A62;    /* Dark green on buttons/text */
@@ -45,6 +44,13 @@ h1 {
     font-weight: var(--font-weight-bold);
     color: var(--color-primary-blue);
     margin-bottom: 0.5rem;
+}
+
+
+header {
+    background: linear-gradient(90deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
+    width: 100%;
+    display: block;
 }
 
 .btn {
