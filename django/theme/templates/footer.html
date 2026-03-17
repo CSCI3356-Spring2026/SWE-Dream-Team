@@ -8,6 +8,7 @@
                     <a href="#">Privacy</a> | <a href="#">Terms of Service</a> | <a href='#'>Contact</a>
                 </p>
             </div>
+            {% if request.path != '/' %}
             <div class="footer__right">
                 <p class="footer__nav">Nav: 
                     <a href="/">Home</a> 
@@ -15,4 +16,5 @@
                     <a href="#">Settings</a></p>
                 <p class="footer__credit">Made by Boston College Students</p>
             </div>
+            {% endif %}
         </div>
