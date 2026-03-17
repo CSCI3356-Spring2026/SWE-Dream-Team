@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'home',
     'theme',
     'user_profile',
+    'landing_page',
 ]
 
 MIDDLEWARE = [

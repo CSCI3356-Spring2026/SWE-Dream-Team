@@ -1,0 +1,354 @@
+/* Landing page: match design – header, split screen, tab auth, footer */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", -apple-system, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Hide base template footer when showing landing footer */
+main:has(.landing-page-wrapper) + footer {
+    display: none;
+}
+
+.landing-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ----- Header: gradient band + logo ----- */
+.landing-header {
+    background: linear-gradient(90deg, #99F2D1 0%, #B9F2D8 50%, #a8e6fc 100%);
+    width: 100%;
+    padding: 12px 24px;
+    flex-shrink: 0;
+}
+
+.landing-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.landing-logo__img {
+    height: 56px;
+    width: auto;
+    display: block;
+}
+
+/* ----- Split screen ----- */
+.split-screen {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-height: 60vh;
+    width: 100%;
+}
+
+/* Left column: hero + branding – subtle shadow */
+.left {
+    flex: 1;
+    background-color: #f8faf8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: inset -8px 0 24px rgba(0, 0, 0, 0.06);
+}
+
+.content-wrapper {
+    width: 100%;
+    max-width: 620px;
+}
+
+.hero-image-wrap {
+    width: 100%;
+    margin-bottom: 1.75rem;
+}
+
+.hero-image {
+    width: 100%;
+    display: block;
+    border-radius: 14px;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.logo {
+    font-size: 4rem;
+    font-weight: 800;
+    margin: 0 0 0.35rem;
+    color: #0066FF;
+}
+
+.tagline {
+    font-size: 1.55rem;
+    color: #147A62;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Right column: auth – equal width with left */
+.right {
+    flex: 1;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 400px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.auth-headline {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+    font-weight: 700;
+}
+
+/* Tab bar: pill-style (Log In active = light green, Sign Up = darker green) */
+.toggle-bar {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.toggle-btn {
+    flex: 1;
+    text-align: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.2s, color 0.2s;
+    border: none;
+    background: #e0f0e8;
+    color: #1a1a1a;
+}
+
+.toggle-btn--signup {
+    background: #147A62;
+    color: #fff;
+}
+
+#loginToggle:checked ~ .toggle-bar .toggle-btn--login {
+    background: #B9F2D8;
+    color: #1a1a1a;
+}
+
+#loginToggle:checked ~ .toggle-bar .toggle-btn--signup {
+    background: #147A62;
+    color: #fff;
+}
+
+#signupToggle:checked ~ .toggle-bar .toggle-btn--signup {
+    background: #B9F2D8;
+    color: #1a1a1a;
+}
+
+#signupToggle:checked ~ .toggle-bar .toggle-btn--login {
+    background: #147A62;
+    color: #fff;
+}
+
+/* Forms */
+.auth-forms {
+    position: relative;
+}
+
+.form {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#loginToggle:checked ~ .auth-forms .login-form {
+    display: flex !important;
+}
+
+#signupToggle:checked ~ .auth-forms .signup-form {
+    display: flex !important;
+}
+
+.input-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+    cursor: pointer;
+}
+
+.checkbox-input {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: #147A62;
+}
+
+.submit-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.submit-btn--primary {
+    background-color: #5a3d7a;
+    color: #fff;
+    border: 1px solid #333;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.submit-btn--primary:hover {
+    opacity: 0.92;
+}
+
+.google-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.google-btn__icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.forgot-link {
+    display: block;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    text-decoration: underline;
+    margin-top: 0.5rem;
+}
+
+.forgot-link:hover {
+    color: #333;
+}
+
+/* ----- Footer ----- */
+.landing-footer {
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 2rem 24px;
+    flex-shrink: 0;
+}
+
+.landing-footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.landing-footer__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.landing-footer__brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.landing-footer__tagline {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 0;
+}
+
+.landing-footer__contact {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 0;
+}
+
+.landing-footer__legal {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.landing-footer__legal a {
+    color: #333;
+    text-decoration: underline;
+}
+
+.landing-footer__right {
+    text-align: right;
+}
+
+.landing-footer__nav {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.landing-footer__nav a {
+    color: #333;
+    text-decoration: underline;
+    margin-left: 0.25rem;
+}
+
+.landing-footer__credit {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
