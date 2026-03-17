@@ -11,51 +11,84 @@ SubLink
 
 {% block content %}
 
-<div class = "split-screen">
-    <div class="left">
-        <div class = "content-wrapper">
-            <h1 class = "logo">SubLink</h1>
-            <p class = "tagline">Start Here to Stop the Search</p>
+<div class="landing-page-wrapper">
+    <div class="split-screen">
+        <!-- Left: hero image + branding -->
+        <div class="left">
+            <div class="content-wrapper">
+                <div class="hero-image-wrap">
+                    <img src="{% static 'landing_page/hero.jpg' %}" alt="" class="hero-image">
+                </div>
+                <h1 class="logo">SubLink</h1>
+                <p class="tagline">Start Here to Stop the Search</p>
+            </div>
+        </div>
+
+        <!-- Right: auth -->
+        <div class="right">
+            <div class="auth-box">
+                <input type="radio" id="loginToggle" name="authToggle" checked class="sr-only">
+                <input type="radio" id="signupToggle" name="authToggle" class="sr-only">
+
+                <h2 class="auth-headline">Your next home awaits...</h2>
+
+                <div class="toggle-bar">
+                    <label for="loginToggle" class="toggle-btn toggle-btn--login">Log In</label>
+                    <label for="signupToggle" class="toggle-btn toggle-btn--signup">Sign Up</label>
+                </div>
+
+                <div class="auth-forms">
+                    <form class="form login-form" method="post" action="#">
+                        {% csrf_token %}
+                        <label for="login-email" class="input-label">Email Address</label>
+                        <input type="email" id="login-email" name="email" placeholder="Email" class="input-field" required>
+                        <label for="login-password" class="input-label">Password</label>
+                        <input type="password" id="login-password" name="password" placeholder="Password" class="input-field" required>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember" checked class="checkbox-input"> Remember me
+                        </label>
+                        <button type="submit" class="submit-btn submit-btn--primary">Log In</button>
+                        <button type="button" class="google-btn">
+                            <img src="{% static 'images/google-icon.png' %}" alt="" class="google-btn__icon"> Log In with Google
+                        </button>
+                        <a href="#" class="forgot-link">Forgot password</a>
+                    </form>
+
+                    <form class="form signup-form" method="post" action="#">
+                        {% csrf_token %}
+                        <label for="signup-name" class="input-label">Name</label>
+                        <input type="text" id="signup-name" name="name" placeholder="Name" class="input-field" required>
+                        <label for="signup-email" class="input-label">Email Address</label>
+                        <input type="email" id="signup-email" name="email" placeholder="Email" class="input-field" required>
+                        <label for="signup-password" class="input-label">Password</label>
+                        <input type="password" id="signup-password" name="password" placeholder="Password" class="input-field" required>
+                        <button type="submit" class="submit-btn submit-btn--primary">Sign Up</button>
+                        <button type="button" class="google-btn">
+                            <img src="{% static 'images/google-icon.png' %}" alt="" class="google-btn__icon"> Sign Up with Google
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="right">
-    <div class = "auth-box">
-
-        <input type = "radio" id="loginToggle" name = "authToggle" checked>
-        <input type = "radio" id="signupToggle" name = "authToggle">
-
-        <h2>Your next home awaits...</h2>
-      
-        <div class = "toggle-bar">
-            <label for = "loginToggle" class = "toggle-btn">Log In</label>
-            <label for = "signupToggle" class = "toggle-btn">Sign Up</label>
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="landing-footer__inner">
+            <div class="landing-footer__left">
+                <p class="landing-footer__brand">SubLink</p>
+                <p class="landing-footer__tagline">Start Here to Stop the Search</p>
+                <p class="landing-footer__contact">Contact Us - support.sublink@gmail.com</p>
+                <p class="landing-footer__legal">
+                    <a href="#">Privacy</a> | <a href="#">Terms of Service</a>
+                </p>
+            </div>
+            <div class="landing-footer__right">
+                <p class="landing-footer__nav">Nav: <a href="/">Home</a> <a href="/profile/preview/">Profile</a> <a href="#">Contact</a></p>
+                <p class="landing-footer__credit">Made by Boston College Students</p>
+            </div>
         </div>
-
-        <div class = "auth-forms">
-            <form class = "form login-form">
-                <input type = "email" placeholder = "Email" class = "input-field" required>
-                <input type = "password" placeholder = "Password" class = "input-field" required>
-                <button type = "submit" class = "submit-btn">Log In</button>
-            </form>
-
-            <form class = "form signup-Form">
-                <input type = "text" placeholder = "Name" class = "input-field" required>
-                <input type = "email" placeholder = "Email" class = "input-field" required>
-                <input type = "password" placeholder = "Password" class = "input-field" required>
-                <button type = "submit" class = "submit-btn">Sign Up</button>
-            </form>
-        </div>
-
-        <div class = "divider">
-            <span>or</span>
-        </div>
-
-        <button class="google-btn">
-            <img src="{% static 'images/google-icon.png' %}" alt=""> Log in with Google
-        </button>
-        </div>
-    </div>
+    </footer>
 </div>
 
 {% endblock %}
