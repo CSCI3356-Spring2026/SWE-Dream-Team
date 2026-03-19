@@ -6,7 +6,8 @@
     <title>{% block title %}SubLink{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
-    
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -21,9 +22,8 @@
         {% endblock %}
     </main>
 
-    <footer>
-        <p class="text-muted">Made by Boston College Students</p>
-        Add real footer App here
+    <footer class="footer">
+        {% include 'footer.html' %}
     </footer>
 </body>
 </html>
