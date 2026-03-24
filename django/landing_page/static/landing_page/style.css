@@ -7,11 +7,6 @@ html {
     overflow-x: hidden;
 }
 
-/* Hide base template footer when showing landing footer */
-main:has(.landing-page-wrapper) + footer {
-    display: none;
-}
-
 .landing-page-wrapper {
     min-height: 100vh;
     display: flex;

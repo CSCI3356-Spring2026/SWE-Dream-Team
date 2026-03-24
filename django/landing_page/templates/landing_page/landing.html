@@ -1,12 +1,13 @@
-{% extends "base.html" %}
+{% extends "theme/base.html" %}
 {% load static %}
 
 {% block title %}
-SubLink
+SubLink - Landing Page
 {% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'landing_page/style.css' %}">
+<script src="https://accounts.google.com/gsi/client" async></script>
 {% endblock %}
 
 {% block content %}
@@ -38,6 +39,10 @@ SubLink
                 </div>
 
                 <div class="auth-forms">
+                    {% if request.session.user_data %}
+                    <p>Signed in as {{ request.session.user_data.email }}. <a href="{% url 'sign_out' %}">Sign out</a></p>
+                    {% endif %}
+
                     <form class="form login-form" method="post" action="#">
                         {% csrf_token %}
                         <label for="login-email" class="input-label">Email Address</label>
@@ -48,9 +53,21 @@ SubLink
                             <input type="checkbox" name="remember" checked class="checkbox-input"> Remember me
                         </label>
                         <button type="submit" class="submit-btn submit-btn--primary">Log In</button>
-                        <button type="button" class="google-btn">
-                            <img src="{% static 'images/google-icon.png' %}" alt="" class="google-btn__icon"> Log In with Google
-                        </button>
+                        <div id="g_id_onload"
+                            data-client_id="{{ google_oauth_client_id }}"
+                            data-context="signin"
+                            data-ux_mode="redirect"
+                            data-login_uri="http://localhost:8000/auth-receiver"
+                            data-auto_prompt="false">
+                        </div>
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left">
+                        </div>
                         <a href="#" class="forgot-link">Forgot password</a>
                     </form>
 
@@ -63,11 +80,21 @@ SubLink
                         <label for="signup-password" class="input-label">Password</label>
                         <input type="password" id="signup-password" name="password" placeholder="Password" class="input-field" required>
                         <button type="submit" class="submit-btn submit-btn--primary">Sign Up</button>
-                        <button type="button" class="google-btn">
-                            <img src="{% static 'images/google-icon.png' %}" alt="" class="google-btn__icon"> Sign Up with Google
-                        </button>
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signup_with"
+                            data-size="large"
+                            data-logo_alignment="left">
+                        </div>
                     </form>
                 </div>
+
+                <form id="google-login-form" method="post" action="{% url 'auth_receiver' %}" style="display:none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="credential" id="google-credential">
+                </form>
             </div>
         </div>
     </div>
@@ -148,5 +175,13 @@ SubLink
         </div>
     </footer>
 </div>
+
+<script>
+function handleGoogleCredential(response) {
+    if (!response || !response.credential) { return; }
+    document.getElementById("google-credential").value = response.credential;
+    document.getElementById("google-login-form").submit();
+}
+</script>
 
 {% endblock %}
