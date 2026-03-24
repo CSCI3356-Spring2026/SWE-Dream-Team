@@ -55,7 +55,7 @@ main:has(.landing-page-wrapper) + footer {
     align-items: center;
     justify-content: center;
     padding: 2.5rem;
-    text-align: center;
+    text-align: left;
     box-shadow: inset -8px 0 24px rgba(0, 0, 0, 0.06);
 }
 
