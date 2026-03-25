@@ -1,7 +1,7 @@
 {% extends "theme/base.html" %}
 {% load static %}
 
-{% block title %}Housing Preferences — SubLink{% endblock %}
+{% block title %}Listing details — SubLink{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'forms/get_to_know_you.css' %}">
@@ -12,33 +12,33 @@
 
 {% block content %}
 {% include "forms/includes/workflow_toggle.html" %}
-<section class="forms-page" aria-labelledby="housing-prefs-heading">
+<section class="forms-page" aria-labelledby="sublettor-listing-heading">
     <div class="forms-page__intro">
-        <h1 class="forms-page__title" id="housing-prefs-heading">What are your housing preferences?</h1>
-        <p class="forms-page__subtitle">Please fill out this information for your profile</p>
+        <h1 class="forms-page__title" id="sublettor-listing-heading">Describe your listing</h1>
+        <p class="forms-page__subtitle">House information for what you’re offering.</p>
     </div>
 
-    <form class="forms-card forms-card--wide" method="post" action="{% url 'forms-student-housing-preferences' %}">
+    <form class="forms-card forms-card--wide" method="post" action="{% url 'forms-sublettor-listing-details' %}">
         {% csrf_token %}
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_preferred_location">Preferred location (street / area)</label>
-            <input class="forms-card__input" type="text" name="preferred_location" id="id_preferred_location" placeholder="Value" autocomplete="street-address" required>
+            <label class="forms-card__label" for="id_sl_location">House location (street / area)</label>
+            <input class="forms-card__input" type="text" name="preferred_location" id="id_sl_location" placeholder="Value" autocomplete="street-address" required>
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_walking_time">Walking time from Boston College (in minutes)</label>
-            <input class="forms-card__input" type="number" name="walking_time_minutes" id="id_walking_time" placeholder="Value" min="0" step="1" inputmode="numeric" required>
+            <label class="forms-card__label" for="id_sl_walk">Walking time from Boston College (in minutes)</label>
+            <input class="forms-card__input" type="number" name="walking_time_minutes" id="id_sl_walk" placeholder="Value" min="0" step="1" inputmode="numeric" required>
         </div>
 
         <fieldset class="forms-card__fieldset forms-card__fieldset--rent">
-            <legend class="forms-card__fieldset-legend">Start date to end date rent</legend>
+            <legend class="forms-card__fieldset-legend">Start date to end date lease</legend>
 
             <div class="housing-rent__group">
-                <span class="housing-rent__label" id="rent-start-label">Start</span>
-                <div class="housing-rent__selects" role="group" aria-labelledby="rent-start-label">
-                    <label class="visually-hidden" for="id_rent_start_month">Start month</label>
-                    <select class="forms-card__select housing-rent__month" name="rent_start_month" id="id_rent_start_month" required>
+                <span class="housing-rent__label" id="lease-start-label">Lease start</span>
+                <div class="housing-rent__selects" role="group" aria-labelledby="lease-start-label">
+                    <label class="visually-hidden" for="id_sl_lease_start_month">Lease start month</label>
+                    <select class="forms-card__select housing-rent__month" name="rent_start_month" id="id_sl_lease_start_month" required>
                         <option value="" disabled selected>Month</option>
                         <option value="01">Jan</option>
                         <option value="02">Feb</option>
@@ -53,8 +53,8 @@
                         <option value="11">Nov</option>
                         <option value="12">Dec</option>
                     </select>
-                    <label class="visually-hidden" for="id_rent_start_year">Start year</label>
-                    <select class="forms-card__select housing-rent__year" name="rent_start_year" id="id_rent_start_year" required>
+                    <label class="visually-hidden" for="id_sl_lease_start_year">Lease start year</label>
+                    <select class="forms-card__select housing-rent__year" name="rent_start_year" id="id_sl_lease_start_year" required>
                         <option value="" disabled selected>Year</option>
                         {% for y in rent_years %}
                         <option value="{{ y }}">{{ y }}</option>
@@ -64,10 +64,10 @@
             </div>
 
             <div class="housing-rent__group">
-                <span class="housing-rent__label" id="rent-end-label">End</span>
-                <div class="housing-rent__selects" role="group" aria-labelledby="rent-end-label">
-                    <label class="visually-hidden" for="id_rent_end_month">End month</label>
-                    <select class="forms-card__select housing-rent__month" name="rent_end_month" id="id_rent_end_month" required>
+                <span class="housing-rent__label" id="lease-end-label">Lease end</span>
+                <div class="housing-rent__selects" role="group" aria-labelledby="lease-end-label">
+                    <label class="visually-hidden" for="id_sl_lease_end_month">Lease end month</label>
+                    <select class="forms-card__select housing-rent__month" name="rent_end_month" id="id_sl_lease_end_month" required>
                         <option value="" disabled selected>Month</option>
                         <option value="01">Jan</option>
                         <option value="02">Feb</option>
@@ -82,8 +82,8 @@
                         <option value="11">Nov</option>
                         <option value="12">Dec</option>
                     </select>
-                    <label class="visually-hidden" for="id_rent_end_year">End year</label>
-                    <select class="forms-card__select housing-rent__year" name="rent_end_year" id="id_rent_end_year" required>
+                    <label class="visually-hidden" for="id_sl_lease_end_year">Lease end year</label>
+                    <select class="forms-card__select housing-rent__year" name="rent_end_year" id="id_sl_lease_end_year" required>
                         <option value="" disabled selected>Year</option>
                         {% for y in rent_years %}
                         <option value="{{ y }}">{{ y }}</option>
@@ -94,13 +94,13 @@
         </fieldset>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_min_monthly_rent">Minimum monthly rental price</label>
-            <input class="forms-card__input" type="number" name="min_monthly_rent" id="id_min_monthly_rent" placeholder="Value" min="0" step="1" inputmode="numeric">
+            <label class="forms-card__label" for="id_sl_rent">Asking monthly rent</label>
+            <input class="forms-card__input" type="number" name="min_monthly_rent" id="id_sl_rent" placeholder="Value" min="0" step="1" inputmode="numeric">
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_dishwasher">Dishwasher?</label>
-            <select class="forms-card__select" name="dishwasher" id="id_dishwasher" required>
+            <label class="forms-card__label" for="id_sl_dishwasher">Does the unit have a dishwasher?</label>
+            <select class="forms-card__select" name="dishwasher" id="id_sl_dishwasher" required>
                 <option value="" disabled selected>Select…</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -108,18 +108,18 @@
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_laundry">Laundry specifications</label>
-            <select class="forms-card__select" name="laundry" id="id_laundry" required>
+            <label class="forms-card__label" for="id_sl_laundry">Laundry</label>
+            <select class="forms-card__select" name="laundry" id="id_sl_laundry" required>
                 <option value="" disabled selected>Select…</option>
                 <option value="in_unit">In unit</option>
                 <option value="in_building">In building</option>
-                <option value="doesnt_matter">Doesn't matter</option>
+                <option value="doesnt_matter">Doesn't matter / N/A</option>
             </select>
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_utilities">Utilities</label>
-            <select class="forms-card__select" name="utilities" id="id_utilities" required>
+            <label class="forms-card__label" for="id_sl_utilities">Utilities</label>
+            <select class="forms-card__select" name="utilities" id="id_sl_utilities" required>
                 <option value="" disabled selected>Select…</option>
                 <option value="included">Included</option>
                 <option value="not_included">Not included</option>
@@ -127,8 +127,8 @@
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_parking">Parking needed</label>
-            <select class="forms-card__select" name="parking_needed" id="id_parking" required>
+            <label class="forms-card__label" for="id_sl_parking">Parking available?</label>
+            <select class="forms-card__select" name="parking_needed" id="id_sl_parking" required>
                 <option value="" disabled selected>Select…</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -136,8 +136,8 @@
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_furnished">Already furnished</label>
-            <select class="forms-card__select" name="already_furnished" id="id_furnished" required>
+            <label class="forms-card__label" for="id_sl_furnished">Is the unit furnished?</label>
+            <select class="forms-card__select" name="already_furnished" id="id_sl_furnished" required>
                 <option value="" disabled selected>Select…</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -145,7 +145,7 @@
         </div>
 
         <div class="forms-card__actions">
-            <a class="forms-card__back" href="{% url 'forms-student-roommate-preferences' %}">Back</a>
+            <a class="forms-card__back" href="{% url 'forms-sublettor-roommate-info' %}">Back</a>
             <button type="submit" class="forms-card__submit">Submit</button>
         </div>
     </form>

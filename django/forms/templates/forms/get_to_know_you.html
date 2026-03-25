@@ -5,9 +5,11 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'forms/get_to_know_you.css' %}">
+<link rel="stylesheet" href="{% static 'forms/workflow_toggle.css' %}">
 {% endblock %}
 
 {% block content %}
+{% include "forms/includes/workflow_toggle.html" %}
 {# POST target: later set action="{% url 'forms-get-to-know-you' %}" and bind to a ModelForm / Profile #}
 <section class="forms-page" aria-labelledby="get-to-know-heading">
     <div class="forms-page__intro">
