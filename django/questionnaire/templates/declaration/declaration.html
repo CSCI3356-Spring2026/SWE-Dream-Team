@@ -6,7 +6,7 @@
 {% block content %}
 <div class="declarations">
     {% for card in cards %}
-        {% include "component/dec_csard.html" with title=card.title  description=card.description icon=card.icon %}
+        {% include "component/dec_card.html" with title=card.title  description=card.description icon=card.icon %}
     {% endfor %}
 </div>
 {% endblock %}
