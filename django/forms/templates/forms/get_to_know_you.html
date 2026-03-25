@@ -68,7 +68,10 @@
             {# enctype on <form> is set for ImageField / file uploads when you handle POST #}
         </div>
 
-        <button type="submit" class="forms-card__submit">Submit</button>
+        <div class="forms-card__actions">
+            <a class="forms-card__back" href="{% url 'landing' %}">Back</a>
+            <button type="submit" class="forms-card__submit">Submit</button>
+        </div>
     </form>
 </section>
 {% endblock %}

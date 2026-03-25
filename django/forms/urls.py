@@ -1,5 +1,5 @@
 """
-URL routes for the onboarding questionnaire (profile + roommate prefs).
+URL routes for the onboarding questionnaire (profile + roommate + housing prefs).
 Role / user-type selection lives in another app.
 """
 
@@ -22,5 +22,10 @@ urlpatterns = [
         "student/roommate-preferences/",
         views.roommate_preferences,
         name="forms-student-roommate-preferences",
+    ),
+    path(
+        "student/housing-preferences/",
+        views.housing_preferences,
+        name="forms-student-housing-preferences",
     ),
 ]

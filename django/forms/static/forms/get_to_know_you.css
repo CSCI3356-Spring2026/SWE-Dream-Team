@@ -84,6 +84,37 @@
     resize: vertical;
 }
 
+.forms-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: stretch;
+    margin-top: 0.25rem;
+}
+
+.forms-card__back {
+    flex: 1 1 160px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-family);
+    color: var(--color-text-main);
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.forms-card__back:hover {
+    background: #f7f7f7;
+    border-color: #b8b8b8;
+}
+
 .forms-card__submit {
     display: block;
     width: 100%;
@@ -97,6 +128,11 @@
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: opacity 0.2s;
+}
+
+.forms-card__actions .forms-card__submit {
+    flex: 1 1 160px;
+    width: auto;
 }
 
 .forms-card__submit:hover {
