@@ -1,18 +1,26 @@
 """
-URL routes for the onboarding questionnaire.
-
-Suggested paths (add views as you build UI):
-  - /forms/role/           — Student vs Lessor selection
-  - /forms/get-to-know-you/ — shared profile form
-  - /forms/student/...     — student-only preference forms
-  - /forms/lessor/...      — lessor-only preference forms
+URL routes for the onboarding questionnaire (profile + roommate prefs).
+Role / user-type selection lives in another app.
 """
 
 from django.urls import path
+from django.views.generic import RedirectView
 
 from . import views
 
 urlpatterns = [
     path("", views.get_to_know_you, name="forms-get-to-know-you"),
-    # path("role/", views.role_select, name="forms-role-select"),
+    path(
+        "get-to-know-you/",
+        RedirectView.as_view(
+            pattern_name="forms-get-to-know-you",
+            permanent=False,
+        ),
+        name="forms-get-to-know-you-legacy",
+    ),
+    path(
+        "student/roommate-preferences/",
+        views.roommate_preferences,
+        name="forms-student-roommate-preferences",
+    ),
 ]

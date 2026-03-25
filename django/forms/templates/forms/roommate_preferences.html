@@ -1,0 +1,164 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Roommate Preferences — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'forms/get_to_know_you.css' %}">
+<link rel="stylesheet" href="{% static 'forms/roommate_preferences.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="forms-page" aria-labelledby="roommate-prefs-heading">
+    <div class="forms-page__intro">
+        <h1 class="forms-page__title" id="roommate-prefs-heading">What are your roommate preferences?</h1>
+        <p class="forms-page__subtitle">Please fill out this information for your profile</p>
+    </div>
+
+    <form class="forms-card forms-card--wide" method="post" action="{% url 'forms-student-roommate-preferences' %}">
+        {% csrf_token %}
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_ideal_housing_vibe">Ideal housing vibe</label>
+            <select class="forms-card__select" name="ideal_housing_vibe" id="id_ideal_housing_vibe" required>
+                <option value="" disabled selected>Select…</option>
+                <option value="quiet_studious">Quiet &amp; Studious</option>
+                <option value="chill_low_key">Chill &amp; Low-Key</option>
+                <option value="social_balanced">Social but Balanced</option>
+                <option value="very_social">Very Social / Going Out Often</option>
+                <option value="independent">Independent / Keep to Myself</option>
+            </select>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_roommate_dealbreakers">Roommate dealbreakers</label>
+            <select class="forms-card__select forms-card__select--multi" name="roommate_dealbreakers" id="id_roommate_dealbreakers" multiple size="1">
+                <option value="smoking">Smoking</option>
+                <option value="excessive_noise">Excessive noise / loud late at night</option>
+                <option value="messiness">Messiness / unclean common areas</option>
+                <option value="guests_frequent">Having guests over frequently</option>
+                <option value="significant_other_guest">Significant other as guest</option>
+                <option value="strong_odors">Strong odors (weed, food, etc.)</option>
+                <option value="sleep_schedules">Different sleep schedules</option>
+                <option value="pets">Pets in the house</option>
+                <option value="drug_use">Drug use</option>
+                <option value="alcohol_use">Alcohol use</option>
+            </select>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_cleanliness">Cleanliness level of roommates</label>
+            <select class="forms-card__select" name="cleanliness" id="id_cleanliness" required>
+                <option value="" disabled selected>Select…</option>
+                <option value="very_messy">Very messy</option>
+                <option value="somewhat_messy">Somewhat messy</option>
+                <option value="neutral">Neutral</option>
+                <option value="somewhat_clean">Somewhat clean</option>
+                <option value="very_clean">Very clean</option>
+            </select>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_weekend_bedtime">Weekend bedtime hours</label>
+            <p class="forms-card__help">Typical time you aim to sleep (8:00 PM – 2:00 AM).</p>
+            <select class="forms-card__select" name="weekend_bedtime" id="id_weekend_bedtime" required>
+                <option value="" disabled selected>Select…</option>
+                <option value="20:00">8:00 PM</option>
+                <option value="21:00">9:00 PM</option>
+                <option value="22:00">10:00 PM</option>
+                <option value="23:00">11:00 PM</option>
+                <option value="00:00">12:00 AM (midnight)</option>
+                <option value="01:00">1:00 AM</option>
+                <option value="02:00">2:00 AM</option>
+            </select>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_weeknight_bedtime">Weeknight bedtime</label>
+            <p class="forms-card__help">Typical school-night sleep time (8:00 PM – 2:00 AM).</p>
+            <select class="forms-card__select" name="weeknight_bedtime" id="id_weeknight_bedtime" required>
+                <option value="" disabled selected>Select…</option>
+                <option value="20:00">8:00 PM</option>
+                <option value="21:00">9:00 PM</option>
+                <option value="22:00">10:00 PM</option>
+                <option value="23:00">11:00 PM</option>
+                <option value="00:00">12:00 AM (midnight)</option>
+                <option value="01:00">1:00 AM</option>
+                <option value="02:00">2:00 AM</option>
+            </select>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_social_level">Social level at home</label>
+            <select class="forms-card__select" name="social_level" id="id_social_level" required>
+                <option value="" disabled selected>Select…</option>
+                <option value="very_social">Very social</option>
+                <option value="moderately_social">Moderately social</option>
+                <option value="balanced">Balanced</option>
+                <option value="mostly_independent">Mostly independent</option>
+                <option value="extremely_independent">Extremely independent</option>
+            </select>
+        </div>
+
+        <fieldset class="forms-card__fieldset">
+            <legend class="forms-card__fieldset-legend">Living preferences</legend>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="id_live_opposite_sex">Live with opposite sex</label>
+                <select class="forms-card__select" name="live_opposite_sex" id="id_live_opposite_sex" required>
+                    <option value="" disabled selected>Select…</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="id_share_double">Share a double</label>
+                <select class="forms-card__select" name="share_double" id="id_share_double" required>
+                    <option value="" disabled selected>Select…</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="id_okay_smoking">Okay with smoking</label>
+                <select class="forms-card__select" name="okay_smoking" id="id_okay_smoking" required>
+                    <option value="" disabled selected>Select…</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="id_okay_alcohol">Okay with alcohol in house</label>
+                <select class="forms-card__select" name="okay_alcohol" id="id_okay_alcohol" required>
+                    <option value="" disabled selected>Select…</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="id_okay_overnight">Okay with overnight partners</label>
+                <select class="forms-card__select" name="okay_overnight" id="id_okay_overnight" required>
+                    <option value="" disabled selected>Select…</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="id_okay_pets">Okay with pets</label>
+                <select class="forms-card__select" name="okay_pets" id="id_okay_pets" required>
+                    <option value="" disabled selected>Select…</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+        </fieldset>
+
+        <button type="submit" class="forms-card__submit">Submit</button>
+    </form>
+</section>
+{% endblock %}
