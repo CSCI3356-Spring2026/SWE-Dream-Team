@@ -13,5 +13,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path("", views.get_to_know_you, name="forms-get-to-know-you"),
     # path("role/", views.role_select, name="forms-role-select"),
 ]

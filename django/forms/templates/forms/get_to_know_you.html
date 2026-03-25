@@ -1,0 +1,74 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Let's Get to Know You — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'forms/get_to_know_you.css' %}">
+{% endblock %}
+
+{% block content %}
+{# POST target: later set action="{% url 'forms-get-to-know-you' %}" and bind to a ModelForm / Profile #}
+<section class="forms-page" aria-labelledby="get-to-know-heading">
+    <div class="forms-page__intro">
+        <h1 class="forms-page__title" id="get-to-know-heading">Let's Get to Know You</h1>
+        <p class="forms-page__subtitle">Please fill out this information for your profile</p>
+    </div>
+
+    <form class="forms-card" method="post" action="{% url 'forms-get-to-know-you' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {# name attributes mirror future model/form fields — wire to user_profile.Profile or a dedicated model #}
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_first_name">Name</label>
+            <input class="forms-card__input" type="text" name="first_name" id="id_first_name" placeholder="Value" autocomplete="given-name">
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_last_name">Surname</label>
+            <input class="forms-card__input" type="text" name="last_name" id="id_last_name" placeholder="Value" autocomplete="family-name">
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_email">Email</label>
+            <input class="forms-card__input" type="email" name="email" id="id_email" placeholder="Value" autocomplete="email">
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_gender">Gender</label>
+            <input class="forms-card__input" type="text" name="gender" id="id_gender" placeholder="Value" autocomplete="sex">
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_major_minor">Boston College Major / Minor</label>
+            <input class="forms-card__input" type="text" name="major_minor" id="id_major_minor" placeholder="Value">
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_grad_year">Boston College Graduation Year</label>
+            <input class="forms-card__input" type="text" name="grad_year" id="id_grad_year" placeholder="Value" inputmode="numeric">
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_instagram">Instagram username <span class="forms-card__hint">(optional)</span></label>
+            <input class="forms-card__input" type="text" name="instagram" id="id_instagram" placeholder="Value" autocomplete="off">
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_bio">
+                Your Bio
+                <span class="forms-card__hint"> — What people see when they visit your profile! (max 500 char limit)</span>
+            </label>
+            <textarea class="forms-card__textarea" name="bio" id="id_bio" placeholder="Value" maxlength="500" rows="5"></textarea>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_profile_photo">Upload Profile Photo</label>
+            <input class="forms-card__input" type="file" name="profile_photo" id="id_profile_photo" accept="image/*">
+            {# enctype on <form> is set for ImageField / file uploads when you handle POST #}
+        </div>
+
+        <button type="submit" class="forms-card__submit">Submit</button>
+    </form>
+</section>
+{% endblock %}
