@@ -4,7 +4,9 @@
 {% block title %}Declaration{% endblock %}
 
 {% block content %}
-<div>
-    
+<div class="declarations">
+    {% for card in cards %}
+        {% include "component/dec_csard.html" with title=card.title  description=card.description icon=card.icon %}
+    {% endfor %}
 </div>
 {% endblock %}
