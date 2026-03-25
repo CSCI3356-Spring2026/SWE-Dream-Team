@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 class DeclarationCardsView(TemplateView):
-    template_name = 'items/static_cards.html'
+    template_name = 'declaration/declaration.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

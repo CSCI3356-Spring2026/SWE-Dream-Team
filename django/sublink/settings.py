@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'theme',
     'user_profile',
     'landing_page',
+    'questionnaire',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.debug',
             ],
         },
     },
