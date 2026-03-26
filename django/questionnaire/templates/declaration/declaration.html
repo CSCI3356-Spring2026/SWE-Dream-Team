@@ -1,0 +1,19 @@
+{% extends 'theme/base.html' %}
+{% load static %}
+
+{% block title %}Declaration{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/declaration.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dec_header">
+    <h2>Let's Get to Know You</h2>
+    <h4>Pick the type of user you are:</h4>
+</div>
+<div class="declarations">
+    {% for card in cards %}
+        {% include "theme/component/set_card.html" with title=card.title description=card.description icon=card.icon link=card.link buttontxt=card.buttontxt %}
+    {% endfor %}
+</div>
+{% endblock %}
