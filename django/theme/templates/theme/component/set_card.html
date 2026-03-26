@@ -1,4 +1,9 @@
-<div class="dec_card">
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/component/set_card.css' %}">
+{% endblock %}
+
+<div class="set_card">
     <div class="info">
         <h4>{{title}}</h4>
         <i class="{{icon}}"></i>
@@ -9,7 +14,7 @@
         </ul>
     </div>
     <div>
-        <button id="{{ link }}" class="dec_button">
+        <button id="{{ link }}" class="set_button">
             <p>{{ buttontxt }}</p>
         </button>
     </div>
