@@ -12,12 +12,3 @@
     padding: 10px;
     min-height: 240px;
 }
-
-.dec_card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 120px;
-    min-width: 320px;
-}
