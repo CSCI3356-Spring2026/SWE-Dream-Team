@@ -9,16 +9,12 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         related_name="profile",
     )
-    name = models.CharField(
-        max_length=150,
-        blank=True,
-        help_text="Shown on the profile card (if empty, you can use User first/last name in templates).",
-    )
     instagram = models.CharField(
         max_length=100,
         blank=True,
         help_text="Handle (e.g. billyrulez) or full URL.",
     )
+
     school = models.CharField(max_length=120, blank=True)
     year = models.CharField(max_length=50, blank=True)
     major = models.CharField(max_length=120, blank=True)
