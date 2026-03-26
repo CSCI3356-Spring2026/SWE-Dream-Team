@@ -23,6 +23,19 @@ class Profile(models.Model):
     )
     
 
+    gender = models.CharField(
+        max_length=20,
+        choices=GENDER_CHOICES,
+        default='prefer_not_to_say',
+    )
+    
+    gender_self_described = models.CharField(
+        max_length=50, 
+        blank=True, 
+        null=True,
+        help_text="If you selected 'A gender not listed', please specify here."
+    )
+
 
     instagram = models.CharField(
         max_length=100,
