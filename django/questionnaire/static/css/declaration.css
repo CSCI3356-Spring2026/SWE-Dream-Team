@@ -1,5 +1,5 @@
 .dec_header {
-   
+   margin: 10px;
 }
 
 .declarations {
@@ -7,17 +7,17 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    min-height: 240px;
+    min-height: 360px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 10px;
 }
 
 .dec_card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    min-height: 120px;
+    min-height: 250px;
     min-width: 320px;
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-text-muted);
@@ -25,17 +25,26 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.dec_card i {
-    font-size: 64px;
-
+.info {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
-.dec_card h4 {
+.info i {
+    font-size: 64px;
+}
+
+.info h4 {
     font-size: 32px;
     padding: 10px;
 }
 
-.dec_card ul {
+.info ul {
     padding: 10px;
     max-width: 290px;
+}
+
+.info ul li {
+    color: var(--color-text-muted);
 }
