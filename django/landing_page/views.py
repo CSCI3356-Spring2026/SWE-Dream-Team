@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from google.auth.transport import requests
 from google.oauth2 import id_token
 
+
 def landing(request):
     return render(
         request,
@@ -44,4 +45,6 @@ def auth_receiver(request):
 
 def sign_out(request):
     request.session.pop("user_data", None)
+    request.session.flush()
     return redirect("landing")
+
