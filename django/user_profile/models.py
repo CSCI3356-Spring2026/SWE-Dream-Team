@@ -2,7 +2,6 @@ from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-
 GENDER_CHOICES = [
         ('man', 'Man'),
         ('woman', 'Woman'),
