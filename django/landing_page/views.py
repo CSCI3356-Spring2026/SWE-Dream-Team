@@ -10,8 +10,7 @@ from google.oauth2 import id_token
 # user specific
 from django.contrib.auth import login
 from django.contrib.auth.models import User
-from .models import Profile
-
+from user_profile.models import Profile
 
 def landing(request):
     return render(
