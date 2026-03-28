@@ -40,6 +40,12 @@ def auth_receiver(request):
         return HttpResponse(status=403)
 
     request.session["user_data"] = user_data
+
+    email = user_data.get('email')
+    first_name = user_data.get('given_name', '')
+    last_name = user_data.get('family_name', '')
+
+
     return redirect("home")
 
 
