@@ -4,7 +4,7 @@ from .models import Profile
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['gender', 'major_minor', 'grad_year', 'instagram', 'phone', 'bio', 'photo']
+        fields = ['instagram', 'phone', 'outreach_preference', 'bio', 'photo', 'gender', 'major_minor', 'grad_year']
         widgets = {
             # This adds your specific CSS classes to the Django-generated fields
             'gender': forms.Select(attrs={'class': 'forms-card__input'}),
@@ -13,4 +13,6 @@ class ProfileForm(forms.ModelForm):
             'instagram': forms.TextInput(attrs={'class': 'forms-card__input'}),
             'phone': forms.TextInput(attrs={'class': 'forms-card__input'}),
             'bio': forms.Textarea(attrs={'class': 'forms-card__textarea', 'rows': 5}),
+            'outreach_preference': forms.Select(attrs={'class': 'forms-card__input'}),
+
         }
