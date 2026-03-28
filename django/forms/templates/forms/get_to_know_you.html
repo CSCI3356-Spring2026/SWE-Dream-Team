@@ -20,60 +20,53 @@
     <form class="forms-card" method="post" action="{% url 'forms-get-to-know-you' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
-        {# name attributes mirror future model/form fields — wire to user_profile.Profile or a dedicated model #}
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_first_name">Name</label>
-            <input class="forms-card__input" type="text" name="first_name" id="id_first_name" placeholder="Value" autocomplete="given-name">
-        </div>
-
-        <div class="forms-card__field">
-            <label class="forms-card__label" for="id_last_name">Surname</label>
-            <input class="forms-card__input" type="text" name="last_name" id="id_last_name" placeholder="Value" autocomplete="family-name">
+            {# 1. Interpolate Name #}
+            <label class="forms-card__label">
+                Welcome, {{ request.user.first_name|default:request.user.username }}!
+            </label>
         </div>
 
         <div class="forms-card__field">
             <label class="forms-card__label" for="id_email">Email</label>
-            <input class="forms-card__input" type="email" name="email" id="id_email" placeholder="Value" autocomplete="email">
+            {# 2. Show Email (Read-only since it's from Google) #}
+            <input class="forms-card__input" type="email" value="{{ request.user.email }}" readonly style="background: #f0f0f0;">
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_gender">Gender</label>
-            <input class="forms-card__input" type="text" name="gender" id="id_gender" placeholder="Value" autocomplete="sex">
+            <label class="forms-card__label" for="{{ form.gender.id_for_label }}">Gender</label>
+            {# 3. Use the Django-generated dropdown #}
+            {{ form.gender }}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_major_minor">Boston College Major / Minor</label>
-            <input class="forms-card__input" type="text" name="major_minor" id="id_major_minor" placeholder="Value">
+            <label class="forms-card__label" for="{{ form.major_minor.id_for_label }}">BC Major / Minor</label>
+            {{ form.major_minor }}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_grad_year">Boston College Graduation Year</label>
-            <input class="forms-card__input" type="text" name="grad_year" id="id_grad_year" placeholder="Value" inputmode="numeric">
+            <label class="forms-card__label" for="{{ form.grad_year.id_for_label }}">BC Year of Graduation</label>
+            {{ form.grad_year }}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_instagram">Instagram username <span class="forms-card__hint">(optional)</span></label>
-            <input class="forms-card__input" type="text" name="instagram" id="id_instagram" placeholder="Value" autocomplete="off">
-        </div>
-
-        <div class="forms-card__field">
-            <label class="forms-card__label" for="id_bio">
-                Your Bio
-                <span class="forms-card__hint"> — What people see when they visit your profile! (max 500 char limit)</span>
-            </label>
-            <textarea class="forms-card__textarea" name="bio" id="id_bio" placeholder="Value" maxlength="500" rows="5"></textarea>
-        </div>
-
-        <div class="forms-card__field">
-            <label class="forms-card__label" for="id_profile_photo">Upload Profile Photo</label>
-            <input class="forms-card__input" type="file" name="profile_photo" id="id_profile_photo" accept="image/*">
-            {# enctype on <form> is set for ImageField / file uploads when you handle POST #}
+            {# 4. Show Google Image from Session #}
+            {% if google_picture %}
+                <div class="profile-preview">
+                    <p class="forms-card__hint">Current Profile Picture:</p>
+                    <img src="{{ google_picture }}" alt="Google Profile" style="width: 100px; border-radius: 20%; margin-bottom: 10px;">
+                </div>
+            {% endif %}
+            
+            <label class="forms-card__label" for="{{ form.photo.id_for_label }}">Change / Upload Profile Photo</label>
+            <span class="forms-card__hint"> — make sure it's a recent photo of yourself!</span>
+            <input type="file" name="photo" id="{{ form.photo.id_for_label }}" accept="image/*" class="forms-card__input">
         </div>
 
         <div class="forms-card__actions">
-            <a class="forms-card__back" href="{% url 'landing' %}">Back</a>
-            <button type="submit" class="forms-card__submit">Submit</button>
+            <button type="submit" class="forms-card__submit">Next</button>
         </div>
     </form>
+    
 </section>
 {% endblock %}
