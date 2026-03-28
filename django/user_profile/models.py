@@ -54,9 +54,11 @@ class Profile(models.Model):
     
     photo = models.ImageField(
         upload_to="profile_photos/",
+        blank=False,
         null=True,
         help_text="Profile picture (requires Pillow installed).",
     )
+
     roommate_match = models.DecimalField(
         max_digits=3,
         decimal_places=1,
