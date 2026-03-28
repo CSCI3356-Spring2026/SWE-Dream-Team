@@ -44,6 +44,19 @@ def auth_receiver(request):
     email = user_data.get('email')
     first_name = user_data.get('given_name', '')
     last_name = user_data.get('family_name', '')
+    
+    # generate user username if needed in future
+    user, created = User.objects.get_or_create(
+        email=email,
+        defaults={'username': email, 'first_name': first_name, 'last_name': last_name}
+    )
+
+    profile, p_created = Profile.objects.get_or_create(user=user)
+
+    # login user in django session
+
+    login(request, user)
+
 
 
     return redirect("home")
