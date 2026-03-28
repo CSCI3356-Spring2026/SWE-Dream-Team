@@ -73,14 +73,15 @@ def _get_to_know_you_response(request):
         # Bind POST data AND Files (for the photo) to the form
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
+            print("DEBUG: Form is valid! Saving now...")
             form.save()
             
             # Logic for redirection based on path
             if _onboarding_path(request) == PATH_SUBLETTOR:
                 return redirect("forms-sublettor-roommate-info")
-            #return redirect("forms-student-roommate-preferences")
-            
-            return redirect("home")
+        else:
+            print("Detailed Errors:", form.errors.as_text())
+            return redirect("forms-student-roommate-preferences")
     else:
         # Pre-fill the form with existing data
         form = ProfileForm(instance=profile)
