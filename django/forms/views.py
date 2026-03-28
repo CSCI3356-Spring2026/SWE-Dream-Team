@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
 # import profile dependencies: 
-from user_profile.forms import ProfileForm
+from user_profile.forms import ProfileForm, RoommatePreferencesForm
 from user_profile.models import Profile
 
 
@@ -113,10 +113,17 @@ def roommate_preferences(request):
     if _onboarding_path(request) == PATH_SUBLETTOR:
         return redirect("forms-sublettor-roommate-info")
     _set_step(request, STEP_ROOMMATE)
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == "POST":
-        # TODO: validate and save preference answers to a model.
-        return redirect("forms-student-housing-preferences")
-    return render(request, "forms/roommate_preferences.html")
+        form = RoommatePreferencesForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect("forms-student-housing-preferences")
+    else:
+        form = RoommatePreferencesForm(instance=profile)
+
+    return render(request, "forms/roommate_preferences.html", {"form": form})
 
 
 def housing_preferences(request):
