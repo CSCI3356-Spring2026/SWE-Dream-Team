@@ -57,6 +57,21 @@ class Profile(models.Model):
         null=True,
         help_text="Profile picture (requires Pillow installed).",
     )
+    roommate_match = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+    )
+    housing_match = models.DecimalField(
+        max_digits=3,
+        decimal_places=1,
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+    )
+  
 
     def __str__(self):
         if self.name:
