@@ -1,5 +1,10 @@
 from django.shortcuts import redirect, render
 
+# import profile dependencies: 
+from user_profile.forms import ProfileForm
+from user_profile.models import Profile
+
+
 # Use django.forms.ModelForm or forms.Form; POST handlers will save to models in models.py.
 
 RENT_YEAR_RANGE = range(2025, 2032)
