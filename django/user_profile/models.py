@@ -8,7 +8,6 @@ GENDER_CHOICES = [
         ('non_binary', 'Non-binary'),
         ('genderqueer', 'Genderqueer / Gender-fluid'),
         ('agender', 'Agender'),
-        ('self_describe', 'A gender not listed (Self-describe)'),
         ('prefer_not_to_say', 'Prefer not to say'),
     ]      
 
@@ -33,17 +32,9 @@ class Profile(models.Model):
         default='prefer_not_to_say',
     )
     
-    gender_self_described = models.CharField(
-        max_length=50, 
-        blank=True, 
-        null=True,
-        help_text="If you selected 'A gender not listed', please specify here."
-    )
+    major_minor = models.CharField(max_length=120)
 
-
-    major_minor = models.CharField(max_length=120, blank=True)
-
-    grad_year = models.CharField(max_length=50, blank=True)
+    grad_year = models.CharField(max_length=50)
 
     # insta, phone, or email
     outreach_preference = models.CharField(
@@ -54,17 +45,15 @@ class Profile(models.Model):
 
     instagram = models.CharField(
         max_length=100,
-        blank=True,
         help_text="Handle (e.g. billyrulez) or full URL.",
     )
 
-    phone = models.CharField(max_length=30, blank=True)
+    phone = models.CharField(max_length=30)
 
-    bio = models.TextField(blank=True)
+    bio = models.TextField()
     
     photo = models.ImageField(
         upload_to="profile_photos/",
-        blank=True,
         null=True,
         help_text="Profile picture (requires Pillow installed).",
     )
