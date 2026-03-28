@@ -50,23 +50,69 @@
         </div>
 
         <div class="forms-card__field">
-            {# 4. Show Google Image from Session #}
-            {% if google_picture %}
-                <div class="profile-preview">
-                    <p class="forms-card__hint">Current Profile Picture:</p>
-                    <img src="{{ google_picture }}" alt="Google Profile" style="width: 100px; border-radius: 20%; margin-bottom: 10px;">
-                </div>
+            <label class="forms-card__label" for="{{ form.instagram.id_for_label }}">
+                Instagram Handle 
+            </label>
+            {{ form.instagram }}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.phone.id_for_label }}">
+                Phone Number 
+            </label>
+            {{ form.phone }}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.outreach_preference.id_for_label }}">
+                How do you prefer people reach out to you?
+            </label>
+            {{ form.outreach_preference }}
+            <span class="forms-card__hint">This will be shown on your profile so others know where to message you.</span>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.bio.id_for_label }}">
+                Your Bio
+                <span class="forms-card__hint"> — What people see when they visit your profile! (max 500 characters)</span>
+            </label>
+            {{ form.bio }}
+            {% if form.bio.errors %}
+                <div class="forms-card__error">{{ form.bio.errors }}</div>
             {% endif %}
+        </div>
+
+
+        <div class="profile-preview">
+            <div class="profile-preview-container">
+                <p class="forms-card__hint">Profile Picture:</p>
+                {# Add an ID to the image so JS can find it #}
+                <img id="profile-preview-img" 
+                     src="{{ google_picture }}" 
+                     alt="Profile Preview" 
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid #ddd;">
+            </div>
             
             <label class="forms-card__label" for="{{ form.photo.id_for_label }}">Change / Upload Profile Photo</label>
-            <span class="forms-card__hint"> — make sure it's a recent photo of yourself!</span>
-            <input type="file" name="photo" id="{{ form.photo.id_for_label }}" accept="image/*" class="forms-card__input">
+            {# Add an ID to the input for the listener #}
+            <input type="file" name="photo" id="id_photo_input" accept="image/*" class="forms-card__input">
         </div>
+
 
         <div class="forms-card__actions">
             <button type="submit" class="forms-card__submit">Next</button>
         </div>
     </form>
-    
+   
+<script>
+    document.getElementById('id_photo_input').onchange = function (evt) {
+        const [file] = this.files;
+        if (file) {
+            // Create a temporary local URL for the selected file
+            document.getElementById('profile-preview-img').src = URL.createObjectURL(file);
+        }
+    };
+</script>
+
 </section>
 {% endblock %}

@@ -49,7 +49,6 @@ class Profile(models.Model):
     outreach_preference = models.CharField(
         max_length=20,
         choices=OUTREACH_OPTIONS,
-        blank=True,
         default='email' 
     )
 
