@@ -26,6 +26,7 @@ class Profile(models.Model):
         related_name="profile",
     )
     
+    has_onboarded = models.BooleanField(default=False)
 
     gender = models.CharField(
         max_length=20,
