@@ -66,12 +66,28 @@ def set_workflow_mode(request, mode: str):
 
 def _get_to_know_you_response(request):
     _set_step(request, STEP_INTRO)
+    # Get the profile for the logged-in user
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == "POST":
-        # TODO: bind POST/FILES to a ModelForm and save to Profile (or related model).
-        if _onboarding_path(request) == PATH_SUBLETTOR:
-            return redirect("forms-sublettor-roommate-info")
-        return redirect("forms-student-roommate-preferences")
-    return render(request, "forms/get_to_know_you.html")
+        # Bind POST data AND Files (for the photo) to the form
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            
+            # Logic for redirection based on path
+            if _onboarding_path(request) == PATH_SUBLETTOR:
+                return redirect("forms-sublettor-roommate-info")
+            return redirect("forms-student-roommate-preferences")
+    else:
+        # Pre-fill the form with existing data
+        form = ProfileForm(instance=profile)
+
+    context = {
+        "form": form,
+        "google_picture": request.session.get("google_picture")
+    }
+    return render(request, "forms/get_to_know_you.html", context)
 
 
 def get_to_know_you(request):
