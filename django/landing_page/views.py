@@ -57,7 +57,7 @@ def auth_receiver(request):
 
     login(request, user)
 
-
+    request.session["google_picture"] = user_data.get("picture")
 
     return redirect("home")
 
