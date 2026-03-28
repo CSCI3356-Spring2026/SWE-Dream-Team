@@ -29,6 +29,7 @@ urlpatterns = [
     path('', include('home.urls')),
     path("", include("user_profile.urls")),
     path("forms/", include("forms.urls")),
+    path('questionnaire/', include('questionnaire.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
