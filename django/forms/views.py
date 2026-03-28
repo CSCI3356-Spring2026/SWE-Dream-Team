@@ -78,7 +78,9 @@ def _get_to_know_you_response(request):
             # Logic for redirection based on path
             if _onboarding_path(request) == PATH_SUBLETTOR:
                 return redirect("forms-sublettor-roommate-info")
-            return redirect("forms-student-roommate-preferences")
+            #return redirect("forms-student-roommate-preferences")
+            
+            return redirect("home")
     else:
         # Pre-fill the form with existing data
         form = ProfileForm(instance=profile)
