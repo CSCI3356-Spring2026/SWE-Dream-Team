@@ -45,8 +45,13 @@ class Profile(models.Model):
 
     grad_year = models.CharField(max_length=50, blank=True)
 
-
-
+    # insta, phone, or email
+    outreach_preference = models.CharField(
+        max_length=20,
+        choices=OUTREACH_OPTIONS,
+        blank=True,
+        default='email' 
+    )
 
     instagram = models.CharField(
         max_length=100,
@@ -58,13 +63,6 @@ class Profile(models.Model):
 
     bio = models.TextField(blank=True)
     
-    outreach_preference = models.CharField(
-        max_length=20,
-        choices=OUTREACH_OPTIONS,
-        blank=True,
-        default='email' # Optional: pick a starting point
-    )
-
     photo = models.ImageField(
         upload_to="profile_photos/",
         blank=True,
