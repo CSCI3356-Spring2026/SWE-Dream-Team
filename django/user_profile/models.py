@@ -12,8 +12,12 @@ GENDER_CHOICES = [
         ('self_describe', 'A gender not listed (Self-describe)'),
         ('prefer_not_to_say', 'Prefer not to say'),
     ]      
- 
 
+OUTREACH_OPTIONS = [
+        ('phone', 'Phone'),
+        ('instagram', 'Instagram'),
+        ('email', 'Email'),
+    ]
 
 class Profile(models.Model):
     user = models.OneToOneField(
@@ -37,42 +41,35 @@ class Profile(models.Model):
     )
 
 
+    major_minor = models.CharField(max_length=120, blank=True)
+
+    grad_year = models.CharField(max_length=50, blank=True)
+
+
+
+
     instagram = models.CharField(
         max_length=100,
         blank=True,
         help_text="Handle (e.g. billyrulez) or full URL.",
     )
 
-
-
-
-    school = models.CharField(max_length=120, blank=True)
-    year = models.CharField(max_length=50, blank=True)
-    major = models.CharField(max_length=120, blank=True)
-    bio = models.TextField(blank=True)
-    outreach_preference = models.CharField(max_length=255, blank=True)
     phone = models.CharField(max_length=30, blank=True)
-    contact_email = models.EmailField(blank=True)
+
+    bio = models.TextField(blank=True)
+    
+    outreach_preference = models.CharField(
+        max_length=20,
+        choices=OUTREACH_OPTIONS,
+        blank=True,
+        default='email' # Optional: pick a starting point
+    )
+
     photo = models.ImageField(
         upload_to="profile_photos/",
         blank=True,
         null=True,
         help_text="Profile picture (requires Pillow installed).",
-    )
-    # Match scores shown under profile photo (0–10, one decimal)
-    roommate_match = models.DecimalField(
-        max_digits=3,
-        decimal_places=1,
-        blank=True,
-        null=True,
-        validators=[MinValueValidator(0), MaxValueValidator(10)],
-    )
-    housing_match = models.DecimalField(
-        max_digits=3,
-        decimal_places=1,
-        blank=True,
-        null=True,
-        validators=[MinValueValidator(0), MaxValueValidator(10)],
     )
 
     def __str__(self):
