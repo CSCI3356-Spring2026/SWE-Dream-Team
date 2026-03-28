@@ -1,38 +1,68 @@
-{% extends 'theme/base.html' %}
+{% extends "theme/base.html" %}
 {% load static %}
+
+{% block title %}{{ profile.user.first_name }}'s Profile — SubLink{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'user_profile/profile.css' %}">
 {% endblock %}
 
-
 {% block content %}
-
 <section class="profile-container">
     <div class="profile-info">
-        <h1 class="profile-name">Billy Petrik</h1>
-        <p class="profile-subtitle">School - Year - Major</p>
+        <h1 class="profile-name">
+            {{ profile.user.first_name }} {{ profile.user.last_name|default:"" }}
+        </h1>
+        
+        <p class="profile-subtitle">
+            Boston College — Class of {{ profile.grad_year|default:"TBD" }} — {{ profile.major_minor|default:"Undeclared" }}
+        </p>
         
         <div class="profile-bio">
-            <h3>Billy's Bio:</h3>
-            <p>Body text for your whole article or post. We'll put in some lorem ipsum to show how a filled-out page might look...</p>
-            <p>Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation...</p>
+            <h3>About {{ profile.user.first_name }}:</h3>
+            {% if profile.bio %}
+                {# The linebreaks filter converts newlines into <p> or <br> tags #}
+                <div class="bio-text">{{ profile.bio|linebreaks }}</div>
+            {% else %}
+                <p class="text-muted">No bio provided yet.</p>
+            {% endif %}
         </div>
 
         <div class="profile-contact">
-            <h3>Contact me</h3>
-            <ul>
-                <li>My outreach preference:</li>
-                <li>Phone: 333-333-3334</li>
-                <li>Email: billyrulez@bc.edu</li>
-                <li>Instagram: billy_petrik</li>
+            <h3>Contact Info</h3>
+            <ul class="contact-list">
+                <li>
+                    <strong>Preferred Method:</strong> 
+                    <span class="badge-preference">{{ profile.get_outreach_preference_display }}</span>
+                </li>
+
+                {% if profile.phone %}
+                    <li><strong>Phone:</strong> {{ profile.phone }}</li>
+                {% endif %}
+
+                <li><strong>Email:</strong> {{ profile.user.email }}</li>
+
+                {% if profile.instagram %}
+                    <li>
+                        <strong>Instagram:</strong> 
+                        <a href="https://instagram.com/{{ profile.instagram|cut:'@' }}" target="_blank">
+                            @{{ profile.instagram|cut:"@" }}
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
 
     <div class="profile-card-column">
         <div class="profile-image-wrapper">
-            <img src="{% static 'images/billy.jpeg' %}" alt="Profile Picture" class="profile-img">
+            {% if profile.photo %}
+                <img src="{{ profile.photo.url }}" alt="{{ profile.user.first_name }}" class="profile-img">
+            {% elif request.session.google_picture %}
+                <img src="{{ request.session.google_picture }}" alt="{{ profile.user.first_name }}" class="profile-img">
+            {% else %}
+                <img src="{% static 'images/default-avatar.png' %}" alt="Default Profile" class="profile-img">
+            {% endif %}
         </div>
         
         <div class="stats-container">
@@ -42,13 +72,18 @@
             </div>
             <div class="stat-row">
                 <span>Housing match</span>
-                <span class="stat-value">👤 9.5</span>
+                <span class="stat-value">🏠 9.5</span>
             </div>
         </div>
 
         <div class="profile-actions">
-            <button class="action-icon">⏏️</button>
-            <button class="action-icon">•••</button>
+            {# Show Edit button only if the user is looking at their own profile #}
+            {% if request.user == profile.user %}
+                <a href="{% url 'forms-get-to-know-you' %}" class="action-btn-edit" title="Edit Profile">
+                    Edit Profile ✏️
+                </a>
+            {% endif %}
+            <button class="action-icon" aria-label="More options">•••</button>
         </div>
     </div>
 </section>
