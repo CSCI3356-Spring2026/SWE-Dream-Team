@@ -82,12 +82,23 @@ UTILITIES_CHOICES = [
     ('not_included', 'Not included'),
 ]
 
+USER_TYPE_CHOICES = [
+    ('renter', 'Renter'),
+    ('sublettor', 'Sublettor'),
+]
+
 
 class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="profile",
+    )
+
+    user_type = models.CharField(
+        max_length=10,
+        choices=USER_TYPE_CHOICES,
+        default='renter',
     )
     
     has_onboarded = models.BooleanField(default=False)
@@ -227,6 +238,14 @@ class Profile(models.Model):
         choices=YES_NO_CHOICES,
         default='no',
     )
+
+    listing_image = models.ImageField(
+        upload_to="listing_photos/",
+        blank=True,
+        null=True,
+        help_text="Photo of the sublet listing."
+    )
+
 
     def __str__(self):
         return f"Profile: {self.user.get_username()}"

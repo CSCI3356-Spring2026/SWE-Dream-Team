@@ -136,6 +136,7 @@ class HousingPreferencesForm(forms.ModelForm):
             'utilities',
             'parking_needed',
             'already_furnished',
+            'listing_image',
         ]
         labels = {
             'preferred_location': 'Preferred location (street / area)',
@@ -156,6 +157,7 @@ class HousingPreferencesForm(forms.ModelForm):
             'utilities': forms.Select(attrs=_SELECT),
             'parking_needed': forms.Select(attrs=_SELECT),
             'already_furnished': forms.Select(attrs=_SELECT),
+            'listing_image': forms.ClearableFileInput(attrs={'class': 'forms-card__input'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -229,3 +231,46 @@ class HousingPreferencesForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class SublettorRoommateInfoForm(RoommatePreferencesForm):
+    class Meta(RoommatePreferencesForm.Meta):
+        labels = {
+            'ideal_housing_vibe': 'What is your housing vibe?',
+            'roommate_dealbreakers': 'Which of the following apply to your household?',
+            'cleanliness': 'Cleanliness level in the household',
+            'weekend_bedtime': 'Typical weekend bedtime in the household',
+            'weeknight_bedtime': 'Typical weeknight bedtime in the household',
+            'social_level': 'Social level in the home',
+            'live_opposite_sex': 'Opposite-sex roommates in the unit?',
+            'share_double': 'Is the arrangement a shared double?',
+            'okay_smoking': 'Is smoking allowed in the home?',
+            'okay_alcohol': 'Is alcohol allowed in the home?',
+            'okay_overnight': 'Are overnight guests allowed?',
+            'okay_pets': 'Are pets in the home?',
+        }
+        help_texts = {
+            'weekend_bedtime': 'Roughly when the home quiets down (8:00 PM – 2:00 AM).',
+            'weeknight_bedtime': 'Roughly when the home quiets down on school nights (8:00 PM – 2:00 AM).',
+        }
+
+
+class SublettorListingDetailsForm(HousingPreferencesForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['listing_image'].required = True
+
+
+    class Meta(HousingPreferencesForm.Meta):
+        labels = {
+            'preferred_location': 'House location (street / area)',
+            'walking_time_minutes': 'Walking time from Boston College (in minutes)',
+            'min_monthly_rent': 'Asking monthly rent',
+            'dishwasher': 'Does the unit have a dishwasher?',
+            'laundry': 'Laundry',
+            'utilities': 'Utilities',
+            'parking_needed': 'Parking available?',
+            'already_furnished': 'Is the unit furnished?',
+            'listing_image': 'Upload a photo of your listing',
+        }
