@@ -183,12 +183,18 @@ def sublettor_listing_details(request):
     """Sublettor: listing / lease details."""
     if _onboarding_path(request) != PATH_SUBLETTOR:
         return redirect("forms-student-housing-preferences")
+        
     _set_step(request, STEP_HOUSING)
     rent_years = list(RENT_YEAR_RANGE)
     profile, _created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
-        form = SublettorListingDetailsForm(request.POST, instance=profile, rent_years=rent_years)
+        form = SublettorListingDetailsForm(
+            request.POST, 
+            request.FILES, 
+            instance=profile, 
+            rent_years=rent_years
+        )
         if form.is_valid():
             form.save()
             return redirect("landing")
@@ -196,3 +202,4 @@ def sublettor_listing_details(request):
         form = SublettorListingDetailsForm(instance=profile, rent_years=rent_years)
 
     return render(request, "forms/sublettor_listing_details.html", {"form": form, "rent_years": rent_years})
+
