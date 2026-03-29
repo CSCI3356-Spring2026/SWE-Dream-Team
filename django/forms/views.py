@@ -1,7 +1,13 @@
 from django.shortcuts import redirect, render
 
 # import profile dependencies: 
-from user_profile.forms import HousingPreferencesForm, ProfileForm, RoommatePreferencesForm
+from user_profile.forms import (
+    HousingPreferencesForm,
+    ProfileForm,
+    RoommatePreferencesForm,
+    SublettorListingDetailsForm,
+    SublettorRoommateInfoForm,
+)
 from user_profile.models import Profile
 
 
@@ -55,6 +61,10 @@ def set_workflow_mode(request, mode: str):
     else:
         return redirect("forms-get-to-know-you")
 
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+    profile.user_type = path_kind
+    profile.save(update_fields=["user_type"])
+
     step = request.session.get(SESSION_FORMS_STEP, STEP_INTRO)
     try:
         step = int(step)
@@ -100,11 +110,17 @@ def get_to_know_you(request):
 
 def get_to_know_you_renter(request):
     request.session[SESSION_FORMS_PATH] = PATH_RENTER
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+    profile.user_type = PATH_RENTER
+    profile.save(update_fields=["user_type"])
     return _get_to_know_you_response(request)
 
 
 def get_to_know_you_sublettor(request):
     request.session[SESSION_FORMS_PATH] = PATH_SUBLETTOR
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+    profile.user_type = PATH_SUBLETTOR
+    profile.save(update_fields=["user_type"])
     return _get_to_know_you_response(request)
 
 
@@ -150,10 +166,17 @@ def sublettor_roommate_info(request):
     if _onboarding_path(request) != PATH_SUBLETTOR:
         return redirect("forms-student-roommate-preferences")
     _set_step(request, STEP_ROOMMATE)
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == "POST":
-        # TODO: validate and save to a model.
-        return redirect("forms-sublettor-listing-details")
-    return render(request, "forms/sublettor_roommate_info.html")
+        form = SublettorRoommateInfoForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect("forms-sublettor-listing-details")
+    else:
+        form = SublettorRoommateInfoForm(instance=profile)
+
+    return render(request, "forms/sublettor_roommate_info.html", {"form": form})
 
 
 def sublettor_listing_details(request):
@@ -161,8 +184,15 @@ def sublettor_listing_details(request):
     if _onboarding_path(request) != PATH_SUBLETTOR:
         return redirect("forms-student-housing-preferences")
     _set_step(request, STEP_HOUSING)
-    context = {"rent_years": list(RENT_YEAR_RANGE)}
+    rent_years = list(RENT_YEAR_RANGE)
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == "POST":
-        # TODO: validate and save to a model.
-        return redirect("landing")
-    return render(request, "forms/sublettor_listing_details.html", context)
+        form = SublettorListingDetailsForm(request.POST, instance=profile, rent_years=rent_years)
+        if form.is_valid():
+            form.save()
+            return redirect("landing")
+    else:
+        form = SublettorListingDetailsForm(instance=profile, rent_years=rent_years)
+
+    return render(request, "forms/sublettor_listing_details.html", {"form": form, "rent_years": rent_years})
