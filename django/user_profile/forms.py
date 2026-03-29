@@ -1,9 +1,14 @@
+from datetime import date
+
 from django import forms
 from django.core.exceptions import ValidationError
 
 from .models import (
     Profile,
+    LAUNDRY_CHOICES,
     ROOMMATE_DEALBREAKER_CHOICES,
+    UTILITIES_CHOICES,
+    YES_NO_CHOICES,
 )
 
 
@@ -112,3 +117,115 @@ class RoommatePreferencesForm(forms.ModelForm):
             if item not in allowed:
                 raise ValidationError('Invalid choice.')
         return list(data)
+
+
+class HousingPreferencesForm(forms.ModelForm):
+    rent_start_month = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'forms-card__select housing-rent__month'}))
+    rent_start_year = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'forms-card__select housing-rent__year'}))
+    rent_end_month = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'forms-card__select housing-rent__month'}))
+    rent_end_year = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'forms-card__select housing-rent__year'}))
+
+    class Meta:
+        model = Profile
+        fields = [
+            'preferred_location',
+            'walking_time_minutes',
+            'min_monthly_rent',
+            'dishwasher',
+            'laundry',
+            'utilities',
+            'parking_needed',
+            'already_furnished',
+        ]
+        labels = {
+            'preferred_location': 'Preferred location (street / area)',
+            'walking_time_minutes': 'Walking time from Boston College (in minutes)',
+            'min_monthly_rent': 'Target monthly rental price',
+            'dishwasher': 'Dishwasher?',
+            'laundry': 'Laundry specifications',
+            'utilities': 'Utilities',
+            'parking_needed': 'Parking needed',
+            'already_furnished': 'Already furnished',
+        }
+        widgets = {
+            'preferred_location': forms.TextInput(attrs={'class': 'forms-card__input', 'autocomplete': 'street-address', 'placeholder': 'Value'}),
+            'walking_time_minutes': forms.NumberInput(attrs={'class': 'forms-card__input', 'min': '0', 'step': '1', 'inputmode': 'numeric', 'placeholder': 'Value'}),
+            'min_monthly_rent': forms.NumberInput(attrs={'class': 'forms-card__input', 'min': '0', 'step': '1', 'inputmode': 'numeric', 'placeholder': 'Value'}),
+            'dishwasher': forms.Select(attrs=_SELECT),
+            'laundry': forms.Select(attrs=_SELECT),
+            'utilities': forms.Select(attrs=_SELECT),
+            'parking_needed': forms.Select(attrs=_SELECT),
+            'already_furnished': forms.Select(attrs=_SELECT),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.rent_years = kwargs.pop('rent_years', None)
+        super().__init__(*args, **kwargs)
+
+        months = [
+            ('01', 'Jan'),
+            ('02', 'Feb'),
+            ('03', 'Mar'),
+            ('04', 'Apr'),
+            ('05', 'May'),
+            ('06', 'Jun'),
+            ('07', 'Jul'),
+            ('08', 'Aug'),
+            ('09', 'Sep'),
+            ('10', 'Oct'),
+            ('11', 'Nov'),
+            ('12', 'Dec'),
+        ]
+        years = self.rent_years or []
+        self.fields['rent_start_month'].choices = [('', 'Month')] + months
+        self.fields['rent_end_month'].choices = [('', 'Month')] + months
+        self.fields['rent_start_year'].choices = [('', 'Year')] + [(str(y), str(y)) for y in years]
+        self.fields['rent_end_year'].choices = [('', 'Year')] + [(str(y), str(y)) for y in years]
+
+        # Pre-fill month/year from instance for GET.
+        if self.instance and getattr(self.instance, 'rent_start_date', None):
+            self.initial.setdefault('rent_start_month', self.instance.rent_start_date.strftime('%m'))
+            self.initial.setdefault('rent_start_year', str(self.instance.rent_start_date.year))
+        if self.instance and getattr(self.instance, 'rent_end_date', None):
+            self.initial.setdefault('rent_end_month', self.instance.rent_end_date.strftime('%m'))
+            self.initial.setdefault('rent_end_year', str(self.instance.rent_end_date.year))
+
+        empty = 'Select…'
+        for name in ('dishwasher', 'laundry', 'utilities', 'parking_needed', 'already_furnished'):
+            f = self.fields[name]
+            if hasattr(f, 'empty_label'):
+                f.empty_label = empty
+
+        # Ensure choices align with model constants (defense-in-depth if model changes).
+        self.fields['dishwasher'].choices = YES_NO_CHOICES
+        self.fields['parking_needed'].choices = YES_NO_CHOICES
+        self.fields['already_furnished'].choices = YES_NO_CHOICES
+        self.fields['laundry'].choices = LAUNDRY_CHOICES
+        self.fields['utilities'].choices = UTILITIES_CHOICES
+
+    def clean(self):
+        cleaned = super().clean()
+        start_month = cleaned.get('rent_start_month')
+        start_year = cleaned.get('rent_start_year')
+        end_month = cleaned.get('rent_end_month')
+        end_year = cleaned.get('rent_end_year')
+
+        if start_month and start_year:
+            cleaned['rent_start_date'] = date(int(start_year), int(start_month), 1)
+        if end_month and end_year:
+            cleaned['rent_end_date'] = date(int(end_year), int(end_month), 1)
+
+        start_date = cleaned.get('rent_start_date')
+        end_date = cleaned.get('rent_end_date')
+        if start_date and end_date and end_date < start_date:
+            raise ValidationError('Rent end date must be on or after the start date.')
+
+        return cleaned
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.rent_start_date = self.cleaned_data['rent_start_date']
+        instance.rent_end_date = self.cleaned_data['rent_end_date']
+        if commit:
+            instance.save()
+        return instance
