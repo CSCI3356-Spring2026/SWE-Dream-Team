@@ -136,6 +136,7 @@ class HousingPreferencesForm(forms.ModelForm):
             'utilities',
             'parking_needed',
             'already_furnished',
+            'listing_image',
         ]
         labels = {
             'preferred_location': 'Preferred location (street / area)',
@@ -156,6 +157,7 @@ class HousingPreferencesForm(forms.ModelForm):
             'utilities': forms.Select(attrs=_SELECT),
             'parking_needed': forms.Select(attrs=_SELECT),
             'already_furnished': forms.Select(attrs=_SELECT),
+            'listing_image': forms.ClearableFileInput(attrs={'class': 'forms-card__input'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -254,6 +256,12 @@ class SublettorRoommateInfoForm(RoommatePreferencesForm):
 
 
 class SublettorListingDetailsForm(HousingPreferencesForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['listing_image'].required = True
+
+
     class Meta(HousingPreferencesForm.Meta):
         labels = {
             'preferred_location': 'House location (street / area)',
@@ -264,4 +272,5 @@ class SublettorListingDetailsForm(HousingPreferencesForm):
             'utilities': 'Utilities',
             'parking_needed': 'Parking available?',
             'already_furnished': 'Is the unit furnished?',
+            'listing_image': 'Upload a photo of your listing',
         }
