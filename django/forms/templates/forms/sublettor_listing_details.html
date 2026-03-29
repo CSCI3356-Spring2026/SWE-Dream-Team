@@ -18,7 +18,7 @@
         <p class="forms-page__subtitle">House information for what you’re offering.</p>
     </div>
 
-    <form class="forms-card forms-card--wide" method="post" action="{% url 'forms-sublettor-listing-details' %}">
+    <form class="forms-card forms-card--wide" method="post" enctype="multipart/form-data" action="{% url 'forms-sublettor-listing-details' %}">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
@@ -122,6 +122,20 @@
                 <div class="forms-card__error">{{ form.already_furnished.errors }}</div>
             {% endif %}
         </div>
+
+
+    <div class="forms-card__field">
+        <label class="forms-card__label" for="{{ form.listing_image.id_for_label }}">
+            {{ form.listing_image.label }}
+        </label>
+        {{ form.listing_image }}
+        {% if form.listing_image.help_text %}
+            <p class="forms-card__help">{{ form.listing_image.help_text }}</p>
+        {% endif %}
+        {% if form.listing_image.errors %}
+            <div class="forms-card__error">{{ form.listing_image.errors }}</div>
+        {% endif %}
+    </div>
 
         <div class="forms-card__actions">
             <a class="forms-card__back" href="{% url 'forms-sublettor-roommate-info' %}">Back</a>
