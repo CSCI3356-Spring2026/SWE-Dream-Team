@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -67,6 +69,17 @@ SOCIAL_LEVEL_CHOICES = [
 YES_NO_CHOICES = [
     ('yes', 'Yes'),
     ('no', 'No'),
+]
+
+LAUNDRY_CHOICES = [
+    ('in_unit', 'In unit'),
+    ('in_building', 'In building'),
+    ('doesnt_matter', "Doesn't matter"),
+]
+
+UTILITIES_CHOICES = [
+    ('included', 'Included'),
+    ('not_included', 'Not included'),
 ]
 
 
@@ -179,6 +192,37 @@ class Profile(models.Model):
         default='no',
     )
     okay_pets = models.CharField(
+        max_length=3,
+        choices=YES_NO_CHOICES,
+        default='no',
+    )
+
+    preferred_location = models.CharField(max_length=255, default='')
+    walking_time_minutes = models.PositiveIntegerField(default=0)
+    rent_start_date = models.DateField(default=date(2025, 9, 1))
+    rent_end_date = models.DateField(default=date(2026, 5, 1))
+    min_monthly_rent = models.PositiveIntegerField(default=0)
+    dishwasher = models.CharField(
+        max_length=3,
+        choices=YES_NO_CHOICES,
+        default='no',
+    )
+    laundry = models.CharField(
+        max_length=20,
+        choices=LAUNDRY_CHOICES,
+        default='doesnt_matter',
+    )
+    utilities = models.CharField(
+        max_length=20,
+        choices=UTILITIES_CHOICES,
+        default='included',
+    )
+    parking_needed = models.CharField(
+        max_length=3,
+        choices=YES_NO_CHOICES,
+        default='no',
+    )
+    already_furnished = models.CharField(
         max_length=3,
         choices=YES_NO_CHOICES,
         default='no',
