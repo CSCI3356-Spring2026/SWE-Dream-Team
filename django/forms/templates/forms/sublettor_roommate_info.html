@@ -20,143 +20,113 @@
     <form class="forms-card forms-card--wide" method="post" action="{% url 'forms-sublettor-roommate-info' %}">
         {% csrf_token %}
 
+        {% if form.non_field_errors %}
+            <div class="forms-card__error">{{ form.non_field_errors }}</div>
+        {% endif %}
+
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_sub_vibe">What is your housing vibe?</label>
-            <select class="forms-card__select" name="ideal_housing_vibe" id="id_sub_vibe" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="quiet_studious">Quiet &amp; Studious</option>
-                <option value="chill_low_key">Chill &amp; Low-Key</option>
-                <option value="social_balanced">Social but Balanced</option>
-                <option value="very_social">Very Social / Going Out Often</option>
-                <option value="independent">Independent / Keep to Myself</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.ideal_housing_vibe.id_for_label }}">{{ form.ideal_housing_vibe.label }}</label>
+            {{ form.ideal_housing_vibe }}
+            {% if form.ideal_housing_vibe.errors %}
+                <div class="forms-card__error">{{ form.ideal_housing_vibe.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_sub_considerations">Which of the following apply to your household?</label>
-            <select class="forms-card__select forms-card__select--multi" name="roommate_dealbreakers" id="id_sub_considerations" multiple size="1">
-                <option value="smoking">Smoking</option>
-                <option value="excessive_noise">Excessive noise / loud late at night</option>
-                <option value="messiness">Messiness / unclean common areas</option>
-                <option value="guests_frequent">Having guests over frequently</option>
-                <option value="significant_other_guest">Significant other as guest</option>
-                <option value="strong_odors">Strong odors (weed, food, etc.)</option>
-                <option value="sleep_schedules">Different sleep schedules</option>
-                <option value="pets">Pets in the house</option>
-                <option value="drug_use">Drug use</option>
-                <option value="alcohol_use">Alcohol use</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.roommate_dealbreakers.id_for_label }}">{{ form.roommate_dealbreakers.label }}</label>
+            {{ form.roommate_dealbreakers }}
+            {% if form.roommate_dealbreakers.errors %}
+                <div class="forms-card__error">{{ form.roommate_dealbreakers.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_sub_cleanliness">Cleanliness level in the household</label>
-            <select class="forms-card__select" name="cleanliness" id="id_sub_cleanliness" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="very_messy">Very messy</option>
-                <option value="somewhat_messy">Somewhat messy</option>
-                <option value="neutral">Neutral</option>
-                <option value="somewhat_clean">Somewhat clean</option>
-                <option value="very_clean">Very clean</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.cleanliness.id_for_label }}">{{ form.cleanliness.label }}</label>
+            {{ form.cleanliness }}
+            {% if form.cleanliness.errors %}
+                <div class="forms-card__error">{{ form.cleanliness.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_sub_weekend_bed">Typical weekend bedtime in the household</label>
-            <p class="forms-card__help">Roughly when the home quiets down (8:00 PM – 2:00 AM).</p>
-            <select class="forms-card__select" name="weekend_bedtime" id="id_sub_weekend_bed" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="20:00">8:00 PM</option>
-                <option value="21:00">9:00 PM</option>
-                <option value="22:00">10:00 PM</option>
-                <option value="23:00">11:00 PM</option>
-                <option value="00:00">12:00 AM (midnight)</option>
-                <option value="01:00">1:00 AM</option>
-                <option value="02:00">2:00 AM</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.weekend_bedtime.id_for_label }}">{{ form.weekend_bedtime.label }}</label>
+            {% if form.weekend_bedtime.help_text %}
+                <p class="forms-card__help">{{ form.weekend_bedtime.help_text }}</p>
+            {% endif %}
+            {{ form.weekend_bedtime }}
+            {% if form.weekend_bedtime.errors %}
+                <div class="forms-card__error">{{ form.weekend_bedtime.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_sub_weeknight_bed">Typical weeknight bedtime in the household</label>
-            <p class="forms-card__help">Roughly when the home quiets down on school nights (8:00 PM – 2:00 AM).</p>
-            <select class="forms-card__select" name="weeknight_bedtime" id="id_sub_weeknight_bed" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="20:00">8:00 PM</option>
-                <option value="21:00">9:00 PM</option>
-                <option value="22:00">10:00 PM</option>
-                <option value="23:00">11:00 PM</option>
-                <option value="00:00">12:00 AM (midnight)</option>
-                <option value="01:00">1:00 AM</option>
-                <option value="02:00">2:00 AM</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.weeknight_bedtime.id_for_label }}">{{ form.weeknight_bedtime.label }}</label>
+            {% if form.weeknight_bedtime.help_text %}
+                <p class="forms-card__help">{{ form.weeknight_bedtime.help_text }}</p>
+            {% endif %}
+            {{ form.weeknight_bedtime }}
+            {% if form.weeknight_bedtime.errors %}
+                <div class="forms-card__error">{{ form.weeknight_bedtime.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_sub_social">Social level in the home</label>
-            <select class="forms-card__select" name="social_level" id="id_sub_social" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="very_social">Very social</option>
-                <option value="moderately_social">Moderately social</option>
-                <option value="balanced">Balanced</option>
-                <option value="mostly_independent">Mostly independent</option>
-                <option value="extremely_independent">Extremely independent</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.social_level.id_for_label }}">{{ form.social_level.label }}</label>
+            {{ form.social_level }}
+            {% if form.social_level.errors %}
+                <div class="forms-card__error">{{ form.social_level.errors }}</div>
+            {% endif %}
         </div>
 
         <fieldset class="forms-card__fieldset">
             <legend class="forms-card__fieldset-legend">What renters should know</legend>
 
             <div class="forms-card__field">
-                <label class="forms-card__label" for="id_sub_opposite_sex">Opposite-sex roommates in the unit?</label>
-                <select class="forms-card__select" name="live_opposite_sex" id="id_sub_opposite_sex" required>
-                    <option value="" disabled selected>Select…</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
+                <label class="forms-card__label" for="{{ form.live_opposite_sex.id_for_label }}">{{ form.live_opposite_sex.label }}</label>
+                {{ form.live_opposite_sex }}
+                {% if form.live_opposite_sex.errors %}
+                    <div class="forms-card__error">{{ form.live_opposite_sex.errors }}</div>
+                {% endif %}
             </div>
 
             <div class="forms-card__field">
-                <label class="forms-card__label" for="id_sub_double">Is the arrangement a shared double?</label>
-                <select class="forms-card__select" name="share_double" id="id_sub_double" required>
-                    <option value="" disabled selected>Select…</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
+                <label class="forms-card__label" for="{{ form.share_double.id_for_label }}">{{ form.share_double.label }}</label>
+                {{ form.share_double }}
+                {% if form.share_double.errors %}
+                    <div class="forms-card__error">{{ form.share_double.errors }}</div>
+                {% endif %}
             </div>
 
             <div class="forms-card__field">
-                <label class="forms-card__label" for="id_sub_smoking">Is smoking allowed in the home?</label>
-                <select class="forms-card__select" name="okay_smoking" id="id_sub_smoking" required>
-                    <option value="" disabled selected>Select…</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
+                <label class="forms-card__label" for="{{ form.okay_smoking.id_for_label }}">{{ form.okay_smoking.label }}</label>
+                {{ form.okay_smoking }}
+                {% if form.okay_smoking.errors %}
+                    <div class="forms-card__error">{{ form.okay_smoking.errors }}</div>
+                {% endif %}
             </div>
 
             <div class="forms-card__field">
-                <label class="forms-card__label" for="id_sub_alcohol">Is alcohol allowed in the home?</label>
-                <select class="forms-card__select" name="okay_alcohol" id="id_sub_alcohol" required>
-                    <option value="" disabled selected>Select…</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
+                <label class="forms-card__label" for="{{ form.okay_alcohol.id_for_label }}">{{ form.okay_alcohol.label }}</label>
+                {{ form.okay_alcohol }}
+                {% if form.okay_alcohol.errors %}
+                    <div class="forms-card__error">{{ form.okay_alcohol.errors }}</div>
+                {% endif %}
             </div>
 
             <div class="forms-card__field">
-                <label class="forms-card__label" for="id_sub_overnight">Are overnight guests allowed?</label>
-                <select class="forms-card__select" name="okay_overnight" id="id_sub_overnight" required>
-                    <option value="" disabled selected>Select…</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
+                <label class="forms-card__label" for="{{ form.okay_overnight.id_for_label }}">{{ form.okay_overnight.label }}</label>
+                {{ form.okay_overnight }}
+                {% if form.okay_overnight.errors %}
+                    <div class="forms-card__error">{{ form.okay_overnight.errors }}</div>
+                {% endif %}
             </div>
 
             <div class="forms-card__field">
-                <label class="forms-card__label" for="id_sub_pets">Are pets in the home?</label>
-                <select class="forms-card__select" name="okay_pets" id="id_sub_pets" required>
-                    <option value="" disabled selected>Select…</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
+                <label class="forms-card__label" for="{{ form.okay_pets.id_for_label }}">{{ form.okay_pets.label }}</label>
+                {{ form.okay_pets }}
+                {% if form.okay_pets.errors %}
+                    <div class="forms-card__error">{{ form.okay_pets.errors }}</div>
+                {% endif %}
             </div>
         </fieldset>
 
