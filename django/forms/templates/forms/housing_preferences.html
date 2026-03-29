@@ -21,14 +21,24 @@
     <form class="forms-card forms-card--wide" method="post" action="{% url 'forms-student-housing-preferences' %}">
         {% csrf_token %}
 
+        {% if form.non_field_errors %}
+            <div class="forms-card__error">{{ form.non_field_errors }}</div>
+        {% endif %}
+
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_preferred_location">Preferred location (street / area)</label>
-            <input class="forms-card__input" type="text" name="preferred_location" id="id_preferred_location" placeholder="Value" autocomplete="street-address" required>
+            <label class="forms-card__label" for="{{ form.preferred_location.id_for_label }}">{{ form.preferred_location.label }}</label>
+            {{ form.preferred_location }}
+            {% if form.preferred_location.errors %}
+                <div class="forms-card__error">{{ form.preferred_location.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_walking_time">Walking time from Boston College (in minutes)</label>
-            <input class="forms-card__input" type="number" name="walking_time_minutes" id="id_walking_time" placeholder="Value" min="0" step="1" inputmode="numeric" required>
+            <label class="forms-card__label" for="{{ form.walking_time_minutes.id_for_label }}">{{ form.walking_time_minutes.label }}</label>
+            {{ form.walking_time_minutes }}
+            {% if form.walking_time_minutes.errors %}
+                <div class="forms-card__error">{{ form.walking_time_minutes.errors }}</div>
+            {% endif %}
         </div>
 
         <fieldset class="forms-card__fieldset forms-card__fieldset--rent">
@@ -37,111 +47,80 @@
             <div class="housing-rent__group">
                 <span class="housing-rent__label" id="rent-start-label">Start</span>
                 <div class="housing-rent__selects" role="group" aria-labelledby="rent-start-label">
-                    <label class="visually-hidden" for="id_rent_start_month">Start month</label>
-                    <select class="forms-card__select housing-rent__month" name="rent_start_month" id="id_rent_start_month" required>
-                        <option value="" disabled selected>Month</option>
-                        <option value="01">Jan</option>
-                        <option value="02">Feb</option>
-                        <option value="03">Mar</option>
-                        <option value="04">Apr</option>
-                        <option value="05">May</option>
-                        <option value="06">Jun</option>
-                        <option value="07">Jul</option>
-                        <option value="08">Aug</option>
-                        <option value="09">Sep</option>
-                        <option value="10">Oct</option>
-                        <option value="11">Nov</option>
-                        <option value="12">Dec</option>
-                    </select>
-                    <label class="visually-hidden" for="id_rent_start_year">Start year</label>
-                    <select class="forms-card__select housing-rent__year" name="rent_start_year" id="id_rent_start_year" required>
-                        <option value="" disabled selected>Year</option>
-                        {% for y in rent_years %}
-                        <option value="{{ y }}">{{ y }}</option>
-                        {% endfor %}
-                    </select>
+                    <label class="visually-hidden" for="{{ form.rent_start_month.id_for_label }}">Start month</label>
+                    {{ form.rent_start_month }}
+                    <label class="visually-hidden" for="{{ form.rent_start_year.id_for_label }}">Start year</label>
+                    {{ form.rent_start_year }}
                 </div>
+                {% if form.rent_start_month.errors or form.rent_start_year.errors %}
+                    <div class="forms-card__error">
+                        {{ form.rent_start_month.errors }}{{ form.rent_start_year.errors }}
+                    </div>
+                {% endif %}
             </div>
 
             <div class="housing-rent__group">
                 <span class="housing-rent__label" id="rent-end-label">End</span>
                 <div class="housing-rent__selects" role="group" aria-labelledby="rent-end-label">
-                    <label class="visually-hidden" for="id_rent_end_month">End month</label>
-                    <select class="forms-card__select housing-rent__month" name="rent_end_month" id="id_rent_end_month" required>
-                        <option value="" disabled selected>Month</option>
-                        <option value="01">Jan</option>
-                        <option value="02">Feb</option>
-                        <option value="03">Mar</option>
-                        <option value="04">Apr</option>
-                        <option value="05">May</option>
-                        <option value="06">Jun</option>
-                        <option value="07">Jul</option>
-                        <option value="08">Aug</option>
-                        <option value="09">Sep</option>
-                        <option value="10">Oct</option>
-                        <option value="11">Nov</option>
-                        <option value="12">Dec</option>
-                    </select>
-                    <label class="visually-hidden" for="id_rent_end_year">End year</label>
-                    <select class="forms-card__select housing-rent__year" name="rent_end_year" id="id_rent_end_year" required>
-                        <option value="" disabled selected>Year</option>
-                        {% for y in rent_years %}
-                        <option value="{{ y }}">{{ y }}</option>
-                        {% endfor %}
-                    </select>
+                    <label class="visually-hidden" for="{{ form.rent_end_month.id_for_label }}">End month</label>
+                    {{ form.rent_end_month }}
+                    <label class="visually-hidden" for="{{ form.rent_end_year.id_for_label }}">End year</label>
+                    {{ form.rent_end_year }}
                 </div>
+                {% if form.rent_end_month.errors or form.rent_end_year.errors %}
+                    <div class="forms-card__error">
+                        {{ form.rent_end_month.errors }}{{ form.rent_end_year.errors }}
+                    </div>
+                {% endif %}
             </div>
         </fieldset>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_min_monthly_rent">Minimum monthly rental price</label>
-            <input class="forms-card__input" type="number" name="min_monthly_rent" id="id_min_monthly_rent" placeholder="Value" min="0" step="1" inputmode="numeric">
+            <label class="forms-card__label" for="{{ form.min_monthly_rent.id_for_label }}">{{ form.min_monthly_rent.label }}</label>
+            {{ form.min_monthly_rent }}
+            {% if form.min_monthly_rent.errors %}
+                <div class="forms-card__error">{{ form.min_monthly_rent.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_dishwasher">Dishwasher?</label>
-            <select class="forms-card__select" name="dishwasher" id="id_dishwasher" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.dishwasher.id_for_label }}">{{ form.dishwasher.label }}</label>
+            {{ form.dishwasher }}
+            {% if form.dishwasher.errors %}
+                <div class="forms-card__error">{{ form.dishwasher.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_laundry">Laundry specifications</label>
-            <select class="forms-card__select" name="laundry" id="id_laundry" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="in_unit">In unit</option>
-                <option value="in_building">In building</option>
-                <option value="doesnt_matter">Doesn't matter</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.laundry.id_for_label }}">{{ form.laundry.label }}</label>
+            {{ form.laundry }}
+            {% if form.laundry.errors %}
+                <div class="forms-card__error">{{ form.laundry.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_utilities">Utilities</label>
-            <select class="forms-card__select" name="utilities" id="id_utilities" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="included">Included</option>
-                <option value="not_included">Not included</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.utilities.id_for_label }}">{{ form.utilities.label }}</label>
+            {{ form.utilities }}
+            {% if form.utilities.errors %}
+                <div class="forms-card__error">{{ form.utilities.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_parking">Parking needed</label>
-            <select class="forms-card__select" name="parking_needed" id="id_parking" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.parking_needed.id_for_label }}">{{ form.parking_needed.label }}</label>
+            {{ form.parking_needed }}
+            {% if form.parking_needed.errors %}
+                <div class="forms-card__error">{{ form.parking_needed.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__field">
-            <label class="forms-card__label" for="id_furnished">Already furnished</label>
-            <select class="forms-card__select" name="already_furnished" id="id_furnished" required>
-                <option value="" disabled selected>Select…</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
+            <label class="forms-card__label" for="{{ form.already_furnished.id_for_label }}">{{ form.already_furnished.label }}</label>
+            {{ form.already_furnished }}
+            {% if form.already_furnished.errors %}
+                <div class="forms-card__error">{{ form.already_furnished.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="forms-card__actions">

@@ -1,5 +1,8 @@
 from django.shortcuts import render
 
+from django.shortcuts import render, get_object_or_404
+from .models import Profile
+
 from .models import Profile
 
 
@@ -13,11 +16,14 @@ def profile_card_preview(request):
         if profile is not None:
             roommate_match = profile.roommate_match
             housing_match = profile.housing_match
+
+    profile = get_object_or_404(Profile, user=request.user)
     return render(
         request,
         "user_profile/profile.html",
         {
             "roommate_match": roommate_match,
             "housing_match": housing_match,
+            "profile": profile,
         },
     )

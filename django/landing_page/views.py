@@ -6,6 +6,12 @@ from django.views.decorators.csrf import csrf_exempt
 from google.auth.transport import requests
 from google.oauth2 import id_token
 
+
+# user specific
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+from user_profile.models import Profile
+
 def landing(request):
     return render(
         request,
@@ -39,9 +45,30 @@ def auth_receiver(request):
         return HttpResponse(status=403)
 
     request.session["user_data"] = user_data
+
+    email = user_data.get('email')
+    first_name = user_data.get('given_name', '')
+    last_name = user_data.get('family_name', '')
+    
+    # generate user username if needed in future
+    user, created = User.objects.get_or_create(
+        email=email,
+        defaults={'username': email, 'first_name': first_name, 'last_name': last_name}
+    )
+
+    profile, p_created = Profile.objects.get_or_create(user=user)
+
+    # login user in django session
+
+    login(request, user)
+
+    request.session["google_picture"] = user_data.get("picture")
+
     return redirect("home")
 
 
 def sign_out(request):
     request.session.pop("user_data", None)
+    request.session.flush()
     return redirect("landing")
+

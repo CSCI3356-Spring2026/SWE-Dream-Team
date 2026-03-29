@@ -1,5 +1,10 @@
 from django.shortcuts import redirect, render
 
+# import profile dependencies: 
+from user_profile.forms import HousingPreferencesForm, ProfileForm, RoommatePreferencesForm
+from user_profile.models import Profile
+
+
 # Use django.forms.ModelForm or forms.Form; POST handlers will save to models in models.py.
 
 RENT_YEAR_RANGE = range(2025, 2032)
@@ -61,12 +66,31 @@ def set_workflow_mode(request, mode: str):
 
 def _get_to_know_you_response(request):
     _set_step(request, STEP_INTRO)
+    # Get the profile for the logged-in user
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == "POST":
-        # TODO: bind POST/FILES to a ModelForm and save to Profile (or related model).
-        if _onboarding_path(request) == PATH_SUBLETTOR:
-            return redirect("forms-sublettor-roommate-info")
-        return redirect("forms-student-roommate-preferences")
-    return render(request, "forms/get_to_know_you.html")
+        # Bind POST data AND Files (for the photo) to the form
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            print("DEBUG: Form is valid! Saving now...")
+            form.save()
+            
+            # Logic for redirection based on path
+            if _onboarding_path(request) == PATH_SUBLETTOR:
+                return redirect("forms-sublettor-roommate-info")
+        else:
+            print("Detailed Errors:", form.errors.as_text())
+            return redirect("forms-student-roommate-preferences")
+    else:
+        # Pre-fill the form with existing data
+        form = ProfileForm(instance=profile)
+
+    context = {
+        "form": form,
+        "google_picture": request.session.get("google_picture")
+    }
+    return render(request, "forms/get_to_know_you.html", context)
 
 
 def get_to_know_you(request):
@@ -89,10 +113,17 @@ def roommate_preferences(request):
     if _onboarding_path(request) == PATH_SUBLETTOR:
         return redirect("forms-sublettor-roommate-info")
     _set_step(request, STEP_ROOMMATE)
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == "POST":
-        # TODO: validate and save preference answers to a model.
-        return redirect("forms-student-housing-preferences")
-    return render(request, "forms/roommate_preferences.html")
+        form = RoommatePreferencesForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect("forms-student-housing-preferences")
+    else:
+        form = RoommatePreferencesForm(instance=profile)
+
+    return render(request, "forms/roommate_preferences.html", {"form": form})
 
 
 def housing_preferences(request):
@@ -100,11 +131,18 @@ def housing_preferences(request):
     if _onboarding_path(request) == PATH_SUBLETTOR:
         return redirect("forms-sublettor-listing-details")
     _set_step(request, STEP_HOUSING)
-    context = {"rent_years": list(RENT_YEAR_RANGE)}
+    rent_years = list(RENT_YEAR_RANGE)
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == "POST":
-        # TODO: validate and save housing preference answers to a model.
-        return redirect("landing")
-    return render(request, "forms/housing_preferences.html", context)
+        form = HousingPreferencesForm(request.POST, instance=profile, rent_years=rent_years)
+        if form.is_valid():
+            form.save()
+            return redirect("landing")
+    else:
+        form = HousingPreferencesForm(instance=profile, rent_years=rent_years)
+
+    return render(request, "forms/housing_preferences.html", {"form": form, "rent_years": rent_years})
 
 
 def sublettor_roommate_info(request):

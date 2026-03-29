@@ -48,7 +48,6 @@
 }
 
 .forms-card__label {
-    display: block;
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--color-text-main);
@@ -137,6 +136,13 @@
 
 .forms-card__submit:hover {
     opacity: 0.92;
+}
+
+.profile-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (min-width: 768px) {
