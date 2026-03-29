@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
 # import profile dependencies: 
-from user_profile.forms import ProfileForm, RoommatePreferencesForm
+from user_profile.forms import HousingPreferencesForm, ProfileForm, RoommatePreferencesForm
 from user_profile.models import Profile
 
 
@@ -131,11 +131,18 @@ def housing_preferences(request):
     if _onboarding_path(request) == PATH_SUBLETTOR:
         return redirect("forms-sublettor-listing-details")
     _set_step(request, STEP_HOUSING)
-    context = {"rent_years": list(RENT_YEAR_RANGE)}
+    rent_years = list(RENT_YEAR_RANGE)
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == "POST":
-        # TODO: validate and save housing preference answers to a model.
-        return redirect("landing")
-    return render(request, "forms/housing_preferences.html", context)
+        form = HousingPreferencesForm(request.POST, instance=profile, rent_years=rent_years)
+        if form.is_valid():
+            form.save()
+            return redirect("landing")
+    else:
+        form = HousingPreferencesForm(instance=profile, rent_years=rent_years)
+
+    return render(request, "forms/housing_preferences.html", {"form": form, "rent_years": rent_years})
 
 
 def sublettor_roommate_info(request):
