@@ -1,0 +1,25 @@
+{% include static %}
+
+<div class="home_card">
+    <img src="" alt="images/Blank_Profile.png">
+    <div class="home_card_details">
+        <h5 class="title">{{ title }}</h5>
+        <h6 class="subtitle">{{ subtitle }}</h6>
+    </div>
+    <div class="match_scores">
+        <div class="score">
+            <p class="match">Roommate Match</p>
+            <div>
+                <i class="fa-regular fa-user"></i>
+                <p>{{ roommate }}</p>
+            </div>
+        </div>
+        <div class="score">
+            <p class="match">Housing Match</p>
+            <div>
+                <i class="fa-regular fa-house"></i>
+                <p>{{ housing }}</p>
+            </div>
+        </div>
+    </div>
+</div>
