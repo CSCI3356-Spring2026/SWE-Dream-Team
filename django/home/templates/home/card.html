@@ -4,10 +4,27 @@
 {% endblock %}
 
 <div class="home_card">
-    <img src="{{ img }}" alt="images/Blank_Profile.png">
+    <img src="{{ img.url }}" alt="images/Blank_Profile.png" class="home_card_img">
     <div class="home_card_details">
         <h5 class="title">{{ title }}</h5>
         <h6 class="subtitle">{{ year }} - {{ major }}</h6>
+        <div class="match_scores">
+            <div class="score">
+                <p class="match">Roommate Match</p>
+                <div>
+                    <i class="fa-regular fa-user"></i>
+                    <p>{{ roommate }}</p>
+                </div>
+            </div>
+            <div class="score">
+                <p class="match">Housing Match</p>
+                <div>
+                    <i class="fa-regular fa-house"></i>
+                    <p>{{ housing }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
     <div class="match_scores">
         <div class="score">
