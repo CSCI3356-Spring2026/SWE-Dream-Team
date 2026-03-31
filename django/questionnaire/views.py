@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
-from user_profile.models import Profile
-from django.contrib import messages
 
 class DeclarationCardsView(TemplateView):
     template_name = 'declaration/declaration.html'

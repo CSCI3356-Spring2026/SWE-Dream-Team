@@ -8,14 +8,19 @@
 
 {% block content %}
 <div class="home_header">
-  {% if user_type == 'renter' %}
+  {% if request.user.profile.user_type == 'renter' %}
   <h2>Explore Listings</h2>
+  {% endif %}
+  {% if request.user.profile.user_type == 'sublettor' %}
+  <h2>Explore Roommates</h2>
   {% endif %}
   <p>Nav header is above from base.html.</p>
 </div>
 <div class="cards">
   {% for card in cards %}
     {% include 'home/card.html' with title=card.user major=card.major_minor year=card.grad_year img=card.photo roommate=card.roommate_match housing=card.housing_match %}
+    {% empty %}
+    <p>No profiles found.</p>
   {% endfor %}
 </div>
 {% endblock %}

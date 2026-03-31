@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-from .models import HomeCards
+from user_profile.models import Profile
 
 def home(request):
     user_data = request.session.get("user_data", {})
@@ -9,6 +9,8 @@ def home(request):
     })
 
 class HomeCardsView(ListView):
-    model = HomeCards
     template_name = 'home/home.html'
     context_object_name = 'cards'
+
+    def get_queryset(self):
+        return Profile.objects.all()
