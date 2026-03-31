@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.shortcuts import redirect
+from user_profile.models import Profile
+from django.contrib import messages
 
 class DeclarationCardsView(TemplateView):
     template_name = 'declaration/declaration.html'
@@ -12,7 +15,8 @@ class DeclarationCardsView(TemplateView):
             'Looking to find compatible roommates'],
             'icon': 'fa-solid fa-user',
             'link': '/forms/renter/',
-            'buttontxt': 'I am renting'
+            'buttontxt': 'I am renting',
+            'value': 'renter',
             },
             {'title': 'Lessor',
             'description': ['Looking to list a property',
@@ -21,6 +25,20 @@ class DeclarationCardsView(TemplateView):
             'icon': 'fa-solid fa-bed',
             'link': '/forms/sublettor/',
             'buttontxt': 'I need a renter',
+            'value': 'sublettor',
             },
         ]
         return context
+
+def set_user_type(request):
+    if request.method == "POST":
+        profile = request.user.profile
+        user_type = request.POST.get("user_type")
+
+        allowed = {"renter", "sublettor"}
+        if user_type in allowed:
+            profile.user_type = user_type
+            profile.save(update_fields=["user_type"])
+            print("saved")
+    
+    return redirect("/forms/")

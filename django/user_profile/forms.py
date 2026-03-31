@@ -9,6 +9,7 @@ from .models import (
     ROOMMATE_DEALBREAKER_CHOICES,
     UTILITIES_CHOICES,
     YES_NO_CHOICES,
+    USER_TYPE_CHOICES,
 )
 
 
