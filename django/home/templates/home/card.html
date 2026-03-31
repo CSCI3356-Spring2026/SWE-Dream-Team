@@ -3,11 +3,15 @@
 <link rel="stylesheet" href="{% static 'css/home_card.css' %}">
 {% endblock %}
 
+
 <div class="home_card">
+    <a href="{% url 'profile-detail' card.pk %}" class="card-link">
     <img src="{{ img.url }}" alt="images/Blank_Profile.png" class="home_card_img">
     <div class="home_card_details">
-        <h5 class="title">{{ title }}</h5>
-        <h6 class="subtitle">{{ year }} - {{ major }}</h6>
+        <div class="desc">
+            <h5 class="title">{{ user.first_name }} {{ user.last_name }}</h5>
+            <h6 class="subtitle">{{ year }} - {{ major }}</h6>
+        </div>
         <div class="match_scores">
             <div class="score">
                 <p class="match">Roommate Match</p>
@@ -25,21 +29,5 @@
             </div>
         </div>
     </div>
-    </div>
-    <div class="match_scores">
-        <div class="score">
-            <p class="match">Roommate Match</p>
-            <div>
-                <i class="fa-regular fa-user"></i>
-                <p>{{ roommate }}</p>
-            </div>
-        </div>
-        <div class="score">
-            <p class="match">Housing Match</p>
-            <div>
-                <i class="fa-regular fa-house"></i>
-                <p>{{ housing }}</p>
-            </div>
-        </div>
-    </div>
+    </a>
 </div>
