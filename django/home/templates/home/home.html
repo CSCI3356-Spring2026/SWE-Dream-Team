@@ -7,8 +7,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="hero">
+<div class="home_header">
   <h1>Welcome Home</h1>
   <p>Nav header is above from base.html.</p>
+</div>
+<div class="cards">
+  {% for card in cards %}
+    {% include 'home/card.html' with title=card.user subtitle=card.major_minor+" - "+card.grad_year img=card.photo roommate=card.roommate_match housing=card.housing_match %}
+  {% endfor %}
 </div>
 {% endblock %}
