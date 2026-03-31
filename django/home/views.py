@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from user_profile.models import Profile
+from django.db.models import Q
 
 class HomeCardsView(ListView):
     model = Profile
@@ -15,6 +16,23 @@ class HomeCardsView(ListView):
 
         if user_type:
             queryset = queryset.filter(user_type=user_type)
+
+        search = self.request.GET.get("search", "").strip()
+        major = self.request.GET.get("major", "").strip()
+        year = self.request.GET.get("year", "").strip()
+
+        if search:
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=search) |
+                Q(user__last_name__icontains=search) |
+                Q(major_minor__icontains=search)
+            )
+
+        if major:
+            queryset = queryset.filter(major_minor__icontains=major)
+
+        if year:
+            queryset = queryset.filter(grad_year=year)
 
         return queryset
 
