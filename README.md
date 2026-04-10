@@ -176,4 +176,23 @@ Then open your browser at `http://localhost:8000` and Google OAuth should work.
 
 ---
 
+# Admin User Setup
+
+## 1. Edit django/.env and set
+
+GOOGLE_ALLOWED_DOMAIN=bc.edu
+ADMIN_PANEL_EMAILS=email1@bc.edu,email2@bc.edu
+
+## 2. Go to the terminal and create a superuser
+
+# Type
+
+python manage.py createsuperuser
+
+# Add the @bc.edu email that you added to the GOOGLE_ALLOWED_DOMAIN
+# Enter password
+
+## 3. Save changes and run the server
+
+
 This Project is owned by Amaan, Billy, Dennis, Sebastian and Susan.
