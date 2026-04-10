@@ -25,6 +25,12 @@ if load_dotenv:
     load_dotenv(BASE_DIR / ".env")
 
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
+GOOGLE_ALLOWED_DOMAIN = os.environ.get("GOOGLE_ALLOWED_DOMAIN", "bc.edu").strip().lower()
+ADMIN_PANEL_EMAILS = [
+    email.strip().lower()
+    for email in os.environ.get("ADMIN_PANEL_EMAILS", "").split(",")
+    if email.strip()
+]
 
 # Allow Google Sign-In popup/iframe behavior during development.
 SECURE_REFERER_POLICY = "no-referrer-when-downgrade"
@@ -59,6 +65,7 @@ INSTALLED_APPS = [
     'landing_page',
     'forms',
     'questionnaire',
+    'admin_panel',
 ]
 
 MIDDLEWARE = [
