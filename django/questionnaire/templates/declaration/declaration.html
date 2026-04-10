@@ -13,7 +13,7 @@
 </div>
 <div class="declarations">
     {% for card in cards %}
-        {% include "theme/component/set_card.html" with title=card.title description=card.description icon=card.icon link=card.link buttontxt=card.buttontxt %}
+        {% include "theme/component/set_card.html" with title=card.title description=card.description icon=card.icon link=card.link buttontxt=card.buttontxt value=card.value %}
     {% endfor %}
 </div>
 {% endblock %}

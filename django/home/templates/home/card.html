@@ -1,0 +1,37 @@
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home_card.css' %}">
+{% endblock %}
+
+
+<div class="home_card">
+    <a href="{% url 'profile-detail' card.pk %}" class="card-link">
+    {% if img %}
+    <img src="{{ img.url }}" alt="{{ user.first_name }} {{ user.last_name }}" class="home_card_img">
+    {% else %}
+    <img src="{% static 'images/SubLink Logo.svg' %}" alt="Default profile image" class="home_card_img">
+    {% endif %}
+    <div class="home_card_details">
+        <div class="desc">
+            <h5 class="title">{{ user.first_name }} {{ user.last_name }}</h5>
+            <h6 class="subtitle">{{ year }} - {{ major }}</h6>
+        </div>
+        <div class="match_scores">
+            <div class="score">
+                <p class="match">Roommate Match</p>
+                <div>
+                    <i class="fa-regular fa-user"></i>
+                    <p>{{ roommate }}</p>
+                </div>
+            </div>
+            <div class="score">
+                <p class="match">Housing Match</p>
+                <div>
+                    <i class="fa-regular fa-house"></i>
+                    <p>{{ housing }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </a>
+</div>

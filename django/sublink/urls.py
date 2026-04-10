@@ -24,12 +24,14 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("admin-center/", include("admin_panel.urls")),
     path("", include("landing_page.urls")),
     path("", TemplateView.as_view(template_name="base.html"), name="home"), # Temp for now until we get landing page up
     path('', include('home.urls')),
     path("", include("user_profile.urls")),
     path("forms/", include("forms.urls")),
     path('questionnaire/', include('questionnaire.urls')),
+    path("listings/", include("listings.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
