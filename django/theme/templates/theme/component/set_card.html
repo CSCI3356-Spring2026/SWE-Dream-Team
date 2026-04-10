@@ -14,14 +14,10 @@
         </ul>
     </div>
     <div>
-        <button id="{{ link }}" class="set_button">
-            <p>{{ buttontxt }}</p>
-        </button>
+        <form method="post" action="{% url 'set_user_type' %}">
+            {% csrf_token %}
+            <input type="hidden" name="user_type" value="{{ value }}">
+            <button id="{{ link }}" class="set_button">{{ buttontxt }}</button>
+        </form>
     </div>
 </div>
-
-<script>
-  document.getElementById("{{ link }}").onclick = function () {
-    window.location.href = "{{ link }}";
-  };
-</script>
