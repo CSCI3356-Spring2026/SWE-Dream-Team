@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'landing_page',
     'forms',
     'questionnaire',
+    'listings',
 ]
 
 MIDDLEWARE = [
