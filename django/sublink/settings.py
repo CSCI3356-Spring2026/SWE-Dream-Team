@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'forms',
     'questionnaire',
     'admin_panel',
+    'listings',
 ]
 
 MIDDLEWARE = [
