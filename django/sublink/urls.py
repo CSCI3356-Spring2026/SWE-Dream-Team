@@ -24,6 +24,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("admin-center/", include("admin_panel.urls")),
     path("", include("landing_page.urls")),
     path("", TemplateView.as_view(template_name="base.html"), name="home"), # Temp for now until we get landing page up
     path('', include('home.urls')),

@@ -25,6 +25,12 @@ if load_dotenv:
     load_dotenv(BASE_DIR / ".env")
 
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
+GOOGLE_ALLOWED_DOMAIN = os.environ.get("GOOGLE_ALLOWED_DOMAIN", "bc.edu").strip().lower()
+ADMIN_PANEL_EMAILS = [
+    email.strip().lower()
+    for email in os.environ.get("ADMIN_PANEL_EMAILS", "").split(",")
+    if email.strip()
+]
 
 # Allow Google Sign-In popup/iframe behavior during development.
 SECURE_REFERER_POLICY = "no-referrer-when-downgrade"
@@ -59,6 +65,7 @@ INSTALLED_APPS = [
     'landing_page',
     'forms',
     'questionnaire',
+    'admin_panel',
     'listings',
     'roomate_listing_page',
 ]
@@ -71,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'sublink.urls'
@@ -149,3 +157,8 @@ STATICFILES_DIRS = [
 # User uploaded files 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+#auth redirects
+LOGIN_URL = "/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

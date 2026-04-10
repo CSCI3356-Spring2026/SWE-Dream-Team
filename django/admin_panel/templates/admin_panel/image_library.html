@@ -1,0 +1,35 @@
+{% extends 'theme/base.html' %}
+{% load static %}
+
+{% block title %}Admin Image Library{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/admin_panel.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="admin-shell">
+    <div class="admin-card">
+        <div class="admin-row">
+            <h1>Profile Image Library</h1>
+            <a class="admin-link-button" href="{% url 'admin_panel:dashboard' %}">Back to Dashboard</a>
+        </div>
+
+        {% if profiles %}
+        <div class="image-grid">
+            {% for profile in profiles %}
+            <article class="image-card">
+                <img src="{{ profile.photo.url }}" alt="{{ profile.user.username }} profile photo">
+                <div>
+                    <h2>{{ profile.user.get_full_name|default:profile.user.username }}</h2>
+                    <p>@{{ profile.user.username }}</p>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No profile images are available yet.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
