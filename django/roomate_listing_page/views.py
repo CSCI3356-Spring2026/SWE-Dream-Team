@@ -1,18 +1,22 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from user_profile.models import Profile
+
+
+def _renter_queryset():
+    return (
+        Profile.objects.filter(user_type="renter")
+        .select_related("user")
+        .order_by("-id")
+    )
 
 
 def explore_roommates(request):
     """
     Grid of renter profiles for sublettors (name, BC + grad year, major, matches).
     """
-    profiles = (
-        Profile.objects.filter(user_type="renter")
-        .select_related("user")
-        .order_by("-id")
-    )
+    profiles = _renter_queryset()
 
     q = (request.GET.get("q") or "").strip()
     if q:
@@ -28,4 +32,19 @@ def explore_roommates(request):
         request,
         "roomate_listing_page/explore_roommates.html",
         {"profiles": profiles, "search_query": q},
+    )
+
+
+def roommate_detail(request, pk):
+    """Single renter profile for sublettors; related renters at bottom."""
+    profile = get_object_or_404(_renter_queryset(), pk=pk)
+    other_roommates = list(_renter_queryset().exclude(pk=profile.pk)[:3])
+
+    return render(
+        request,
+        "roomate_listing_page/roommate_detail.html",
+        {
+            "profile": profile,
+            "other_roommates": other_roommates,
+        },
     )

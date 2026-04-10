@@ -33,6 +33,7 @@
         <ul class="explore-housing__grid">
             {% for profile in profiles %}
             <li>
+                <a class="listing-card__link" href="{% url 'roommates-detail' profile.pk %}">
                 <article class="listing-card listing-card--roommate">
                     <div class="listing-card__media">
                         {% if profile.photo %}
@@ -91,6 +92,7 @@
                         </dl>
                     </div>
                 </article>
+                </a>
             </li>
             {% endfor %}
         </ul>
