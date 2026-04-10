@@ -14,6 +14,9 @@
             <div id="dropdown-menu" class="dropdown-content">
               <a href="/profile/preview/">My Profile</a>
               <a href="/home/">Edit My Profile</a>
+              {% if request.user.is_authenticated and request.user.is_staff %}
+              <a href="/admin-center/">Admin Panel</a>
+              {% endif %}
               <a href="/settings/">Settings</a>
               <a href="/sign-out">Sign Out</a>
             </div>

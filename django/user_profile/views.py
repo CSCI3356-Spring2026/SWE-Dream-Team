@@ -1,10 +1,6 @@
 from django.shortcuts import render
-
 from django.shortcuts import render, get_object_or_404
 from .models import Profile
-
-from .models import Profile
-
 
 def profile_card_preview(request):
     """Serves the profile card template for local preview."""
@@ -24,6 +20,17 @@ def profile_card_preview(request):
         {
             "roommate_match": roommate_match,
             "housing_match": housing_match,
+            "profile": profile,
+        },
+    )
+
+def profile_detail(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+
+    return render(
+        request,
+        "user_profile/profile.html",
+        {
             "profile": profile,
         },
     )
