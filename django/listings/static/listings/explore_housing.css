@@ -1,0 +1,191 @@
+/*
+  Explore Housing — uses theme base.css variables.
+*/
+
+.explore-housing {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 3rem;
+}
+
+.explore-housing__visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.explore-housing__toolbar {
+    margin-bottom: 1.75rem;
+}
+
+.explore-housing__title {
+    font-size: 1.85rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-main);
+    margin: 0 0 1rem;
+    line-height: 1.2;
+}
+
+.explore-housing__search {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    align-items: stretch;
+}
+
+.explore-housing__input {
+    flex: 1 1 220px;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: var(--font-family);
+    border: 1px solid #d0d0d0;
+    border-radius: var(--radius-lg);
+    background: #fff;
+}
+
+.explore-housing__input:focus {
+    outline: 2px solid rgba(0, 102, 255, 0.35);
+    outline-offset: 1px;
+    border-color: var(--color-primary-blue);
+}
+
+.explore-housing__filters {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: var(--font-family);
+    color: var(--color-text-main);
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: var(--radius-lg);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.explore-housing__empty {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.explore-housing__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+    .explore-housing__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .explore-housing__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.listing-card {
+    background: var(--color-bg-light);
+    border: 1px solid #e5e5e5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.listing-card__media {
+    aspect-ratio: 5 / 3;
+    background: #f0f0f0;
+    overflow: hidden;
+}
+
+.listing-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.listing-card__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+.listing-card__body {
+    padding: 1rem 1.1rem 1.15rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.listing-card__location {
+    font-size: 1.05rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-main);
+    margin: 0 0 0.35rem;
+    line-height: 1.3;
+}
+
+.listing-card__lease {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0 0 1rem;
+    line-height: 1.4;
+}
+
+.listing-card__metrics {
+    margin: auto 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.listing-card__metric {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.listing-card__metric-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    margin: 0;
+}
+
+.listing-card__metric-value {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+}
+
+.listing-card__icon {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+}
