@@ -58,7 +58,7 @@
         <div class="profile-image-wrapper">
             {% if profile.photo %}
                 <img src="{{ profile.photo.url }}" alt="{{ profile.user.first_name }}" class="profile-img">
-            {% elif request.session.google_picture %}
+            {% elif profile.user == request.user and request.session.google_picture %}
                 <img src="{{ request.session.google_picture }}" alt="{{ profile.user.first_name }}" class="profile-img">
             {% else %}
                 <img src="{% static 'images/default-avatar.png' %}" alt="Default Profile" class="profile-img">
@@ -68,11 +68,11 @@
         <div class="stats-container">
             <div class="stat-row">
                 <span>Roommate match</span>
-                <span class="stat-value">👤 9.5</span>
+                <span class="stat-value">👤 {% if roommate_match is not None %}{{ roommate_match }}{% else %}—{% endif %}</span>
             </div>
             <div class="stat-row">
                 <span>Housing match</span>
-                <span class="stat-value">🏠 9.5</span>
+                <span class="stat-value">🏠 {% if housing_match is not None %}{{ housing_match }}{% else %}—{% endif %}</span>
             </div>
         </div>
 

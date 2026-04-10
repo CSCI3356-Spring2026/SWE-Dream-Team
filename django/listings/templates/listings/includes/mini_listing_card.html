@@ -1,0 +1,32 @@
+{# Expects variable: profile #}
+<li>
+    <a class="mini-listing-card" href="{% url 'listings-detail' profile.pk %}">
+        <div class="mini-listing-card__media">
+            {% if profile.listing_image %}
+                <img class="mini-listing-card__img" src="{{ profile.listing_image.url }}" alt="" loading="lazy" width="320" height="192">
+            {% else %}
+                <div class="mini-listing-card__placeholder">No photo</div>
+            {% endif %}
+        </div>
+        <div class="mini-listing-card__body">
+            <h3 class="mini-listing-card__location">{{ profile.preferred_location|default:"Location" }}</h3>
+            <p class="mini-listing-card__lease">
+                {% if profile.rent_start_date and profile.rent_end_date %}
+                    {{ profile.rent_start_date|date:"M j, Y" }} – {{ profile.rent_end_date|date:"M j, Y" }}
+                {% else %}
+                    Lease TBD
+                {% endif %}
+            </p>
+            <dl class="mini-listing-card__metrics">
+                <div class="mini-listing-card__metric">
+                    <dt>Roommate match</dt>
+                    <dd>{% if profile.roommate_match is not None %}{{ profile.roommate_match }}%{% else %}—{% endif %}</dd>
+                </div>
+                <div class="mini-listing-card__metric">
+                    <dt>Housing match</dt>
+                    <dd>{% if profile.housing_match is not None %}{{ profile.housing_match }}%{% else %}—{% endif %}</dd>
+                </div>
+            </dl>
+        </div>
+    </a>
+</li>

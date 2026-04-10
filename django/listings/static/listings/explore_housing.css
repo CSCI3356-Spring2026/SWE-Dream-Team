@@ -97,6 +97,18 @@
     }
 }
 
+.listing-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    border-radius: var(--radius-lg);
+}
+
+.listing-card__link:hover .listing-card {
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
 .listing-card {
     background: var(--color-bg-light);
     border: 1px solid #e5e5e5;
