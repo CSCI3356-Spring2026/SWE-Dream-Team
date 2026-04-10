@@ -89,6 +89,8 @@ def _get_to_know_you_response(request):
             # Logic for redirection based on path
             if _onboarding_path(request) == PATH_SUBLETTOR:
                 return redirect("forms-sublettor-roommate-info")
+            if _onboarding_path(request) == PATH_RENTER:
+                return redirect("forms-student-roommate-preferences")
         else:
             print("Detailed Errors:", form.errors.as_text())
             return redirect("forms-student-roommate-preferences")
