@@ -11,8 +11,9 @@ from google.oauth2 import id_token
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from user_profile.models import Profile
+from django.contrib.auth.decorators import login_not_required
 
-
+@login_not_required
 def _build_unique_username(email: str, fallback_seed: str) -> str:
     base = (email.split("@", 1)[0] or fallback_seed or "google_user").strip()
     candidate = base[:150]
@@ -23,6 +24,7 @@ def _build_unique_username(email: str, fallback_seed: str) -> str:
         suffix += 1
     return candidate
 
+@login_not_required
 def landing(request):
     return render(
         request,
@@ -33,7 +35,7 @@ def landing(request):
         },
     )
 
-
+@login_not_required
 @csrf_exempt
 def auth_receiver(request):
     if request.method != "POST":
