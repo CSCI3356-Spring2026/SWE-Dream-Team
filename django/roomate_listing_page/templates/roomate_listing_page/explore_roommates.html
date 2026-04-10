@@ -1,0 +1,99 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Explore Roommates — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'listings/explore_housing.css' %}">
+<link rel="stylesheet" href="{% static 'roomate_listing_page/explore_roommates.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="explore-housing" aria-labelledby="explore-heading">
+    <div class="explore-housing__toolbar">
+        <h1 class="explore-housing__title" id="explore-heading">Explore Roommates</h1>
+        <form class="explore-housing__search" method="get" action="{% url 'roommates-explore' %}" role="search">
+            <label class="explore-housing__visually-hidden" for="id_roommate_search">Search for a specific roommate</label>
+            <input
+                class="explore-housing__input"
+                type="search"
+                name="q"
+                id="id_roommate_search"
+                value="{{ search_query }}"
+                placeholder="Search for a specific roommate"
+                autocomplete="off"
+            >
+            <button type="button" class="explore-housing__filters" disabled title="Coming soon">Filters</button>
+        </form>
+    </div>
+
+    {% if not profiles %}
+        <p class="explore-housing__empty">No renters to show yet.</p>
+    {% else %}
+        <ul class="explore-housing__grid">
+            {% for profile in profiles %}
+            <li>
+                <article class="listing-card listing-card--roommate">
+                    <div class="listing-card__media">
+                        {% if profile.photo %}
+                            <img
+                                class="listing-card__img"
+                                src="{{ profile.photo.url }}"
+                                alt=""
+                                loading="lazy"
+                                width="400"
+                                height="400"
+                            >
+                        {% else %}
+                            <div class="listing-card__placeholder" aria-hidden="true">No photo</div>
+                        {% endif %}
+                    </div>
+                    <div class="listing-card__body">
+                        <h2 class="listing-card__location" id="renter-title-{{ profile.pk }}">
+                            {{ profile.user.get_full_name|default:profile.user.username }}
+                        </h2>
+                        <p class="listing-card__lease">
+                            Boston College{% if profile.grad_year %} — {{ profile.grad_year }}{% endif %}
+                        </p>
+                        <p class="listing-card__major">{{ profile.major_minor }}</p>
+                        <dl class="listing-card__metrics">
+                            <div class="listing-card__metric">
+                                <dt class="listing-card__metric-label">
+                                    <svg class="listing-card__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                    Roommate match
+                                </dt>
+                                <dd class="listing-card__metric-value">
+                                    {% if profile.roommate_match is not None %}
+                                        {{ profile.roommate_match }}%
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </dd>
+                            </div>
+                            <div class="listing-card__metric">
+                                <dt class="listing-card__metric-label">
+                                    <svg class="listing-card__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
+                                    </svg>
+                                    Housing match
+                                </dt>
+                                <dd class="listing-card__metric-value">
+                                    {% if profile.housing_match is not None %}
+                                        {{ profile.housing_match }}%
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</section>
+{% endblock %}

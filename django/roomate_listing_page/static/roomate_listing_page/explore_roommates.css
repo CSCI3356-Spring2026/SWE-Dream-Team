@@ -1,0 +1,18 @@
+/*
+  Overrides on top of listings/explore_housing.css — square photo + major line.
+*/
+
+.listing-card--roommate .listing-card__media {
+    aspect-ratio: 1;
+}
+
+.listing-card--roommate .listing-card__major {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0 0 1rem;
+    line-height: 1.4;
+}
+
+.listing-card--roommate .listing-card__lease {
+    margin-bottom: 0.35rem;
+}

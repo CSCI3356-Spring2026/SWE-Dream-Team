@@ -31,6 +31,7 @@ urlpatterns = [
     path("forms/", include("forms.urls")),
     path('questionnaire/', include('questionnaire.urls')),
     path("listings/", include("listings.urls")),
+    path("roommates/", include("roomate_listing_page.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
