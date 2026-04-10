@@ -6,7 +6,11 @@
 
 <div class="home_card">
     <a href="{% url 'profile-detail' card.pk %}" class="card-link">
-    <img src="{{ img.url }}" alt="images/Blank_Profile.png" class="home_card_img">
+    {% if img %}
+    <img src="{{ img.url }}" alt="{{ user.first_name }} {{ user.last_name }}" class="home_card_img">
+    {% else %}
+    <img src="{% static 'images/SubLink Logo.svg' %}" alt="Default profile image" class="home_card_img">
+    {% endif %}
     <div class="home_card_details">
         <div class="desc">
             <h5 class="title">{{ user.first_name }} {{ user.last_name }}</h5>
