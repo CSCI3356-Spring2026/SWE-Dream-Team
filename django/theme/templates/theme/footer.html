@@ -8,7 +8,7 @@
                     <a href="#">Privacy</a> | <a href="#">Terms of Service</a> | <a href='#'>Contact</a>
                 </p>
             </div>
-            {% if request.path != '/' %}
+            {% if user.is_authenticated %}
             <div class="footer__right">
                 <p class="footer__nav">Nav: 
                     <a href="/home">Home</a> 
