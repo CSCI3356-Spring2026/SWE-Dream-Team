@@ -11,7 +11,9 @@ from google.oauth2 import id_token
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from user_profile.models import Profile
+from django.contrib.auth.decorators import login_not_required
 
+@login_not_required
 def landing(request):
     return render(
         request,
