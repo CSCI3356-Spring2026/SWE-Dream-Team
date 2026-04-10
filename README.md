@@ -189,7 +189,7 @@ ADMIN_PANEL_EMAILS=email1@bc.edu,email2@bc.edu
 ```bash
 # Type
 python manage.py createsuperuser
-# Add the @bc.edu email that you added to the GOOGLE_ALLOWED_DOMAIN
+# Enter the @bc.edu email that you added to the GOOGLE_ALLOWED_DOMAIN
 # Enter password
 ```
 
