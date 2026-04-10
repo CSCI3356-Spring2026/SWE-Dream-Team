@@ -195,4 +195,6 @@ python manage.py createsuperuser
 
 ## 3. Save changes and run the server
 
+---
+
 This Project is owned by Amaan, Billy, Dennis, Sebastian and Susan.
