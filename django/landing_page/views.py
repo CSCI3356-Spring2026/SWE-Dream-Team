@@ -24,7 +24,7 @@ def landing(request):
         },
     )
 
-
+@login_not_required
 @csrf_exempt
 def auth_receiver(request):
     if request.method != "POST":
