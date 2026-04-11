@@ -44,7 +44,7 @@ html {
 
 /* Left column: hero + branding – subtle shadow */
 .left {
-    flex: 1;
+    flex: 1.25;
     background-color: #f8faf8;
     display: flex;
     align-items: center;
@@ -99,7 +99,11 @@ html {
 
 .auth-box {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .auth-instruction {
@@ -107,6 +111,13 @@ html {
     margin-bottom: 1rem;
     font-size: 0.95rem;
     color: #555;
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .sr-only {
@@ -126,7 +137,7 @@ html {
 }
 
 .auth-headline {
-    font-size: 1.75rem;
+    font-size: 4.5rem;
     margin-bottom: 1.5rem;
     color: #1a1a1a;
     font-weight: 700;
@@ -145,16 +156,16 @@ html {
     background-clip: text;
 
     color: transparent;
-    animation: gradientshift 2s linear infinite;
+    animation: gradientShift 1.5s linear infinite;
 }
 
 @keyframes gradientShift {
     0% {
-        background-position: 0% center;
+        background-position: 200% center;
     }
 
     100% {
-        background-position: 200% center;
+        background-position: 0% center;
     }
 }
 
@@ -178,6 +189,12 @@ html {
     justify-content: center;
     gap: 8px;
     margin-top: 0.5rem;
+}
+
+.g_id_signin {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 /* ----- Footer ----- */
@@ -295,6 +312,7 @@ html {
 .about-container {
     max-width: 1100px;
     margin: 0 auto;
+    align-items: center;
     text-align: center;
 }
 
