@@ -6,11 +6,9 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'forms/get_to_know_you.css' %}">
 <link rel="stylesheet" href="{% static 'forms/roommate_preferences.css' %}">
-<link rel="stylesheet" href="{% static 'forms/workflow_toggle.css' %}">
 {% endblock %}
 
 {% block content %}
-{% include "forms/includes/workflow_toggle.html" %}
 <section class="forms-page" aria-labelledby="sublettor-roommate-heading">
     <div class="forms-page__intro">
         <h1 class="forms-page__title" id="sublettor-roommate-heading">Tell renters about your household</h1>
