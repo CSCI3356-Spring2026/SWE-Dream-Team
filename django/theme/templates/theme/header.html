@@ -1,11 +1,11 @@
 {% load static %}
 <nav class="navbar">
     <div class="nav-wrapper">
-        <a href="/" class="logo">
+        <a href="/home/" class="logo">
             <img src="{% static 'images/SubLink Logo.svg' %}" alt="SubLink Logo" height="100">
         </a>
 
-        {% if request.path != '/' %}
+        {% if user.is_authenticated %}
         <div class="nav-dropdown">
             <button class="dropbtn" onclick="toggleMenu()">
                 My Profile
@@ -14,6 +14,9 @@
             <div id="dropdown-menu" class="dropdown-content">
               <a href="/profile/preview/">My Profile</a>
               <a href="/home/">Edit My Profile</a>
+              {% if request.user.is_staff %}
+              <a href="/admin-center/">Admin Panel</a>
+              {% endif %}
               <a href="/settings/">Settings</a>
               <a href="/sign-out">Sign Out</a>
             </div>

@@ -1,8 +1,6 @@
 """
-Onboarding: renter vs sublettor. Use the toggle on any /forms/ page, or:
-  /forms/renter/      — start as renter (step 1)
-  /forms/sublettor/   — start as sublettor (step 1)
-  /forms/workflow/renter/ or .../sublettor/ — switch workflow, same step
+Onboarding: choose renter vs sublettor at /forms/set-card/, then /forms/ (Let's Get to Know You).
+Legacy /forms/renter/ and /forms/sublettor/ redirect to set-card.
 """
 
 from django.urls import path
@@ -11,13 +9,18 @@ from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
-    path("renter/", views.get_to_know_you_renter, name="forms-renter-start"),
-    path("sublettor/", views.get_to_know_you_sublettor, name="forms-sublettor-start"),
     path(
-        "workflow/<slug:mode>/",
-        views.set_workflow_mode,
-        name="forms-set-workflow-mode",
+        "renter/",
+        RedirectView.as_view(pattern_name="forms-set-card", permanent=False),
+        name="forms-renter-start",
     ),
+    path(
+        "sublettor/",
+        RedirectView.as_view(pattern_name="forms-set-card", permanent=False),
+        name="forms-sublettor-start",
+    ),
+    path("set-card/", views.SetUserTypeCardsView.as_view(), name="forms-set-card"),
+    path("set-user-type/", views.set_user_type, name="forms-set-user-type"),
     path("", views.get_to_know_you, name="forms-get-to-know-you"),
     path(
         "get-to-know-you/",

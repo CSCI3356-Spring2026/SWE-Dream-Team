@@ -1,0 +1,18 @@
+<div class="set_card">
+    <div class="info">
+        <h4>{{ title }}</h4>
+        <i class="{{ icon }}"></i>
+        <ul>
+            {% for desc in description %}
+            <li>{{ desc }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <form method="post" action="{% url 'forms-set-user-type' %}">
+            {% csrf_token %}
+            <input type="hidden" name="user_type" value="{{ value }}">
+            <button type="submit" id="user-type-{{ value }}" class="set_button">{{ buttontxt }}</button>
+        </form>
+    </div>
+</div>

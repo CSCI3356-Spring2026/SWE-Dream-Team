@@ -1,0 +1,48 @@
+{% extends 'theme/base.html' %}
+{% load static %}
+
+{% block title %}Admin Center{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/admin_panel.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="admin-shell">
+    <div class="admin-card">
+        <div class="admin-row">
+            <div>
+                <h1>Admin Center</h1>
+                <p>Staff-only operations dashboard for SubLink.</p>
+            </div>
+            <a class="admin-link-button" href="/sign-out">Sign Out</a>
+        </div>
+
+        <div class="admin-stats">
+            <article class="admin-stat">
+                <h2>Users</h2>
+                <p>{{ user_count }}</p>
+            </article>
+            <article class="admin-stat">
+                <h2>Profiles</h2>
+                <p>{{ profile_count }}</p>
+            </article>
+            <article class="admin-stat">
+                <h2>Onboarded</h2>
+                <p>{{ onboarded_count }}</p>
+            </article>
+            <article class="admin-stat">
+                <h2>Images</h2>
+                <p>{{ image_count }}</p>
+            </article>
+        </div>
+
+        <div class="admin-links">
+            <a class="admin-link-button" href="{% url 'admin_panel:images' %}">Open Image Library</a>
+            <a class="admin-link-button" href="/admin/">Django Admin Home</a>
+            <a class="admin-link-button" href="/admin/auth/user/">Manage Users</a>
+            <a class="admin-link-button" href="/admin/user_profile/profile/">Manage Profiles</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
