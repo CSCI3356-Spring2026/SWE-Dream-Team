@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_POST
+from django.views.generic import TemplateView
 
-# import profile dependencies: 
 from user_profile.forms import (
     HousingPreferencesForm,
     ProfileForm,
@@ -8,17 +9,17 @@ from user_profile.forms import (
     SublettorListingDetailsForm,
     SublettorRoommateInfoForm,
 )
-from user_profile.models import Profile
-
-
-# Use django.forms.ModelForm or forms.Form; POST handlers will save to models in models.py.
+from user_profile.models import Profile, USER_TYPE_CHOICES
 
 RENT_YEAR_RANGE = range(2025, 2032)
 
 SESSION_FORMS_PATH = "forms_onboarding_path"
 SESSION_FORMS_STEP = "forms_onboarding_step"
+SESSION_USER_TYPE_CHOSEN = "forms_user_type_chosen"
 PATH_RENTER = "renter"
 PATH_SUBLETTOR = "sublettor"
+
+_ALLOWED_USER_TYPES = frozenset(dict(USER_TYPE_CHOICES).keys())
 
 STEP_INTRO = 1
 STEP_ROOMMATE = 2
@@ -29,109 +30,113 @@ def _onboarding_path(request):
     return request.session.get(SESSION_FORMS_PATH, PATH_RENTER)
 
 
+def _effective_onboarding_path(request, profile):
+    if profile.has_onboarded:
+        return profile.user_type
+    return _onboarding_path(request)
+
+
 def _set_step(request, step: int):
     request.session[SESSION_FORMS_STEP] = step
 
 
-def _redirect_for_workflow_step(step: int, path_kind: str):
-    """HTTP redirect to the URL for this step in the given workflow."""
-    if step <= STEP_INTRO:
-        return redirect("forms-get-to-know-you")
-    if path_kind == PATH_RENTER:
-        if step == STEP_ROOMMATE:
-            return redirect("forms-student-roommate-preferences")
-        return redirect("forms-student-housing-preferences")
-    if step == STEP_ROOMMATE:
-        return redirect("forms-sublettor-roommate-info")
-    return redirect("forms-sublettor-listing-details")
+def _redirect_if_onboarding_blocked(request, profile):
+    if not profile.has_onboarded and not request.session.get(SESSION_USER_TYPE_CHOSEN):
+        return redirect("forms-set-card")
+    return None
 
 
-def set_workflow_mode(request, mode: str):
-    """
-    Toggle renter vs sublettor; keeps the same step (intro / roommate / housing).
-    Linked from the workflow bar on every forms page.
-    """
-    m = (mode or "").strip().lower()
-    if m in ("renter", "student", "tenant"):
-        request.session[SESSION_FORMS_PATH] = PATH_RENTER
-        path_kind = PATH_RENTER
-    elif m in ("sublettor", "subletor", "lessor", "landlord"):
-        request.session[SESSION_FORMS_PATH] = PATH_SUBLETTOR
-        path_kind = PATH_SUBLETTOR
-    else:
-        return redirect("forms-get-to-know-you")
+class SetUserTypeCardsView(TemplateView):
+    template_name = "forms/set_card.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cards"] = [
+            {
+                "title": "Renter",
+                "description": [
+                    "Need to find off-campus housing",
+                    "Looking to find compatible roommates",
+                ],
+                "icon": "fa-solid fa-user",
+                "buttontxt": "I am renting",
+                "value": PATH_RENTER,
+            },
+            {
+                "title": "Sublettor",
+                "description": [
+                    "Looking to list a property",
+                    "Looking for a roommate to lease to",
+                    "Looking for someone to take on my lease",
+                ],
+                "icon": "fa-solid fa-bed",
+                "buttontxt": "I need a renter",
+                "value": PATH_SUBLETTOR,
+            },
+        ]
+        return context
+
+
+@require_POST
+def set_user_type(request):
     profile, _created = Profile.objects.get_or_create(user=request.user)
-    profile.user_type = path_kind
-    profile.save(update_fields=["user_type"])
+    user_type = (request.POST.get("user_type") or "").strip().lower()
+    if user_type not in _ALLOWED_USER_TYPES:
+        return redirect("forms-set-card")
 
-    step = request.session.get(SESSION_FORMS_STEP, STEP_INTRO)
-    try:
-        step = int(step)
-    except (TypeError, ValueError):
-        step = STEP_INTRO
-    step = max(STEP_INTRO, min(STEP_HOUSING, step))
-    return _redirect_for_workflow_step(step, path_kind)
+    profile.user_type = user_type
+    profile.save(update_fields=["user_type"])
+    request.session[SESSION_FORMS_PATH] = user_type
+    request.session[SESSION_USER_TYPE_CHOSEN] = True
+    return redirect("forms-get-to-know-you")
 
 
 def _get_to_know_you_response(request):
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+    blocked = _redirect_if_onboarding_blocked(request, profile)
+    if blocked:
+        return blocked
+
     _set_step(request, STEP_INTRO)
-    # Get the profile for the logged-in user
-    profile, created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
-        # Bind POST data AND Files (for the photo) to the form
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            print("DEBUG: Form is valid! Saving now...")
             form.save()
-            
-            # Logic for redirection based on path
-            if _onboarding_path(request) == PATH_SUBLETTOR:
+            if _effective_onboarding_path(request, profile) == PATH_SUBLETTOR:
                 return redirect("forms-sublettor-roommate-info")
-            if _onboarding_path(request) == PATH_RENTER:
-                return redirect("forms-student-roommate-preferences")
-        else:
-            print("Detailed Errors:", form.errors.as_text())
             return redirect("forms-student-roommate-preferences")
-    else:
-        # Pre-fill the form with existing data
-        form = ProfileForm(instance=profile)
+        return render(
+            request,
+            "forms/get_to_know_you.html",
+            {
+                "form": form,
+                "google_picture": request.session.get("google_picture"),
+            },
+        )
 
+    form = ProfileForm(instance=profile)
     context = {
         "form": form,
-        "google_picture": request.session.get("google_picture")
+        "google_picture": request.session.get("google_picture"),
     }
     return render(request, "forms/get_to_know_you.html", context)
 
 
 def get_to_know_you(request):
-    """First step for both workflows; use the top toggle to switch renter / sublettor."""
-    return _get_to_know_you_response(request)
-
-
-def get_to_know_you_renter(request):
-    request.session[SESSION_FORMS_PATH] = PATH_RENTER
-    profile, _created = Profile.objects.get_or_create(user=request.user)
-    profile.user_type = PATH_RENTER
-    profile.save(update_fields=["user_type"])
-    return _get_to_know_you_response(request)
-
-
-def get_to_know_you_sublettor(request):
-    request.session[SESSION_FORMS_PATH] = PATH_SUBLETTOR
-    profile, _created = Profile.objects.get_or_create(user=request.user)
-    profile.user_type = PATH_SUBLETTOR
-    profile.save(update_fields=["user_type"])
+    """First step for both workflows after user type is chosen on set-card."""
     return _get_to_know_you_response(request)
 
 
 def roommate_preferences(request):
     """Renter: roommate preference questionnaire."""
-    if _onboarding_path(request) == PATH_SUBLETTOR:
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+    blocked = _redirect_if_onboarding_blocked(request, profile)
+    if blocked:
+        return blocked
+    if _effective_onboarding_path(request, profile) == PATH_SUBLETTOR:
         return redirect("forms-sublettor-roommate-info")
     _set_step(request, STEP_ROOMMATE)
-    profile, _created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
         form = RoommatePreferencesForm(request.POST, instance=profile)
@@ -146,16 +151,21 @@ def roommate_preferences(request):
 
 def housing_preferences(request):
     """Renter: housing search preferences."""
-    if _onboarding_path(request) == PATH_SUBLETTOR:
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+    blocked = _redirect_if_onboarding_blocked(request, profile)
+    if blocked:
+        return blocked
+    if _effective_onboarding_path(request, profile) == PATH_SUBLETTOR:
         return redirect("forms-sublettor-listing-details")
     _set_step(request, STEP_HOUSING)
     rent_years = list(RENT_YEAR_RANGE)
-    profile, _created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
         form = HousingPreferencesForm(request.POST, instance=profile, rent_years=rent_years)
         if form.is_valid():
             form.save()
+            profile.has_onboarded = True
+            profile.save(update_fields=["has_onboarded"])
             return redirect("landing")
     else:
         form = HousingPreferencesForm(instance=profile, rent_years=rent_years)
@@ -165,10 +175,13 @@ def housing_preferences(request):
 
 def sublettor_roommate_info(request):
     """Sublettor: household / roommate info."""
-    if _onboarding_path(request) != PATH_SUBLETTOR:
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+    blocked = _redirect_if_onboarding_blocked(request, profile)
+    if blocked:
+        return blocked
+    if _effective_onboarding_path(request, profile) != PATH_SUBLETTOR:
         return redirect("forms-student-roommate-preferences")
     _set_step(request, STEP_ROOMMATE)
-    profile, _created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
         form = SublettorRoommateInfoForm(request.POST, instance=profile)
@@ -183,25 +196,29 @@ def sublettor_roommate_info(request):
 
 def sublettor_listing_details(request):
     """Sublettor: listing / lease details."""
-    if _onboarding_path(request) != PATH_SUBLETTOR:
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+    blocked = _redirect_if_onboarding_blocked(request, profile)
+    if blocked:
+        return blocked
+    if _effective_onboarding_path(request, profile) != PATH_SUBLETTOR:
         return redirect("forms-student-housing-preferences")
-        
+
     _set_step(request, STEP_HOUSING)
     rent_years = list(RENT_YEAR_RANGE)
-    profile, _created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
         form = SublettorListingDetailsForm(
-            request.POST, 
-            request.FILES, 
-            instance=profile, 
-            rent_years=rent_years
+            request.POST,
+            request.FILES,
+            instance=profile,
+            rent_years=rent_years,
         )
         if form.is_valid():
             form.save()
+            profile.has_onboarded = True
+            profile.save(update_fields=["has_onboarded"])
             return redirect("landing")
     else:
         form = SublettorListingDetailsForm(instance=profile, rent_years=rent_years)
 
     return render(request, "forms/sublettor_listing_details.html", {"form": form, "rent_years": rent_years})
-

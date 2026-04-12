@@ -123,7 +123,9 @@ def auth_receiver(request):
 
     request.session["google_picture"] = user_data.get("picture")
 
-    return redirect("home")
+    if profile.has_onboarded:
+        return redirect("home")
+    return redirect("forms-set-card")
 
 
 def sign_out(request):
