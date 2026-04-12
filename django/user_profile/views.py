@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, render
 
+from .models import Profile
+
+
 def profile_card_preview(request):
     """Serves the profile card template for local preview."""
     roommate_match = 9.5
