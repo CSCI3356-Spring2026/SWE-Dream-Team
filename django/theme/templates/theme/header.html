@@ -1,7 +1,12 @@
 {% load static %}
+
 <nav class="navbar">
     <div class="nav-wrapper">
-        <a href="/home/" class="logo">
+      {% if request.user.profile.user_type == 'renter' %}
+          <a href="{% url 'listings-explore-housing' %}" class="logo">
+      {% else %}
+          <a href="{% url 'roommates-explore' %}" class="logo">
+      {% endif %}
             <img src="{% static 'images/SubLink Logo.svg' %}" alt="SubLink Logo" height="100">
         </a>
 
