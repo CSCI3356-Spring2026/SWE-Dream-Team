@@ -13,8 +13,8 @@ def profile_card_preview(request):
         request,
         "user_profile/profile.html",
         {
-            "roommate_match": profile.roommate_match,
-            "housing_match": profile.housing_match,
+            "roommate_match": roommate_match,
+            "housing_match": housing_match,
             "profile": profile,
         },
     )
