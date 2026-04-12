@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
-
 from user_profile.models import Profile
 
 
@@ -13,8 +12,8 @@ def profile_card_preview(request):
         request,
         "user_profile/profile.html",
         {
-            "roommate_match": roommate_match,
-            "housing_match": housing_match,
+            "roommate_match": profile.roommate_match,
+            "housing_match": profile.housing_match,
             "profile": profile,
         },
     )
