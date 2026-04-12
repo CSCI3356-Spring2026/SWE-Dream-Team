@@ -1,0 +1,21 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Choose your path — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'forms/set_card_page.css' %}">
+<link rel="stylesheet" href="{% static 'forms/set_card.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="set-card-page__header">
+    <h2>Let's Get to Know You</h2>
+    <h4>Pick the type of user you are:</h4>
+</div>
+<div class="set-card-page__cards">
+    {% for card in cards %}
+        {% include "forms/includes/set_card_item.html" with title=card.title description=card.description icon=card.icon buttontxt=card.buttontxt value=card.value %}
+    {% endfor %}
+</div>
+{% endblock %}
