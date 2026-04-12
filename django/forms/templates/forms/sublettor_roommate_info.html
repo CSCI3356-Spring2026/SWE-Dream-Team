@@ -1,0 +1,137 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Household & roommate info — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'forms/get_to_know_you.css' %}">
+<link rel="stylesheet" href="{% static 'forms/roommate_preferences.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="forms-page" aria-labelledby="sublettor-roommate-heading">
+    <div class="forms-page__intro">
+        <h1 class="forms-page__title" id="sublettor-roommate-heading">Tell renters about your household</h1>
+        <p class="forms-page__subtitle">Answer from the sublettor perspective—the same details renters look for, so matches stay aligned.</p>
+    </div>
+
+    <form class="forms-card forms-card--wide" method="post" action="{% url 'forms-sublettor-roommate-info' %}">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="forms-card__error">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.ideal_housing_vibe.id_for_label }}">{{ form.ideal_housing_vibe.label }}</label>
+            {{ form.ideal_housing_vibe }}
+            {% if form.ideal_housing_vibe.errors %}
+                <div class="forms-card__error">{{ form.ideal_housing_vibe.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.roommate_dealbreakers.id_for_label }}">{{ form.roommate_dealbreakers.label }}</label>
+            {{ form.roommate_dealbreakers }}
+            {% if form.roommate_dealbreakers.errors %}
+                <div class="forms-card__error">{{ form.roommate_dealbreakers.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.cleanliness.id_for_label }}">{{ form.cleanliness.label }}</label>
+            {{ form.cleanliness }}
+            {% if form.cleanliness.errors %}
+                <div class="forms-card__error">{{ form.cleanliness.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.weekend_bedtime.id_for_label }}">{{ form.weekend_bedtime.label }}</label>
+            {% if form.weekend_bedtime.help_text %}
+                <p class="forms-card__help">{{ form.weekend_bedtime.help_text }}</p>
+            {% endif %}
+            {{ form.weekend_bedtime }}
+            {% if form.weekend_bedtime.errors %}
+                <div class="forms-card__error">{{ form.weekend_bedtime.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.weeknight_bedtime.id_for_label }}">{{ form.weeknight_bedtime.label }}</label>
+            {% if form.weeknight_bedtime.help_text %}
+                <p class="forms-card__help">{{ form.weeknight_bedtime.help_text }}</p>
+            {% endif %}
+            {{ form.weeknight_bedtime }}
+            {% if form.weeknight_bedtime.errors %}
+                <div class="forms-card__error">{{ form.weeknight_bedtime.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.social_level.id_for_label }}">{{ form.social_level.label }}</label>
+            {{ form.social_level }}
+            {% if form.social_level.errors %}
+                <div class="forms-card__error">{{ form.social_level.errors }}</div>
+            {% endif %}
+        </div>
+
+        <fieldset class="forms-card__fieldset">
+            <legend class="forms-card__fieldset-legend">What renters should know</legend>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="{{ form.live_opposite_sex.id_for_label }}">{{ form.live_opposite_sex.label }}</label>
+                {{ form.live_opposite_sex }}
+                {% if form.live_opposite_sex.errors %}
+                    <div class="forms-card__error">{{ form.live_opposite_sex.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="{{ form.share_double.id_for_label }}">{{ form.share_double.label }}</label>
+                {{ form.share_double }}
+                {% if form.share_double.errors %}
+                    <div class="forms-card__error">{{ form.share_double.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="{{ form.okay_smoking.id_for_label }}">{{ form.okay_smoking.label }}</label>
+                {{ form.okay_smoking }}
+                {% if form.okay_smoking.errors %}
+                    <div class="forms-card__error">{{ form.okay_smoking.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="{{ form.okay_alcohol.id_for_label }}">{{ form.okay_alcohol.label }}</label>
+                {{ form.okay_alcohol }}
+                {% if form.okay_alcohol.errors %}
+                    <div class="forms-card__error">{{ form.okay_alcohol.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="{{ form.okay_overnight.id_for_label }}">{{ form.okay_overnight.label }}</label>
+                {{ form.okay_overnight }}
+                {% if form.okay_overnight.errors %}
+                    <div class="forms-card__error">{{ form.okay_overnight.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="forms-card__field">
+                <label class="forms-card__label" for="{{ form.okay_pets.id_for_label }}">{{ form.okay_pets.label }}</label>
+                {{ form.okay_pets }}
+                {% if form.okay_pets.errors %}
+                    <div class="forms-card__error">{{ form.okay_pets.errors }}</div>
+                {% endif %}
+            </div>
+        </fieldset>
+
+        <div class="forms-card__actions">
+            <a class="forms-card__back" href="{% url 'forms-get-to-know-you' %}">Back</a>
+            <button type="submit" class="forms-card__submit">Submit</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

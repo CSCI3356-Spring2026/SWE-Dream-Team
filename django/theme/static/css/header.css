@@ -18,7 +18,8 @@
 }
 
 .logo img {
-    display: block;
+  display: block;
+  height: 60px;
 }
 
 /* Profile Dropdown Button */
@@ -54,6 +55,8 @@
 /* Dropdown Menu logic */
 .nav-dropdown {
     position: relative;
+    background: #ffffff;
+    border-radius: var(--radius-md);
 }
 
 .dropdown-content {

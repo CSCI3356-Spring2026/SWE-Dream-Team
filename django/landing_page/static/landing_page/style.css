@@ -44,7 +44,7 @@ html {
 
 /* Left column: hero + branding – subtle shadow */
 .left {
-    flex: 1;
+    flex: 1.25;
     background-color: #f8faf8;
     display: flex;
     align-items: center;
@@ -99,7 +99,25 @@ html {
 
 .auth-box {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.auth-instruction {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .sr-only {
@@ -113,130 +131,47 @@ html {
     border: 0;
 }
 
+:root {
+    --color-gradient-start: #99F2D1;
+    --color-gradient-end: #C5FD97;
+}
+
 .auth-headline {
-    font-size: 1.75rem;
+    font-size: 4.5rem;
     margin-bottom: 1.5rem;
     color: #1a1a1a;
     font-weight: 700;
+
+    /* Gradient background */
+    background: linear-gradient(
+        90deg,
+        var(--color-gradient-start), 
+        var(--color-gradient-end), 
+        var(--color-gradient-start)
+    );
+    background-size: 200% auto;
+
+    /* Clip background to text */
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+    animation: gradientShift 1.5s linear infinite;
 }
 
-/* Tab bar: pill-style (Log In active = light green, Sign Up = darker green) */
-.toggle-bar {
-    display: flex;
-    margin-bottom: 1.5rem;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
+@keyframes gradientShift {
+    0% {
+        background-position: 200% center;
+    }
 
-.toggle-btn {
-    flex: 1;
-    text-align: center;
-    padding: 12px 16px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: background 0.2s, color 0.2s;
-    border: none;
-    background: #e0f0e8;
-    color: #1a1a1a;
-}
-
-.toggle-btn--signup {
-    background: #147A62;
-    color: #fff;
-}
-
-#loginToggle:checked ~ .toggle-bar .toggle-btn--login {
-    background: #B9F2D8;
-    color: #1a1a1a;
-}
-
-#loginToggle:checked ~ .toggle-bar .toggle-btn--signup {
-    background: #147A62;
-    color: #fff;
-}
-
-#signupToggle:checked ~ .toggle-bar .toggle-btn--signup {
-    background: #B9F2D8;
-    color: #1a1a1a;
-}
-
-#signupToggle:checked ~ .toggle-bar .toggle-btn--login {
-    background: #147A62;
-    color: #fff;
+    100% {
+        background-position: 0% center;
+    }
 }
 
 /* Forms */
 .auth-forms {
     position: relative;
-}
-
-.form {
-    display: none;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-#loginToggle:checked ~ .auth-forms .login-form {
-    display: flex !important;
-}
-
-#signupToggle:checked ~ .auth-forms .signup-form {
-    display: flex !important;
-}
-
-.input-label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.25rem;
-}
-
-.input-field {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    box-sizing: border-box;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    color: #555;
-    cursor: pointer;
-}
-
-.checkbox-input {
-    width: 1.1rem;
-    height: 1.1rem;
-    accent-color: #147A62;
-}
-
-.submit-btn {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-.submit-btn--primary {
-    background-color: #5a3d7a;
-    color: #fff;
-    border: 1px solid #333;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.submit-btn--primary:hover {
-    opacity: 0.92;
 }
 
 .google-btn {
@@ -253,24 +188,74 @@ html {
     align-items: center;
     justify-content: center;
     gap: 8px;
-}
-
-.google-btn__icon {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-}
-
-.forgot-link {
-    display: block;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #666;
-    text-decoration: underline;
     margin-top: 0.5rem;
 }
 
-.forgot-link:hover {
+.g_id_signin {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* ----- Footer ----- */
+.landing-footer {
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 2rem 24px;
+    flex-shrink: 0;
+}
+
+.landing-footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.landing-footer__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.landing-footer__brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.landing-footer__tagline {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 0;
+}
+
+.landing-footer__contact {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 0;
+}
+
+.landing-footer__legal {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.landing-footer__legal a {
+    color: #333;
+    text-decoration: underline;
+}
+
+.landing-footer__right {
+    text-align: right;
+}
+
+.landing-footer__nav {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
     color: #333;
 }
 

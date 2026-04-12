@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-
+    <script src="https://kit.fontawesome.com/e867f74e8d.js" crossorigin="anonymous"></script>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -25,5 +25,6 @@
     <footer class="footer">
         {% include 'theme/footer.html' %}
     </footer>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

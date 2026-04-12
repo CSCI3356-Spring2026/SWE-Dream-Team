@@ -1,0 +1,38 @@
+{# Expects variable: profile #}
+<li>
+    <a class="mini-listing-card" href="{% url 'roommates-detail' profile.pk %}">
+        <div class="mini-listing-card__media">
+            {% if profile.photo %}
+                <img class="mini-listing-card__img" src="{{ profile.photo.url }}" alt="" loading="lazy" width="320" height="320">
+            {% else %}
+                <div class="mini-listing-card__placeholder">No photo</div>
+            {% endif %}
+        </div>
+        <div class="mini-listing-card__body">
+            <h3 class="mini-listing-card__title">{{ profile.user.get_full_name|default:profile.user.username }}</h3>
+            <p class="mini-listing-card__meta">Boston College — {{ profile.grad_year }}</p>
+            <p class="mini-listing-card__major">{{ profile.major_minor }}</p>
+            <dl class="mini-listing-card__metrics">
+                <div class="mini-listing-card__metric">
+                    <dt>
+                        <svg class="listing-detail__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Roommate match
+                    </dt>
+                    <dd>{% if profile.roommate_match is not None %}{{ profile.roommate_match }}%{% else %}—{% endif %}</dd>
+                </div>
+                <div class="mini-listing-card__metric">
+                    <dt>
+                        <svg class="listing-detail__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
+                        </svg>
+                        Housing match
+                    </dt>
+                    <dd>{% if profile.housing_match is not None %}{{ profile.housing_match }}%{% else %}—{% endif %}</dd>
+                </div>
+            </dl>
+        </div>
+    </a>
+</li>

@@ -1,0 +1,103 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Explore Housing — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'listings/explore_housing.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="explore-housing" aria-labelledby="explore-heading">
+    <div class="explore-housing__toolbar">
+        <h1 class="explore-housing__title" id="explore-heading">Explore Housing</h1>
+        <form class="explore-housing__search" method="get" action="{% url 'listings-explore-housing' %}" role="search">
+            <label class="explore-housing__visually-hidden" for="id_listing_search">Search for a specific house</label>
+            <input
+                class="explore-housing__input"
+                type="search"
+                name="q"
+                id="id_listing_search"
+                value="{{ search_query }}"
+                placeholder="Search for a specific house"
+                autocomplete="off"
+            >
+            <button type="button" class="explore-housing__filters" disabled title="Coming soon">Filters</button>
+        </form>
+    </div>
+
+    {% if not profiles %}
+        <p class="explore-housing__empty">No listings yet. Sublettors can add one from the listing details step after signing in.</p>
+    {% else %}
+        <ul class="explore-housing__grid">
+            {% for profile in profiles %}
+            <li>
+                <a class="listing-card__link" href="{% url 'listings-detail' profile.pk %}">
+                <article class="listing-card">
+                    <div class="listing-card__media">
+                        {% if profile.listing_image %}
+                            <img
+                                class="listing-card__img"
+                                src="{{ profile.listing_image.url }}"
+                                alt=""
+                                loading="lazy"
+                                width="400"
+                                height="240"
+                            >
+                        {% else %}
+                            <div class="listing-card__placeholder" aria-hidden="true">No photo</div>
+                        {% endif %}
+                    </div>
+                    <div class="listing-card__body">
+                        <h2 class="listing-card__location" id="listing-title-{{ profile.pk }}">
+                            {{ profile.preferred_location|default:"Location not set" }}
+                        </h2>
+                        <p class="listing-card__lease">
+                            {% if profile.rent_start_date and profile.rent_end_date %}
+                                {{ profile.rent_start_date|date:"M j, Y" }} – {{ profile.rent_end_date|date:"M j, Y" }}
+                            {% else %}
+                                Lease dates not set
+                            {% endif %}
+                        </p>
+                        <dl class="listing-card__metrics">
+                            <div class="listing-card__metric">
+                                <dt class="listing-card__metric-label">
+                                    <svg class="listing-card__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                    Roommate match
+                                </dt>
+                                <dd class="listing-card__metric-value">
+                                    {% if profile.roommate_match is not None %}
+                                        {{ profile.roommate_match }}%
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </dd>
+                            </div>
+                            <div class="listing-card__metric">
+                                <dt class="listing-card__metric-label">
+                                    <svg class="listing-card__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
+                                    </svg>
+                                    Housing match
+                                </dt>
+                                <dd class="listing-card__metric-value">
+                                    {% if profile.housing_match is not None %}
+                                        {{ profile.housing_match }}%
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</section>
+{% endblock %}

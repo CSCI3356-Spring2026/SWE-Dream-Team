@@ -8,10 +8,14 @@
                     <a href="#">Privacy</a> | <a href="#">Terms of Service</a> | <a href='#'>Contact</a>
                 </p>
             </div>
-            {% if request.path != '/' %}
+            {% if user.is_authenticated %}
             <div class="footer__right">
                 <p class="footer__nav">Nav: 
-                    <a href="/home">Home</a> 
+                    {% if request.user.profile.user_type == 'renter' %}
+                    <a href="{% url 'listings-explore-housing' %}">Home</a>
+                    {% else %}
+                    <a href="{% url 'roommates-explore' %}">Home</a>
+                    {% endif %} 
                     <a href="/profile/preview/">Profile</a> 
                     <a href="#">Settings</a></p>
                 <p class="footer__credit">Made by Boston College Students</p>

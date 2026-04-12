@@ -1,11 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'theme/base.html' %}
 {% load static %}
 
 {% block title %}Home{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="hero">
-  <h1>Welcome Home</h1>
-  <p>Nav header is above from base.html.</p>
+<div class="home_header">
+  {% if request.user.profile.user_type == 'renter' %}
+  <h2>Explore Listings</h2>
+  {% endif %}
+  {% if request.user.profile.user_type == 'sublettor' %}
+  <h2>Explore Roommates</h2>
+  {% endif %}
+</div>
+<div class="cards">
+  {% for card in cards %}
+    {% include 'home/card.html' with user=card.user major=card.major_minor year=card.grad_year img=card.photo roommate=card.roommate_match housing=card.housing_match %}
+    {% empty %}
+    <p>No profiles found.</p>
+  {% endfor %}
 </div>
 {% endblock %}

@@ -25,6 +25,12 @@ if load_dotenv:
     load_dotenv(BASE_DIR / ".env")
 
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
+GOOGLE_ALLOWED_DOMAIN = os.environ.get("GOOGLE_ALLOWED_DOMAIN", "bc.edu").strip().lower()
+ADMIN_PANEL_EMAILS = [
+    email.strip().lower()
+    for email in os.environ.get("ADMIN_PANEL_EMAILS", "").split(",")
+    if email.strip()
+]
 
 # Allow Google Sign-In popup/iframe behavior during development.
 SECURE_REFERER_POLICY = "no-referrer-when-downgrade"
@@ -40,7 +46,8 @@ SECRET_KEY = 'django-insecure-=xp+syd97y8$23(kdz5fi81#y3!j#wqgyu0%57oc@@%&r3dk0j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Local dev: allow browser + runserver + Django test client. Add your LAN hostname if needed.
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver"]
 
 
 # Application definition
@@ -56,6 +63,10 @@ INSTALLED_APPS = [
     'theme',
     'user_profile',
     'landing_page',
+    'forms',
+    'admin_panel',
+    'listings',
+    'roomate_listing_page',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'sublink.urls'
@@ -80,6 +92,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.debug',
             ],
         },
     },
@@ -142,3 +155,8 @@ STATICFILES_DIRS = [
 # User uploaded files 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+#auth redirects
+LOGIN_URL = "/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

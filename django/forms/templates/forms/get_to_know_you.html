@@ -1,0 +1,115 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Let's Get to Know You — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'forms/get_to_know_you.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="forms-page" aria-labelledby="get-to-know-heading">
+    <div class="forms-page__intro">
+        <h1 class="forms-page__title" id="get-to-know-heading">Let's Get to Know You</h1>
+        <p class="forms-page__subtitle">Please fill out this information for your profile</p>
+    </div>
+
+    <form class="forms-card" method="post" action="{% url 'forms-get-to-know-you' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="forms-card__field">
+            {# 1. Interpolate Name #}
+            <label class="forms-card__label">
+                Welcome, {{ request.user.first_name|default:request.user.username }}!
+            </label>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="id_email">Email</label>
+            {# 2. Show Email (Read-only since it's from Google) #}
+            <input class="forms-card__input" type="email" value="{{ request.user.email }}" readonly style="background: #f0f0f0;">
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.gender.id_for_label }}">Gender</label>
+            {# 3. Use the Django-generated dropdown #}
+            {{ form.gender }}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.major_minor.id_for_label }}">BC Major / Minor</label>
+            {{ form.major_minor }}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.grad_year.id_for_label }}">BC Year of Graduation</label>
+            {{ form.grad_year }}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.instagram.id_for_label }}">
+                Instagram Handle 
+            </label>
+            {{ form.instagram }}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.phone.id_for_label }}">
+                Phone Number 
+            </label>
+            {{ form.phone }}
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.outreach_preference.id_for_label }}">
+                How do you prefer people reach out to you?
+            </label>
+            {{ form.outreach_preference }}
+            <span class="forms-card__hint">This will be shown on your profile so others know where to message you.</span>
+        </div>
+
+        <div class="forms-card__field">
+            <label class="forms-card__label" for="{{ form.bio.id_for_label }}">
+                Your Bio
+                <span class="forms-card__hint"> — What people see when they visit your profile! (max 500 characters)</span>
+            </label>
+            {{ form.bio }}
+            {% if form.bio.errors %}
+                <div class="forms-card__error">{{ form.bio.errors }}</div>
+            {% endif %}
+        </div>
+
+
+        <div class="profile-preview">
+            <div class="profile-preview-container">
+                <p class="forms-card__hint">Profile Picture:</p>
+                {# Add an ID to the image so JS can find it #}
+                <img id="profile-preview-img" 
+                     src="{{ google_picture }}" 
+                     alt="Profile Preview" 
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid #ddd;">
+            </div>
+            
+            <label class="forms-card__label" for="{{ form.photo.id_for_label }}">Change / Upload Profile Photo</label>
+            {# Add an ID to the input for the listener #}
+            <input type="file" name="photo" id="id_photo_input" accept="image/*" class="forms-card__input">
+        </div>
+
+
+        <div class="forms-card__actions">
+            <button type="submit" class="forms-card__submit">Next</button>
+        </div>
+    </form>
+   
+<script>
+    document.getElementById('id_photo_input').onchange = function (evt) {
+        const [file] = this.files;
+        if (file) {
+            // Create a temporary local URL for the selected file
+            document.getElementById('profile-preview-img').src = URL.createObjectURL(file);
+        }
+    };
+</script>
+
+</section>
+{% endblock %}
