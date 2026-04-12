@@ -1,0 +1,43 @@
+{# Expects variable: profile #}
+<li>
+    <a class="mini-listing-card" href="{% url 'listings-detail' profile.pk %}">
+        <div class="mini-listing-card__media">
+            {% if profile.listing_image %}
+                <img class="mini-listing-card__img" src="{{ profile.listing_image.url }}" alt="" loading="lazy" width="320" height="192">
+            {% else %}
+                <div class="mini-listing-card__placeholder">No photo</div>
+            {% endif %}
+        </div>
+        <div class="mini-listing-card__body">
+            <h3 class="mini-listing-card__title">{{ profile.preferred_location|default:"Location not set" }}</h3>
+            <p class="mini-listing-card__meta">
+                {% if profile.rent_start_date and profile.rent_end_date %}
+                    {{ profile.rent_start_date|date:"M j, Y" }} – {{ profile.rent_end_date|date:"M j, Y" }}
+                {% else %}
+                    Lease dates not set
+                {% endif %}
+            </p>
+            <dl class="mini-listing-card__metrics">
+                <div class="mini-listing-card__metric">
+                    <dt>
+                        <svg class="listing-detail__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Roommate match
+                    </dt>
+                    <dd>{% if profile.roommate_match is not None %}{{ profile.roommate_match }}%{% else %}—{% endif %}</dd>
+                </div>
+                <div class="mini-listing-card__metric">
+                    <dt>
+                        <svg class="listing-detail__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
+                        </svg>
+                        Housing match
+                    </dt>
+                    <dd>{% if profile.housing_match is not None %}{{ profile.housing_match }}%{% else %}—{% endif %}</dd>
+                </div>
+            </dl>
+        </div>
+    </a>
+</li>

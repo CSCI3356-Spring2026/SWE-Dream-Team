@@ -12,17 +12,61 @@
     <div class="explore-housing__toolbar">
         <h1 class="explore-housing__title" id="explore-heading">Explore Housing</h1>
         <form class="explore-housing__search" method="get" action="{% url 'listings-explore-housing' %}" role="search">
-            <label class="explore-housing__visually-hidden" for="id_listing_search">Search for a specific house</label>
-            <input
-                class="explore-housing__input"
-                type="search"
-                name="q"
-                id="id_listing_search"
-                value="{{ search_query }}"
-                placeholder="Search for a specific house"
-                autocomplete="off"
-            >
-            <button type="button" class="explore-housing__filters" disabled title="Coming soon">Filters</button>
+            <div class="explore-housing__search-row">
+                <label class="explore-housing__visually-hidden" for="id_listing_search">Search for a specific house</label>
+                <input
+                    class="explore-housing__input"
+                    type="search"
+                    name="q"
+                    id="id_listing_search"
+                    value="{{ search_query }}"
+                    placeholder="Search for a specific house"
+                    autocomplete="off"
+                >
+                <button type="submit" class="explore-housing__submit">Search</button>
+            </div>
+
+            <details class="explore-housing__filter-panel" {% if filters.max_rent or filters.date_from or filters.date_to or filters.no_smoking or filters.no_pets or filters.no_doubles or filters.no_mixed_gender %}open{% endif %}>
+                <summary class="explore-housing__filter-toggle">Filters</summary>
+                <div class="explore-housing__filter-body">
+                    <div class="explore-housing__filter-grid">
+                        <label class="explore-housing__filter-label">
+                            Max rent ($/mo)
+                            <input class="explore-housing__filter-input" type="number" name="max_rent" value="{{ filters.max_rent }}" min="0" placeholder="e.g. 1500">
+                        </label>
+                        <label class="explore-housing__filter-label">
+                            Available from
+                            <input class="explore-housing__filter-input" type="date" name="date_from" value="{{ filters.date_from }}">
+                        </label>
+                        <label class="explore-housing__filter-label">
+                            Available until
+                            <input class="explore-housing__filter-input" type="date" name="date_to" value="{{ filters.date_to }}">
+                        </label>
+                    </div>
+                    <div class="explore-housing__filter-checkboxes">
+                        <label class="explore-housing__checkbox-label">
+                            <input type="checkbox" name="no_mixed_gender" value="yes" {% if filters.no_mixed_gender %}checked{% endif %}>
+                            No Mixed Gender Housing
+                        </label>
+                        <label class="explore-housing__checkbox-label">
+                            <input type="checkbox" name="no_doubles" value="yes" {% if filters.no_doubles %}checked{% endif %}>
+                            No Doubles
+                        </label>
+                        <label class="explore-housing__checkbox-label">
+                            <input type="checkbox" name="no_smoking" value="yes" {% if filters.no_smoking %}checked{% endif %}>
+                            No Smoking
+                        </label>
+                        <label class="explore-housing__checkbox-label">
+                            <input type="checkbox" name="no_pets" value="yes" {% if filters.no_pets %}checked{% endif %}>
+                            No Pets
+                        </label>
+                    </div>
+                    <div class="explore-housing__filter-actions">
+                        <button type="submit" class="explore-housing__submit">Apply filters</button>
+                        <a class="explore-housing__clear" href="{% url 'listings-explore-housing' %}">Clear all</a>
+                    </div>
+                </div>
+            </details>
         </form>
     </div>
 
@@ -32,6 +76,7 @@
         <ul class="explore-housing__grid">
             {% for profile in profiles %}
             <li>
+                <a class="listing-card__link" href="{% url 'listings-detail' profile.pk %}">
                 <article class="listing-card">
                     <div class="listing-card__media">
                         {% if profile.listing_image %}
@@ -93,6 +138,7 @@
                         </dl>
                     </div>
                 </article>
+                </a>
             </li>
             {% endfor %}
         </ul>

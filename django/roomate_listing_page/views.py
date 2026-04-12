@@ -28,10 +28,23 @@ def explore_roommates(request):
             | Q(grad_year__icontains=q),
         )
 
+    checkbox_fields = ["live_opposite_sex", "share_double", "okay_smoking", "okay_pets"]
+    checkbox_filters = {}
+    for field in checkbox_fields:
+        if request.GET.get(field) == "yes":
+            profiles = profiles.filter(**{field: "yes"})
+            checkbox_filters[field] = True
+        else:
+            checkbox_filters[field] = False
+
     return render(
         request,
         "roomate_listing_page/explore_roommates.html",
-        {"profiles": profiles, "search_query": q},
+        {
+            "profiles": profiles,
+            "search_query": q,
+            "filters": checkbox_filters,
+        },
     )
 
 

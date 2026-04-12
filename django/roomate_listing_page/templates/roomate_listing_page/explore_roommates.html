@@ -13,17 +13,47 @@
     <div class="explore-housing__toolbar">
         <h1 class="explore-housing__title" id="explore-heading">Explore Roommates</h1>
         <form class="explore-housing__search" method="get" action="{% url 'roommates-explore' %}" role="search">
-            <label class="explore-housing__visually-hidden" for="id_roommate_search">Search for a specific roommate</label>
-            <input
-                class="explore-housing__input"
-                type="search"
-                name="q"
-                id="id_roommate_search"
-                value="{{ search_query }}"
-                placeholder="Search for a specific roommate"
-                autocomplete="off"
-            >
-            <button type="button" class="explore-housing__filters" disabled title="Coming soon">Filters</button>
+            <div class="explore-housing__search-row">
+                <label class="explore-housing__visually-hidden" for="id_roommate_search">Search for a specific roommate</label>
+                <input
+                    class="explore-housing__input"
+                    type="search"
+                    name="q"
+                    id="id_roommate_search"
+                    value="{{ search_query }}"
+                    placeholder="Search for a specific roommate"
+                    autocomplete="off"
+                >
+                <button type="submit" class="explore-housing__submit">Search</button>
+            </div>
+
+            <details class="explore-housing__filter-panel" {% if filters.live_opposite_sex or filters.share_double or filters.okay_smoking or filters.okay_pets %}open{% endif %}>
+                <summary class="explore-housing__filter-toggle">Filters</summary>
+                <div class="explore-housing__filter-body">
+                    <div class="explore-housing__filter-checkboxes">
+                        <label class="explore-housing__checkbox-label">
+                            <input type="checkbox" name="live_opposite_sex" value="yes" {% if filters.live_opposite_sex %}checked{% endif %}>
+                            Okay living with opposite sex
+                        </label>
+                        <label class="explore-housing__checkbox-label">
+                            <input type="checkbox" name="share_double" value="yes" {% if filters.share_double %}checked{% endif %}>
+                            Willing to share a double
+                        </label>
+                        <label class="explore-housing__checkbox-label">
+                            <input type="checkbox" name="okay_smoking" value="yes" {% if filters.okay_smoking %}checked{% endif %}>
+                            Okay with smoking
+                        </label>
+                        <label class="explore-housing__checkbox-label">
+                            <input type="checkbox" name="okay_pets" value="yes" {% if filters.okay_pets %}checked{% endif %}>
+                            Okay with pets
+                        </label>
+                    </div>
+                    <div class="explore-housing__filter-actions">
+                        <button type="submit" class="explore-housing__submit">Apply filters</button>
+                        <a class="explore-housing__clear" href="{% url 'roommates-explore' %}">Clear all</a>
+                    </div>
+                </div>
+            </details>
         </form>
     </div>
 
