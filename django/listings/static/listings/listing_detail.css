@@ -168,6 +168,12 @@
     user-select: none;
 }
 
+.listing-detail__related {
+    margin-top: 2.75rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e8e8e8;
+}
+
 .listing-detail__related-title {
     font-size: 1.5rem;
     font-weight: var(--font-weight-bold);
