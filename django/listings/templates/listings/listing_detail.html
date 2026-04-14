@@ -1,0 +1,102 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}{{ profile.preferred_location|truncatechars:40 }} — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'listings/listing_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<article class="listing-detail">
+    <div class="listing-detail__hero">
+        <div class="listing-detail__media">
+            {% if profile.listing_image %}
+                <img
+                    class="listing-detail__img"
+                    src="{{ profile.listing_image.url }}"
+                    alt=""
+                    width="720"
+                    height="480"
+                >
+            {% else %}
+                <div class="listing-detail__placeholder">No listing photo</div>
+            {% endif %}
+        </div>
+
+        <div class="listing-detail__main">
+            <h1 class="listing-detail__title">{{ profile.preferred_location|default:"Listing" }}</h1>
+            <p class="listing-detail__lease">
+                {% if profile.rent_start_date and profile.rent_end_date %}
+                    {{ profile.rent_start_date|date:"M j, Y" }} – {{ profile.rent_end_date|date:"M j, Y" }}
+                {% else %}
+                    Lease dates not set
+                {% endif %}
+            </p>
+
+            <p class="listing-detail__price">
+                {% if profile.min_monthly_rent %}
+                    ${{ profile.min_monthly_rent }}<span class="listing-detail__price-suffix">/mo</span>
+                {% else %}
+                    <span class="listing-detail__price-muted">Rent not listed</span>
+                {% endif %}
+            </p>
+
+            <div class="listing-detail__body-text">
+                <p><strong>Available parking:</strong> {{ profile.get_parking_needed_display }}</p>
+                <p><strong>Dishwasher in unit:</strong> {{ profile.get_dishwasher_display }}</p>
+                <p><strong>Laundry:</strong> {{ profile.get_laundry_display }}</p>
+                <p><strong>Unit furnished:</strong> {{ profile.get_already_furnished_display }}</p>
+            </div>
+
+            <a class="listing-detail__cta" href="{% url 'profile-public-by-user' profile.user_id %}">
+                Interested? View Lessor Profile
+            </a>
+
+            <dl class="listing-detail__metrics">
+                <div class="listing-detail__metric">
+                    <dt class="listing-detail__metric-label">
+                        <svg class="listing-detail__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Roommate match
+                    </dt>
+                    <dd class="listing-detail__metric-value">
+                        {% if profile.roommate_match is not None %}{{ profile.roommate_match }}%{% else %}—{% endif %}
+                    </dd>
+                </div>
+                <div class="listing-detail__metric">
+                    <dt class="listing-detail__metric-label">
+                        <svg class="listing-detail__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
+                        </svg>
+                        Housing match
+                    </dt>
+                    <dd class="listing-detail__metric-value">
+                        {% if profile.housing_match is not None %}{{ profile.housing_match }}%{% else %}—{% endif %}
+                    </dd>
+                </div>
+            </dl>
+
+            <div class="listing-detail__toolbar" aria-hidden="true">
+                <span class="listing-detail__toolbar-btn" title="Share">↗</span>
+                <span class="listing-detail__toolbar-btn" title="More">⋯</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="listing-detail__related" aria-labelledby="related-heading">
+        <h2 class="listing-detail__related-title" id="related-heading">Other housing you may like</h2>
+        {% if other_listings %}
+            <ul class="listing-detail__related-grid">
+                {% for p in other_listings %}
+                    {% include "listings/includes/mini_listing_card.html" with profile=p %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="listing-detail__related-empty">No other listings yet.</p>
+        {% endif %}
+    </section>
+</article>
+{% endblock %}
