@@ -29,7 +29,7 @@ SubLink - Landing Page
         <div class="right">
             <div class="auth-box">
                 <h2 class="auth-headline">Your next home awaits...</h2>
-                
+
                 <div class="auth-container">
                     {% if request.session.user_data %}
                         <div class="user-signed-in">
@@ -38,7 +38,7 @@ SubLink - Landing Page
                         </div>
                     {% else %}
                         <p class="auth-instruction">Please sign in with your BC email to continue.</p>
-                        
+
                         <div id="g_id_onload"
                             data-client_id="{{ google_oauth_client_id }}"
                             data-context="signin"
@@ -56,7 +56,7 @@ SubLink - Landing Page
                             data-width="320"> </div>
                     {% endif %}
                 </div>
-        
+
                 <form id="google-login-form" method="post" action="{% url 'auth_receiver' %}" style="display:none;">
                     {% csrf_token %}
                     <input type="hidden" name="credential" id="google-credential">
@@ -71,7 +71,7 @@ SubLink - Landing Page
             <h2 class = "about-title">About Us</h2>
 
             <p class = "about-text">
-                SubLink is a platform designed to tackle the most difficult part of the subletting process: the search. We understand the struggle of utilizing multiple platforms to find a leaser/leasee, and now all those platforms can be replaced with SubLink. We provide compatability scores for living spaces and potential roommates, so your future home will be just right. 
+                SubLink is a platform designed to tackle the most difficult part of the subletting process: the search. We understand the struggle of utilizing multiple platforms to find a leaser/leasee, and now all those platforms can be replaced with SubLink. We provide compatability scores for living spaces and potential roommates, so your future home will be just right.
             </p>
 
             <div class = "about-features">
@@ -97,33 +97,32 @@ SubLink - Landing Page
     </section>
 
     <!-- How It Works -->
-     <section class = "how-section">
-        <div class = "how-container">
-            <h2 class = "how-title">How It Works</h2>
+    <section class="how-section">
+        <div class="how-container-split">
 
-            <div class = "steps">
-                <div class = "step">
-                    <div class = "step-number">1</div>
+            <div class="steps-vertical-stack">
+                <div class="step">
+                    <div class="step-number">1</div>
                     <h3>Create Your Profile</h3>
                     <p>Answer our detailed questionnaire about living styles, personality styles and preferences.</p>
                 </div>
 
-                <div class = "step">
-                    <div class = "step-number">2</div>
-                    <h3>Algorithm-Based Compatability</h3>
-                    <p>Below every living space and roommate profile, compatability scores are listed so you can identify the best option for you, and only you.</p>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Algorithm-Based Compatibility</h3>
+                    <p>Below every living space and roommate profile, compatibility scores are listed.</p>
                 </div>
 
-                <div class = "step">
-                    <div class = "step-number">3</div>
+                <div class="step">
+                    <div class="step-number">3</div>
                     <h3>Connect and Complete</h3>
-                    <p>Contact information will be listed below available listings, so you can easily reach out to your ideal leaser/leasee.</p>
+                    <p>Contact information will be listed below available listings for easy outreach.</p>
                 </div>
+            </div> <div class="how-title-wrapper">
+                <h2 class="how-title-side">How It<br>Works</h2>
             </div>
-        </div>
-     </section>
 
-</div>
+        </div> </section>
 
 <script>
 function handleGoogleCredential(response) {
