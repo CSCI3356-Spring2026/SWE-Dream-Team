@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'admin_panel',
     'listings',
     'roomate_listing_page',
+    'settings',
 ]
 
 MIDDLEWARE = [

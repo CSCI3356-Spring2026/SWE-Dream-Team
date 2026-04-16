@@ -32,6 +32,7 @@ urlpatterns = [
     path("forms/", include("forms.urls")),
     path("listings/", include("listings.urls")),
     path("roommates/", include("roomate_listing_page.urls")),
+    path("settings/", include("settings.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
