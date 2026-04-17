@@ -127,6 +127,37 @@
             {{ form.listing_image.label }}
         </label>
         {{ form.listing_image }}
+
+        <div class="profile-preview" style="margin-top: 12px;">
+            <div class="profile-preview-container">
+                <p class="forms-card__hint" style="margin-bottom: 8px;">Listing photo preview:</p>
+                <img
+                    id="listing-preview-img"
+                    src="{% if form.instance.listing_image %}{{ form.instance.listing_image.url }}{% else %}{% endif %}"
+                    alt="Listing photo preview"
+                    style="display: {% if form.instance.listing_image %}block{% else %}none{% endif %}; width: 120px; height: 120px; border-radius: 12px; object-fit: cover; border: 2px solid #ddd;"
+                >
+                <div
+                    id="listing-preview-placeholder"
+                    aria-hidden="true"
+                    style="display: {% if form.instance.listing_image %}none{% else %}block{% endif %}; width: 120px; height: 120px; border-radius: 12px; border: 2px dashed #ddd; background: #fafafa; color: #666; font-size: 14px; line-height: 120px; text-align: center;"
+                >
+                    No photo
+                </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <button
+                    type="button"
+                    id="clear-listing-photo-btn"
+                    class="forms-card__back"
+                    style="text-decoration: none;"
+                >
+                    Clear listing photo
+                </button>
+            </div>
+        </div>
+
         {% if form.listing_image.help_text %}
             <p class="forms-card__help">{{ form.listing_image.help_text }}</p>
         {% endif %}
@@ -134,6 +165,34 @@
             <div class="forms-card__error">{{ form.listing_image.errors }}</div>
         {% endif %}
     </div>
+
+    <script>
+        (function () {
+            const input = document.getElementById("{{ form.listing_image.id_for_label }}");
+            const img = document.getElementById("listing-preview-img");
+            const placeholder = document.getElementById("listing-preview-placeholder");
+            const clearBtn = document.getElementById("clear-listing-photo-btn");
+
+            if (!input || !img || !placeholder || !clearBtn) return;
+
+            input.addEventListener("change", function () {
+                const file = this.files && this.files[0];
+                if (!file) return;
+
+                img.src = URL.createObjectURL(file);
+                img.style.display = "block";
+                placeholder.style.display = "none";
+            });
+
+            clearBtn.addEventListener("click", function () {
+                input.value = "";
+                input.setAttribute("required", "required");
+                img.src = "";
+                img.style.display = "none";
+                placeholder.style.display = "block";
+            });
+        })();
+    </script>
 
         <div class="forms-card__actions">
             <a class="forms-card__back" href="{% url 'forms-sublettor-roommate-info' %}">Back</a>

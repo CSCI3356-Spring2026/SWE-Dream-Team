@@ -124,7 +124,7 @@ def auth_receiver(request):
     request.session["google_picture"] = user_data.get("picture")
 
     if profile.has_onboarded:
-        return redirect("home")
+        return redirect("listings-explore-housing") if profile.user_type == 'renter' else redirect("roommates-explore")
     return redirect("forms-set-card")
 
 
