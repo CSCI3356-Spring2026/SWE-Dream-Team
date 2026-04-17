@@ -158,7 +158,7 @@ class HousingPreferencesForm(forms.ModelForm):
             'utilities': forms.Select(attrs=_SELECT),
             'parking_needed': forms.Select(attrs=_SELECT),
             'already_furnished': forms.Select(attrs=_SELECT),
-            'listing_image': forms.ClearableFileInput(attrs={'class': 'forms-card__input'}),
+            'listing_image': forms.FileInput(attrs={'class': 'forms-card__input'}),
         }
 
     def __init__(self, *args, **kwargs):
