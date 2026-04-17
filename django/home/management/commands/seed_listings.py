@@ -56,6 +56,7 @@ class Command(BaseCommand):
         if options["clear"]:
             deleted, _ = User.objects.filter(username__startswith="seed_listing_").delete()
             self.stdout.write(self.style.WARNING(f"Cleared {deleted} seeded users/profiles."))
+            return
 
         count = options["count"]
         created = 0
