@@ -1,6 +1,13 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
+from user_profile.matching import (
+    attach_pairwise_to_profiles,
+    pairwise_housing_score,
+    pairwise_roommate_score,
+    sort_profiles_by_pairwise,
+    viewer_profile_for_pairwise,
+)
 from user_profile.models import Profile
 
 
@@ -37,11 +44,15 @@ def explore_roommates(request):
         else:
             checkbox_filters[field] = False
 
+    profile_rows = list(profiles)
+    seeker = viewer_profile_for_pairwise(request.user)
+    profile_rows = sort_profiles_by_pairwise(profile_rows, seeker)
+
     return render(
         request,
         "roomate_listing_page/explore_roommates.html",
         {
-            "profiles": profiles,
+            "profiles": profile_rows,
             "search_query": q,
             "filters": checkbox_filters,
         },
@@ -52,6 +63,15 @@ def roommate_detail(request, pk):
     """Single renter profile for sublettors; related renters at bottom."""
     profile = get_object_or_404(_renter_queryset(), pk=pk)
     other_roommates = list(_renter_queryset().exclude(pk=profile.pk)[:3])
+
+    seeker = viewer_profile_for_pairwise(request.user)
+    if seeker:
+        profile.pairwise_roommate_score = pairwise_roommate_score(seeker, profile)
+        profile.pairwise_housing_score = pairwise_housing_score(seeker, profile)
+    else:
+        profile.pairwise_roommate_score = None
+        profile.pairwise_housing_score = None
+    attach_pairwise_to_profiles(other_roommates, seeker)
 
     return render(
         request,
