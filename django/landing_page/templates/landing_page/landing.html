@@ -31,9 +31,12 @@ SubLink - Landing Page
                 <h2 class="auth-headline">Your next home awaits...</h2>
 
                 <div class="auth-container">
-                    {% if request.session.user_data %}
+                    {% if request.user.is_authenticated %}
                         <div class="user-signed-in">
-                            <p>Signed in as <strong>{{ request.session.user_data.email }}</strong></p>
+                            <p>Signed in as <strong>{% if request.session.user_data %}{{ request.session.user_data.email }}{% else %}{{ request.user.email }}{% endif %}</strong></p>
+                            {% if explore_url %}
+                                <a href="{{ explore_url }}" class="submit-btn submit-btn--primary">Begin Exploring!</a>
+                            {% endif %}
                             <a href="{% url 'sign_out' %}" class="submit-btn submit-btn--secondary">Sign Out</a>
                         </div>
                     {% else %}
