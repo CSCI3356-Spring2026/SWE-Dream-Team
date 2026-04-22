@@ -1,13 +1,71 @@
-.set-card-page__header {
-    margin: 10px;
+/*
+  Set-card page — outer spacing matches theme footer (.footer + .footer__inner).
+  Primary title matches listings explore (.explore-housing__title).
+*/
+
+/* Same outer padding as .footer */
+.set-card-page {
+    width: 100%;
+    padding: 2rem 24px;
+    box-sizing: border-box;
 }
 
-.set-card-page__cards {
+/* Same inner width / flex rhythm as .footer__inner */
+.set-card-page__header {
+    max-width: var(--container-width, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     flex-wrap: wrap;
-    min-height: 240px;
-    margin: 0 auto;
-    padding: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0;
+    box-sizing: border-box;
+    margin-bottom: 1.75rem;
+}
+
+/* Primary line — matches .explore-housing__title (explore_housing.css) */
+.set-card-page__header h2 {
+    font-family: var(--font-family);
+    font-size: 1.85rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-main);
+    margin: 0 0 1rem;
+    line-height: 1.2;
+    text-align: left;
+    width: 100%;
+}
+
+/* Secondary line — same tone as explore / listing meta copy */
+.set-card-page__header h4 {
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    line-height: 1.45;
+    margin: 0;
+    text-align: left;
+    width: 100%;
+}
+
+/* Card row: same inner width as footer; cards centered in the row */
+.set-card-page__cards {
+    max-width: var(--container-width, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2rem;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+/* set_card.css adds margin: 15px on .set_card — drops flex centering; use row gap only */
+.set-card-page__cards .set_card {
+    margin: 0;
 }
