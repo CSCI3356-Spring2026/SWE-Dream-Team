@@ -12,8 +12,6 @@ def profile_card_preview(request):
         request,
         "user_profile/profile.html",
         {
-            "roommate_match": profile.roommate_match,
-            "housing_match": profile.housing_match,
             "profile": profile,
         },
     )
@@ -27,8 +25,6 @@ def public_profile_by_user(request, user_id):
         request,
         "user_profile/profile.html",
         {
-            "roommate_match": profile.roommate_match,
-            "housing_match": profile.housing_match,
             "profile": profile,
         },
     )

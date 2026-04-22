@@ -3,11 +3,11 @@
 <nav class="navbar">
     <div class="nav-wrapper">
       {% if request.user.profile.user_type == 'renter' %}
-          <a href="{% url 'listings-explore-housing' %}" class="logo">
+          <a href="{% url 'listings-explore-housing' %}" class="nav-brand">
       {% else %}
-          <a href="{% url 'roommates-explore' %}" class="logo">
+          <a href="{% url 'roommates-explore' %}" class="nav-brand">
       {% endif %}
-            <img src="{% static 'images/SubLink Logo.svg' %}" alt="SubLink Logo" height="100">
+            <img src="{% static 'images/SubLink-Logo.svg' %}" alt="SubLink" width="160" height="60" decoding="async">
         </a>
 
         {% if user.is_authenticated %}

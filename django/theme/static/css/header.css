@@ -11,15 +11,20 @@
     padding-right: 25px;
 }
 
-/* Logo specific adjustments */
-.logo {
+/* Header logo — class name avoids clash with landing page `.logo` (typography) */
+.nav-brand {
     display: flex;
     align-items: center;
+    line-height: 0;
+    text-decoration: none;
 }
 
-.logo img {
-  display: block;
-  height: 60px;
+.nav-brand img {
+    display: block;
+    height: 60px;
+    width: auto;
+    max-width: min(200px, 42vw);
+    object-fit: contain;
 }
 
 /* Profile Dropdown Button */
