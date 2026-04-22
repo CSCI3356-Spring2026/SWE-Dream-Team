@@ -20,11 +20,11 @@
             <dl class="mini-listing-card__metrics">
                 <div class="mini-listing-card__metric">
                     <dt>Roommate match</dt>
-                    <dd>{% if profile.roommate_match is not None %}{{ profile.roommate_match }}%{% else %}—{% endif %}</dd>
+                    <dd>{% if profile.pairwise_roommate_score is not None %}{{ profile.pairwise_roommate_score|floatformat:1 }}/10{% else %}—{% endif %}</dd>
                 </div>
                 <div class="mini-listing-card__metric">
                     <dt>Housing match</dt>
-                    <dd>{% if profile.housing_match is not None %}{{ profile.housing_match }}%{% else %}—{% endif %}</dd>
+                    <dd>{% if profile.pairwise_housing_score is not None %}{{ profile.pairwise_housing_score|floatformat:1 }}/10{% else %}—{% endif %}</dd>
                 </div>
             </dl>
         </div>
