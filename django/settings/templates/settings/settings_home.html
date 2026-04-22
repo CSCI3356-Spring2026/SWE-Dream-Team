@@ -1,0 +1,45 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'settings/settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="app-settings" aria-label="Settings">
+  <section class="app-settings__inner">
+    <section class="app-settings__cards" aria-label="Settings actions">
+      <a class="settings-card" href="{% url 'forms-get-to-know-you' %}">
+        <h2 class="settings-card__title">Edit<br>My Profile</h2>
+        <div class="settings-card__icon" aria-hidden="true"><i class="fa-regular fa-user"></i></div>
+        <div class="settings-card__cta" aria-hidden="true">Select</div>
+      </a>
+
+      <a class="settings-card" href="{% url 'forms-student-roommate-preferences' %}">
+        <h2 class="settings-card__title">Edit My<br>Roommate<br>Preferences</h2>
+        <div class="settings-card__icon" aria-hidden="true"><i class="fa-solid fa-user-group"></i></div>
+        <div class="settings-card__cta" aria-hidden="true">Select</div>
+      </a>
+
+      <a class="settings-card" href="{% url 'forms-student-housing-preferences' %}">
+        <h2 class="settings-card__title">Edit My<br>Housing<br>Preferences</h2>
+        <div class="settings-card__icon" aria-hidden="true"><i class="fa-solid fa-house"></i></div>
+        <div class="settings-card__cta" aria-hidden="true">Select</div>
+      </a>
+    </section>
+
+    <section class="app-settings__switch" aria-label="Switch user type">
+      <h2 class="app-settings__switch-title">Want to Switch to a Sublessor?</h2>
+      <div class="app-settings__switch-icon" aria-hidden="true">➕</div>
+      <h3 class="app-settings__switch-subtitle">Create a Listing</h3>
+      <p class="app-settings__switch-body">
+        Creating a listing will switch your account to be sublessor. Your profile will no longer be discoverable from the home page.
+      </p>
+      <a class="app-settings__switch-btn" href="{% url 'forms-set-card' %}">Create a Listing</a>
+    </section>
+  </section>
+</main>
+{% endblock %}
+
