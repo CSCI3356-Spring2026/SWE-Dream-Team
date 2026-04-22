@@ -1,6 +1,14 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
+from user_profile.matching import (
+    attach_pairwise_to_profiles,
+    pairwise_housing_score,
+    pairwise_roommate_score,
+    sort_profiles_by_pairwise,
+    viewer_profile_for_pairwise,
+)
 from user_profile.models import Profile
+
 
 def _listing_queryset():
     return (
@@ -68,11 +76,15 @@ def explore_housing(request):
         "no_mixed_gender": no_mixed_gender,
     }
 
+    profile_rows = list(profiles)
+    seeker = viewer_profile_for_pairwise(request.user)
+    profile_rows = sort_profiles_by_pairwise(profile_rows, seeker)
+
     return render(
         request,
         "listings/explore_housing.html",
         {
-            "profiles": profiles,
+            "profiles": profile_rows,
             "search_query": q,
             "filters": {
                 "max_rent": max_rent,
@@ -80,33 +92,6 @@ def explore_housing(request):
                 "date_to": date_to,
                 **checkbox_filters,
             },
-        },
-    )
-
-
-def _sublettor_queryset():
-    return (
-        Profile.objects.filter(user_type="sublettor", has_onboarded=True)
-        .filter(
-            Q(preferred_location__gt="")
-            | (Q(listing_image__isnull=False) & ~Q(listing_image=""))
-        )
-        .select_related("user")
-        .order_by("-id")
-    )
-
-
-def listing_detail(request, pk):
-    """Single sublettor listing detail page."""
-    profile = get_object_or_404(_sublettor_queryset(), pk=pk)
-    other_listings = list(_sublettor_queryset().exclude(pk=profile.pk)[:3])
-
-    return render(
-        request,
-        "listings/listing_detail.html",
-        {
-            "profile": profile,
-            "other_listings": other_listings,
         },
     )
 
@@ -121,6 +106,15 @@ def listing_detail(request, pk):
     other_listings = list(
         _listing_queryset().exclude(pk=profile.pk)[:3],
     )
+
+    seeker = viewer_profile_for_pairwise(request.user)
+    if seeker:
+        profile.pairwise_roommate_score = pairwise_roommate_score(seeker, profile)
+        profile.pairwise_housing_score = pairwise_housing_score(seeker, profile)
+    else:
+        profile.pairwise_roommate_score = None
+        profile.pairwise_housing_score = None
+    attach_pairwise_to_profiles(other_listings, seeker)
 
     return render(
         request,
