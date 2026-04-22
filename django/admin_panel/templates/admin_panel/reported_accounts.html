@@ -1,0 +1,93 @@
+{% extends 'theme/base.html' %}
+{% load static %}
+
+{% block title %}Reported Accounts{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/admin_panel.css' %}">
+<style>
+    /* Fallback: force the Listings/Users segmented toggle to render as buttons. */
+    .admin-reported-top .reported-toggle {
+        display: inline-flex !important;
+        border: 1px solid #6f7d86 !important;
+        border-radius: 999px !important;
+        overflow: hidden !important;
+        background: #fff !important;
+    }
+
+    .admin-reported-top .reported-toggle .reported-toggle__item {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 98px !important;
+        padding: 0.42rem 1.05rem !important;
+        text-decoration: none !important;
+        color: #25282b !important;
+        background: #fff !important;
+        border-right: 1px solid #6f7d86 !important;
+        font-weight: 500 !important;
+        line-height: 1 !important;
+    }
+
+    .admin-reported-top .reported-toggle .reported-toggle__item:last-child {
+        border-right: 0 !important;
+    }
+
+    .admin-reported-top .reported-toggle .reported-toggle__item.is-active {
+        background: #d4d4d4 !important;
+        color: #000 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="admin-shell">
+    <div class="admin-card admin-reported-card">
+        <div class="admin-row admin-reported-top">
+            <div>
+                <h1>Admin Panel</h1>
+            </div>
+            <div class="reported-toggle" role="tablist" aria-label="Reported account types">
+                <a class="reported-toggle__item {% if mode == 'listings' %}is-active{% endif %}" href="?mode=listings&speed={{ selected_speed }}">Listings</a>
+                <a class="reported-toggle__item {% if mode == 'users' %}is-active{% endif %}" href="?mode=users&speed={{ selected_speed }}">Users</a>
+            </div>
+        </div>
+
+        <h2 class="reported-accounts-title">Reported Accounts</h2>
+
+        <div class="reported-filter-row">
+            <label for="speed-filter">Filter by speed:</label>
+            <select id="speed-filter" class="reported-filter" onchange="window.location.href='?mode={{ mode }}&speed=' + this.value">
+                {% for value, label in speed_choices %}
+                <option value="{{ value }}" {% if selected_speed == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="reported-table-wrap">
+            <table class="reported-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Link</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td><a href="{{ row.link }}">{{ row.link }}</a></td>
+                        <td>{{ row.reason|default:"-" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">{{ empty_label }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

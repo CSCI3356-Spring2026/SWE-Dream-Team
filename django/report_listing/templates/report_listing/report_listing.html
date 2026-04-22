@@ -1,0 +1,36 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Report Listing — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'report_listing/report_listing.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="report-listing-page" aria-labelledby="report-listing-title">
+    <div class="report-listing-wrap">
+        <h1 id="report-listing-title" class="report-listing-title">Why do you want to report this listing?</h1>
+
+        <form class="report-listing-form" method="post" action="{% url 'report_listing:report-listing-form' profile.pk %}">
+            {% csrf_token %}
+
+            <div class="report-listing-field">
+                <label for="id_reason">Reason of report:</label>
+                <input type="text" id="id_reason" name="reason" placeholder="Value">
+            </div>
+
+            <fieldset class="report-listing-fieldset">
+                <legend>How fast should this report be processed:</legend>
+                <label><input type="radio" name="speed" value="asap" required> As fast as possible</label>
+                <label><input type="radio" name="speed" value="fast"> Fast</label>
+                <label><input type="radio" name="speed" value="normal"> Normal</label>
+                <label><input type="radio" name="speed" value="less_than_normal"> Less than normal</label>
+                <label><input type="radio" name="speed" value="no_rush"> No Rush</label>
+            </fieldset>
+
+            <button type="submit" class="report-listing-submit">Submit</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

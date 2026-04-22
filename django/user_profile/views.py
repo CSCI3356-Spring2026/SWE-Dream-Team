@@ -28,3 +28,15 @@ def public_profile_by_user(request, user_id):
             "profile": profile,
         },
     )
+
+
+def profile_detail(request, pk):
+    """Backward-compatible profile detail route by Profile primary key."""
+    profile = get_object_or_404(Profile, pk=pk)
+    return render(
+        request,
+        "user_profile/profile.html",
+        {
+            "profile": profile,
+        },
+    )

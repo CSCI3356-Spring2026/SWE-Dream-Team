@@ -66,7 +66,11 @@ INSTALLED_APPS = [
     'forms',
     'admin_panel',
     'listings',
+    'flagged_listings',
     'roomate_listing_page',
+    'flagged_users',
+    'report_user',
+    'report_listing',
     'settings',
 ]
 

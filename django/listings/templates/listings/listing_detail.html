@@ -10,18 +10,21 @@
 {% block content %}
 <article class="listing-detail">
     <div class="listing-detail__hero">
-        <div class="listing-detail__media">
-            {% if profile.listing_image %}
-                <img
-                    class="listing-detail__img"
-                    src="{{ profile.listing_image.url }}"
-                    alt=""
-                    width="720"
-                    height="480"
-                >
-            {% else %}
-                <div class="listing-detail__placeholder">No listing photo</div>
-            {% endif %}
+        <div class="listing-detail__media-column">
+            <div class="listing-detail__media">
+                {% if profile.listing_image %}
+                    <img
+                        class="listing-detail__img"
+                        src="{{ profile.listing_image.url }}"
+                        alt=""
+                        width="720"
+                        height="480"
+                    >
+                {% else %}
+                    <div class="listing-detail__placeholder">No listing photo</div>
+                {% endif %}
+            </div>
+            <a href="{% url 'report_listing:report-listing-form' profile.pk %}" class="listing-detail__report-btn" role="button">Report Listing</a>
         </div>
 
         <div class="listing-detail__main">

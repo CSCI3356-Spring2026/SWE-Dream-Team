@@ -1,0 +1,98 @@
+.report-user-page {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 1.8rem 1.4rem 3rem;
+}
+
+.report-user-wrap {
+    width: 100%;
+}
+
+.report-user-title {
+    margin: 0 0 1rem;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.08;
+    color: #111;
+}
+
+.report-user-form {
+    border: 1px solid #d7d7d7;
+    border-radius: 8px;
+    background: #efefef;
+    padding: 1rem;
+}
+
+.report-user-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 0.65rem;
+}
+
+.report-user-field label {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.report-user-field input[type="text"] {
+    width: 100%;
+    height: 2rem;
+    border: 1px solid #d0d0d0;
+    border-radius: 7px;
+    padding: 0 0.75rem;
+    font-size: 0.95rem;
+    background: #fff;
+}
+
+.report-user-fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.report-user-fieldset legend {
+    font-size: 0.95rem;
+    color: #333;
+    margin: 0 0 0.45rem;
+}
+
+.report-user-fieldset label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.report-user-submit {
+    margin-top: 0.8rem;
+    width: 90%;
+    max-width: 900px;
+    display: block;
+    border: none;
+    border-radius: 8px;
+    background: #2f2f33;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 0.58rem 1rem;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .report-user-title {
+        font-size: 2.4rem;
+    }
+
+    .report-user-fieldset label {
+        font-size: 1rem;
+    }
+
+    .report-user-submit {
+        width: 100%;
+        font-size: 1rem;
+    }
+}
