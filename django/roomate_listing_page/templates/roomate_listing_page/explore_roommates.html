@@ -97,8 +97,8 @@
                                     Roommate match
                                 </dt>
                                 <dd class="listing-card__metric-value">
-                                    {% if profile.roommate_match is not None %}
-                                        {{ profile.roommate_match }}%
+                                    {% if profile.pairwise_roommate_score is not None %}
+                                        {{ profile.pairwise_roommate_score|floatformat:1 }}<span class="listing-card__match-outof">/10</span>
                                     {% else %}
                                         —
                                     {% endif %}
@@ -112,8 +112,8 @@
                                     Housing match
                                 </dt>
                                 <dd class="listing-card__metric-value">
-                                    {% if profile.housing_match is not None %}
-                                        {{ profile.housing_match }}%
+                                    {% if profile.pairwise_housing_score is not None %}
+                                        {{ profile.pairwise_housing_score|floatformat:1 }}<span class="listing-card__match-outof">/10</span>
                                     {% else %}
                                         —
                                     {% endif %}
