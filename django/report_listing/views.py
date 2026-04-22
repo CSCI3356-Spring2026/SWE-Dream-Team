@@ -10,6 +10,9 @@ def report_listing_form(request, listing_id):
     """Report form page for a specific listing profile."""
     profile = get_object_or_404(Profile, pk=listing_id)
 
+    if profile.user == request.user:
+        return redirect("listings-detail", pk=listing_id)
+
     if request.method == "POST":
         ListingReport.objects.create(
             reported_listing=profile,
