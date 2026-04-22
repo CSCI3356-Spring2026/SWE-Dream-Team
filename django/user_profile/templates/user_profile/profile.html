@@ -65,25 +65,10 @@
             {% endif %}
         </div>
         
-        <div class="stats-container">
-            <div class="stat-row">
-                <span>Roommate match</span>
-                <span class="stat-value">👤 {% if roommate_match is not None %}{{ roommate_match }}{% else %}—{% endif %}</span>
-            </div>
-            <div class="stat-row">
-                <span>Housing match</span>
-                <span class="stat-value">🏠 {% if housing_match is not None %}{{ housing_match }}{% else %}—{% endif %}</span>
-            </div>
-        </div>
-
         <div class="profile-actions">
-            {# Show Edit button only if the user is looking at their own profile #}
             {% if request.user == profile.user %}
-                <a href="{% url 'forms-get-to-know-you' %}" class="action-btn-edit" title="Edit Profile">
-                    Edit Profile ✏️
-                </a>
+                <a href="{% url 'forms-get-to-know-you' %}" class="action-btn-edit" role="button" title="Edit profile">Edit My Profile</a>
             {% endif %}
-            <button class="action-icon" aria-label="More options">•••</button>
         </div>
     </div>
 </section>
