@@ -53,7 +53,7 @@ def reported_accounts(request):
 		selected_speed = "all"
 
 	report_type = "profile" if mode == "users" else "listing"
-	reports = Report.objects.filter(report_type=report_type).select_related("reported_profile__user")
+	reports = Report.objects.filter(report_type=report_type).select_related("reported_profile__user", "reporter")
 	if selected_speed != "all":
 		reports = reports.filter(speed=selected_speed)
 
@@ -74,6 +74,8 @@ def reported_accounts(request):
 				"created_at": report.created_at,
 				"hidden": profile.hidden,
 				"banned": profile.banned,
+				"reporter_name": (report.reporter.get_full_name() or report.reporter.username) if report.reporter else "-",
+				"reporter_link": reverse("profile-public-by-user", args=[report.reporter.pk]) if report.reporter else None,
 			}
 		)
 

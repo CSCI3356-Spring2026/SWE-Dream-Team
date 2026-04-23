@@ -74,6 +74,7 @@
                         <th>Speed</th>
                         <th>Hidden</th>
                         <th>Banned</th>
+                        <th>Reported By</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,10 +86,11 @@
                         <td>{{ row.speed }}</td>
                         <td>{% if row.hidden %}Yes{% else %}No{% endif %}</td>
                         <td>{% if row.banned %}Yes{% else %}No{% endif %}</td>
+                        <td>{% if row.reporter_link %}<a href="{{ row.reporter_link }}">{{ row.reporter_name }}</a>{% else %}{{ row.reporter_name }}{% endif %}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6">{{ empty_label }}</td>
+                        <td colspan="7">{{ empty_label }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
