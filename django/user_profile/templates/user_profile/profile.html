@@ -67,7 +67,7 @@
         
         <div class="profile-actions">
             {% if request.user != profile.user %}
-                <a href="{% url 'report_user:report-user-form' profile.user_id %}" class="action-btn-report-user" role="button" title="Report this user">Report User</a>
+                <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="action-btn-report-user" role="button" title="Report this user">Report User</a>
             {% endif %}
             {% if request.user == profile.user %}
                 <a href="{% url 'forms-get-to-know-you' %}" class="action-btn-edit" role="button" title="Edit profile">Edit My Profile</a>

@@ -70,7 +70,6 @@ INSTALLED_APPS = [
     'roomate_listing_page',
     'flagged_users',
     'report_user',
-    'report_listing',
     'settings',
 ]
 

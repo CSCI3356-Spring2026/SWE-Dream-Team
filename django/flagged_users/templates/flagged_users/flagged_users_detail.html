@@ -64,7 +64,7 @@
                         <div class="listing-detail__placeholder">No photo</div>
                     {% endif %}
                 </div>
-                <a href="{% url 'report_user:report-user-form' profile.user_id %}" class="listing-detail__report-btn" role="button">Report User</a>
+                <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="listing-detail__report-btn" role="button">Report User</a>
             </div>
             <div class="listing-detail__aside-footer">
                 <dl class="listing-detail__metrics">

@@ -34,8 +34,7 @@ urlpatterns = [
     path("listings/flagged/", include("flagged_listings.urls")),
     path("roommates/", include("roomate_listing_page.urls")),
     path("roommates/flagged/", include("flagged_users.urls")),
-    path("report-user/", include("report_user.urls")),
-    path("report-listing/", include("report_listing.urls")),
+    path("report/", include("report_user.urls")),
     path("settings/", include("settings.urls")),
 ]
 if settings.DEBUG:

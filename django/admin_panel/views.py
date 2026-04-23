@@ -3,8 +3,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
 from django.shortcuts import render
 
-from report_listing.models import ListingReport
-from report_user.models import UserReport
+from report_user.models import Report
 from user_profile.models import Profile
 
 
@@ -53,39 +52,28 @@ def reported_accounts(request):
 	if selected_speed not in valid_speeds:
 		selected_speed = "all"
 
+	report_type = "profile" if mode == "users" else "listing"
+	reports = Report.objects.filter(report_type=report_type).select_related("reported_profile__user")
+	if selected_speed != "all":
+		reports = reports.filter(speed=selected_speed)
+
 	rows = []
-	if mode == "users":
-		reports = UserReport.objects.select_related("reported_user")
-		if selected_speed != "all":
-			reports = reports.filter(speed=selected_speed)
-
-		for report in reports[:200]:
-			reported_user = report.reported_user
-			rows.append(
-				{
-					"name": reported_user.get_full_name() or reported_user.username,
-					"link": reverse("profile-public-by-user", args=[reported_user.pk]),
-					"speed": report.get_speed_display(),
-					"reason": report.reason,
-					"created_at": report.created_at,
-				}
-			)
-	else:
-		reports = ListingReport.objects.select_related("reported_listing__user")
-		if selected_speed != "all":
-			reports = reports.filter(speed=selected_speed)
-
-		for report in reports[:200]:
-			listing = report.reported_listing
-			rows.append(
-				{
-					"name": listing.user.get_full_name() or listing.user.username,
-					"link": reverse("listings-detail", args=[listing.pk]),
-					"speed": report.get_speed_display(),
-					"reason": report.reason,
-					"created_at": report.created_at,
-				}
-			)
+	for report in reports[:200]:
+		profile = report.reported_profile
+		link = (
+			reverse("profile-public-by-user", args=[profile.user.pk])
+			if mode == "users"
+			else reverse("listings-detail", args=[profile.pk])
+		)
+		rows.append(
+			{
+				"name": profile.user.get_full_name() or profile.user.username,
+				"link": link,
+				"speed": report.get_speed_display(),
+				"reason": report.reason,
+				"created_at": report.created_at,
+			}
+		)
 
 	context = {
 		"mode": mode,

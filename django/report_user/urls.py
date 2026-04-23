@@ -5,6 +5,6 @@ from . import views
 app_name = "report_user"
 
 urlpatterns = [
-    path("<int:user_id>/", views.report_user_form, name="report-user-form"),
-    path("thank-you/", views.report_user_thank_you, name="report-user-thank-you"),
+    path("<str:report_type>/<int:profile_id>/", views.report_form, name="report-form"),
+    path("thank-you/", views.report_thank_you, name="report-thank-you"),
 ]
