@@ -23,26 +23,16 @@ def profile_card_preview(request):
 def public_profile_by_user(request, user_id):
     """Read-only profile for a listing owner (lessor / sublettor)."""
     user = get_object_or_404(get_user_model(), pk=user_id)
-    profile = get_object_or_404(Profile, user=user)
-    return render(
-        request,
-        "user_profile/profile.html",
-        {
-            "profile": profile,
-        },
-    )
+    qs = Profile.objects if request.user.is_staff else Profile.objects.filter(banned=False)
+    profile = get_object_or_404(qs, user=user)
+    return render(request, "user_profile/profile.html", {"profile": profile})
 
 
 def profile_detail(request, pk):
     """Backward-compatible profile detail route by Profile primary key."""
-    profile = get_object_or_404(Profile, pk=pk)
-    return render(
-        request,
-        "user_profile/profile.html",
-        {
-            "profile": profile,
-        },
-    )
+    qs = Profile.objects if request.user.is_staff else Profile.objects.filter(banned=False)
+    profile = get_object_or_404(qs, pk=pk)
+    return render(request, "user_profile/profile.html", {"profile": profile})
 
 
 @require_POST
@@ -52,6 +42,7 @@ def toggle_ban(request, pk):
         return HttpResponseForbidden()
     profile = get_object_or_404(Profile, pk=pk)
     profile.banned = not profile.banned
+    profile.hidden = profile.banned
     profile.save()
     return redirect(request.POST.get("next", "/"))
 

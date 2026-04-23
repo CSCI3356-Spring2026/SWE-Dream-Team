@@ -4,7 +4,7 @@ from user_profile.models import Profile
 
 def _listing_queryset():
     return (
-        Profile.objects.filter(user_type="sublettor", has_onboarded=True)
+        Profile.objects.filter(user_type="sublettor", has_onboarded=True, banned=False, hidden=False)
         .filter(
             Q(preferred_location__gt="")
             | (Q(listing_image__isnull=False) & ~Q(listing_image="")),
@@ -86,7 +86,7 @@ def explore_housing(request):
 
 def _sublettor_queryset():
     return (
-        Profile.objects.filter(user_type="sublettor", has_onboarded=True)
+        Profile.objects.filter(user_type="sublettor", has_onboarded=True, banned=False, hidden=False)
         .filter(
             Q(preferred_location__gt="")
             | (Q(listing_image__isnull=False) & ~Q(listing_image=""))

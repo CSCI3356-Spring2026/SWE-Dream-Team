@@ -6,7 +6,7 @@ from user_profile.models import Profile
 
 def _renter_queryset():
     return (
-        Profile.objects.filter(user_type="renter", has_onboarded=True)
+        Profile.objects.filter(user_type="renter", has_onboarded=True, banned=False, hidden=False)
         .select_related("user")
         .order_by("-id")
     )
