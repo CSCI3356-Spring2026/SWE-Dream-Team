@@ -71,6 +71,9 @@
                         <th>Name</th>
                         <th>Link</th>
                         <th>Reason</th>
+                        <th>Speed</th>
+                        <th>Hidden</th>
+                        <th>Banned</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,10 +82,13 @@
                         <td>{{ row.name }}</td>
                         <td><a href="{{ row.link }}">{{ row.link }}</a></td>
                         <td>{{ row.reason|default:"-" }}</td>
+                        <td>{{ row.speed }}</td>
+                        <td>{% if row.hidden %}Yes{% else %}No{% endif %}</td>
+                        <td>{% if row.banned %}Yes{% else %}No{% endif %}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="3">{{ empty_label }}</td>
+                        <td colspan="6">{{ empty_label }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

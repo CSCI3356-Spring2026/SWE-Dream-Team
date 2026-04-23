@@ -72,6 +72,8 @@ def reported_accounts(request):
 				"speed": report.get_speed_display(),
 				"reason": report.reason,
 				"created_at": report.created_at,
+				"hidden": profile.hidden,
+				"banned": profile.banned,
 			}
 		)
 
