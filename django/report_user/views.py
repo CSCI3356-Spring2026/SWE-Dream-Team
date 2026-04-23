@@ -26,6 +26,9 @@ def report_form(request, report_type, profile_id):
             reason=request.POST.get("reason", "").strip(),
             speed=request.POST.get("speed", "normal"),
         )
+        if Report.objects.filter(reported_profile=profile).count() > 1 and not profile.hidden:
+            profile.hidden = True
+            profile.save()
         return redirect("report_user:report-thank-you")
 
     return render(request, "report_user/report.html", {
