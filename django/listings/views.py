@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
+from report_user.models import Report
 from user_profile.models import Profile
 
 def _listing_queryset():
@@ -97,30 +98,16 @@ def _sublettor_queryset():
 
 
 def listing_detail(request, pk):
-    """Single sublettor listing detail page."""
-    profile = get_object_or_404(_sublettor_queryset(), pk=pk)
-    other_listings = list(_sublettor_queryset().exclude(pk=profile.pk)[:3])
-
-    return render(
-        request,
-        "listings/listing_detail.html",
-        {
-            "profile": profile,
-            "other_listings": other_listings,
-        },
-    )
-
-
-def listing_detail(request, pk):
     """Single listing: image, location, lease, amenities, matches, related listings."""
-    profile = get_object_or_404(
-        _listing_queryset(),
-        pk=pk,
-    )
+    qs = Profile.objects.filter(user_type="sublettor", has_onboarded=True) if request.user.is_staff else _listing_queryset()
+    profile = get_object_or_404(qs, pk=pk)
+    other_listings = list(_listing_queryset().exclude(pk=profile.pk)[:3])
 
-    other_listings = list(
-        _listing_queryset().exclude(pk=profile.pk)[:3],
-    )
+    report = None
+    if request.user.is_staff:
+        report_id = request.GET.get("report")
+        if report_id:
+            report = Report.objects.filter(pk=report_id, reported_profile=profile).first()
 
     return render(
         request,
@@ -128,5 +115,6 @@ def listing_detail(request, pk):
         {
             "profile": profile,
             "other_listings": other_listings,
+            "report": report,
         },
     )

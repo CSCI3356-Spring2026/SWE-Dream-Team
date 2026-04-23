@@ -8,6 +8,24 @@
 {% endblock %}
 
 {% block content %}
+{% if report %}
+<div class="report-banner">
+    <div class="report-banner__body">
+        <strong class="report-banner__label">Reported:</strong>
+        <span class="report-banner__reason">{{ report.reason|default:"No reason provided" }}</span>
+    </div>
+    <div class="report-banner__actions">
+        <form method="post" action="{% url 'report-dismiss' report.pk %}">
+            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="report-banner__btn report-banner__btn--dismiss">Remove Report &amp; Unhide</button>
+        </form>
+        <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
+            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="report-banner__btn report-banner__btn--ban">{% if profile.banned %}Unban{% else %}Ban{% endif %} Account</button>
+        </form>
+    </div>
+</div>
+{% endif %}
 <article class="listing-detail">
     <div class="listing-detail__hero">
         <div class="listing-detail__media-column">

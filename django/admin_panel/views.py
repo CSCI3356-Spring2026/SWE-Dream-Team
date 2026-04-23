@@ -60,11 +60,12 @@ def reported_accounts(request):
 	rows = []
 	for report in reports[:200]:
 		profile = report.reported_profile
-		link = (
+		base_link = (
 			reverse("profile-public-by-user", args=[profile.user.pk])
 			if mode == "users"
 			else reverse("listings-detail", args=[profile.pk])
 		)
+		link = f"{base_link}?report={report.pk}"
 		rows.append(
 			{
 				"name": profile.user.get_full_name() or profile.user.username,

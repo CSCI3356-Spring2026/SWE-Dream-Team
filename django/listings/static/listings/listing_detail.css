@@ -2,6 +2,64 @@
   Single listing + related — uses theme base.css variables.
 */
 
+.report-banner {
+    max-width: 1100px;
+    margin: 1rem auto 0;
+    padding: 0.85rem 1.25rem;
+    background: #fff8e1;
+    border: 1px solid #f0c040;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.report-banner__body {
+    font-size: 0.95rem;
+    color: #5a4000;
+}
+
+.report-banner__label {
+    margin-right: 0.4rem;
+}
+
+.report-banner__actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.report-banner__btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.report-banner__btn--dismiss {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.report-banner__btn--dismiss:hover {
+    background: #333;
+}
+
+.report-banner__btn--ban {
+    background: #d31313;
+    color: #fff;
+}
+
+.report-banner__btn--ban:hover {
+    background: #b00e0e;
+}
+
 .listing-detail {
     max-width: 1100px;
     margin: 0 auto;
