@@ -66,13 +66,43 @@
         </div>
         
         <div class="profile-actions">
-            {% if request.user != profile.user %}
-                <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="action-btn-report-user" role="button" title="Report this user">Report User</a>
-            {% endif %}
             {% if request.user == profile.user %}
                 <a href="{% url 'forms-get-to-know-you' %}" class="action-btn-edit" role="button" title="Edit profile">Edit My Profile</a>
             {% endif %}
+            <div class="profile-toolbar">
+                <button class="profile-toolbar__btn" title="Share" onclick="copyPageLink(this)">↗</button>
+                {% if request.user != profile.user %}
+                <div class="profile-more-wrap">
+                    <button class="profile-toolbar__btn" title="More" onclick="toggleMoreMenu(this)">⋯</button>
+                    <div class="profile-more-menu">
+                        <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="profile-more-item profile-more-item--danger">Report User</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyPageLink(btn) {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓';
+        setTimeout(() => btn.textContent = orig, 1500);
+    });
+}
+function toggleMoreMenu(btn) {
+    const menu = btn.nextElementSibling;
+    menu.classList.toggle('show');
+}
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('.profile-more-wrap')) {
+        document.querySelectorAll('.profile-more-menu.show')
+            .forEach(m => m.classList.remove('show'));
+    }
+});
+</script>
 {% endblock %}

@@ -24,7 +24,6 @@
                     <div class="listing-detail__placeholder">No listing photo</div>
                 {% endif %}
             </div>
-            <a href="{% url 'report_user:report-form' 'listing' profile.pk %}" class="listing-detail__report-btn" role="button">Report Listing</a>
         </div>
 
         <div class="listing-detail__main">
@@ -82,9 +81,16 @@
                 </div>
             </dl>
 
-            <div class="listing-detail__toolbar" aria-hidden="true">
-                <span class="listing-detail__toolbar-btn" title="Share">↗</span>
-                <span class="listing-detail__toolbar-btn" title="More">⋯</span>
+            <div class="listing-detail__toolbar">
+                <button class="listing-detail__toolbar-btn" title="Share" onclick="copyPageLink(this)">↗</button>
+                <div class="listing-detail__more-wrap">
+                    <button class="listing-detail__toolbar-btn" title="More" onclick="toggleMoreMenu(this)">⋯</button>
+                    <div class="listing-detail__more-menu">
+                        {% if request.user != profile.user %}
+                        <a href="{% url 'report_user:report-form' 'listing' profile.pk %}" class="listing-detail__more-item listing-detail__more-item--danger">Report Listing</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -102,4 +108,26 @@
         {% endif %}
     </section>
 </article>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyPageLink(btn) {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓';
+        setTimeout(() => btn.textContent = orig, 1500);
+    });
+}
+function toggleMoreMenu(btn) {
+    const menu = btn.nextElementSibling;
+    menu.classList.toggle('show');
+}
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('.listing-detail__more-wrap')) {
+        document.querySelectorAll('.listing-detail__more-menu.show')
+            .forEach(m => m.classList.remove('show'));
+    }
+});
+</script>
 {% endblock %}
