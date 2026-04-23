@@ -48,19 +48,31 @@
                 <h1>Admin Panel</h1>
             </div>
             <div class="reported-toggle" role="tablist" aria-label="Reported account types">
-                <a class="reported-toggle__item {% if mode == 'listings' %}is-active{% endif %}" href="?mode=listings&speed={{ selected_speed }}">Listings</a>
-                <a class="reported-toggle__item {% if mode == 'users' %}is-active{% endif %}" href="?mode=users&speed={{ selected_speed }}">Users</a>
+                <a class="reported-toggle__item {% if mode == 'listings' %}is-active{% endif %}" href="?mode=listings&speed={{ selected_speed }}&banned={{ selected_banned }}&hidden={{ selected_hidden }}">Listings</a>
+                <a class="reported-toggle__item {% if mode == 'users' %}is-active{% endif %}" href="?mode=users&speed={{ selected_speed }}&banned={{ selected_banned }}&hidden={{ selected_hidden }}">Users</a>
             </div>
         </div>
 
         <h2 class="reported-accounts-title">Reported Accounts</h2>
 
         <div class="reported-filter-row">
-            <label for="speed-filter">Filter by speed:</label>
-            <select id="speed-filter" class="reported-filter" onchange="window.location.href='?mode={{ mode }}&speed=' + this.value">
+            <label for="speed-filter">Speed:</label>
+            <select id="speed-filter" class="reported-filter" onchange="applyFilters()">
                 {% for value, label in speed_choices %}
                 <option value="{{ value }}" {% if selected_speed == value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
+            </select>
+            <label for="banned-filter">Banned:</label>
+            <select id="banned-filter" class="reported-filter" onchange="applyFilters()">
+                <option value="all" {% if selected_banned == "all" %}selected{% endif %}>All</option>
+                <option value="yes" {% if selected_banned == "yes" %}selected{% endif %}>Yes</option>
+                <option value="no" {% if selected_banned == "no" %}selected{% endif %}>No</option>
+            </select>
+            <label for="hidden-filter">Hidden:</label>
+            <select id="hidden-filter" class="reported-filter" onchange="applyFilters()">
+                <option value="all" {% if selected_hidden == "all" %}selected{% endif %}>All</option>
+                <option value="yes" {% if selected_hidden == "yes" %}selected{% endif %}>Yes</option>
+                <option value="no" {% if selected_hidden == "no" %}selected{% endif %}>No</option>
             </select>
         </div>
 
@@ -98,4 +110,15 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function applyFilters() {
+    const speed = document.getElementById('speed-filter').value;
+    const banned = document.getElementById('banned-filter').value;
+    const hidden = document.getElementById('hidden-filter').value;
+    window.location.href = '?mode={{ mode }}&speed=' + speed + '&banned=' + banned + '&hidden=' + hidden;
+}
+</script>
 {% endblock %}

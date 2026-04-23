@@ -52,10 +52,25 @@ def reported_accounts(request):
 	if selected_speed not in valid_speeds:
 		selected_speed = "all"
 
+	selected_banned = request.GET.get("banned", "all")
+	selected_hidden = request.GET.get("hidden", "all")
+	if selected_banned not in {"all", "yes", "no"}:
+		selected_banned = "all"
+	if selected_hidden not in {"all", "yes", "no"}:
+		selected_hidden = "all"
+
 	report_type = "profile" if mode == "users" else "listing"
 	reports = Report.objects.filter(report_type=report_type).select_related("reported_profile__user", "reporter")
 	if selected_speed != "all":
 		reports = reports.filter(speed=selected_speed)
+	if selected_banned == "yes":
+		reports = reports.filter(reported_profile__banned=True)
+	elif selected_banned == "no":
+		reports = reports.filter(reported_profile__banned=False)
+	if selected_hidden == "yes":
+		reports = reports.filter(reported_profile__hidden=True)
+	elif selected_hidden == "no":
+		reports = reports.filter(reported_profile__hidden=False)
 
 	rows = []
 	for report in reports[:200]:
@@ -85,6 +100,8 @@ def reported_accounts(request):
 		"rows": rows,
 		"speed_choices": speed_choices,
 		"selected_speed": selected_speed,
+		"selected_banned": selected_banned,
+		"selected_hidden": selected_hidden,
 		"reported_label": "Reported Houses" if mode == "listings" else "Reported Roommates",
 		"empty_label": "No reported houses match the current filter." if mode == "listings" else "No reported roommates match the current filter.",
 	}
