@@ -232,11 +232,18 @@
 
 .listing-detail__more-item {
     display: block;
+    width: 100%;
     padding: 0.7rem 1rem;
     font-size: 0.9rem;
+    font-family: inherit;
+    text-align: left;
     text-decoration: none !important;
     color: var(--color-text-main);
+    background: none;
+    border: none;
+    cursor: pointer;
     transition: background 0.15s;
+    box-sizing: border-box;
 }
 
 .listing-detail__more-item:hover {

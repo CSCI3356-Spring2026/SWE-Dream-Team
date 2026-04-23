@@ -10,4 +10,6 @@ urlpatterns = [
         views.public_profile_by_user,
         name="profile-public-by-user",
     ),
+    path("profile/<int:pk>/ban/", views.toggle_ban, name="profile-toggle-ban"),
+    path("profile/<int:pk>/hide/", views.toggle_hidden, name="profile-toggle-hidden"),
 ]

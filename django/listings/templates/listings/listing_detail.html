@@ -89,6 +89,16 @@
                         {% if request.user != profile.user %}
                         <a href="{% url 'report_user:report-form' 'listing' profile.pk %}" class="listing-detail__more-item listing-detail__more-item--danger">Report Listing</a>
                         {% endif %}
+                        {% if request.user.is_staff %}
+                        <form method="post" action="{% url 'profile-toggle-hidden' profile.pk %}">
+                            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" class="listing-detail__more-item">{% if profile.hidden %}Unhide Listing{% else %}Hide Listing{% endif %}</button>
+                        </form>
+                        <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
+                            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" class="listing-detail__more-item listing-detail__more-item--danger">{% if profile.banned %}Unban User{% else %}Ban User{% endif %}</button>
+                        </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

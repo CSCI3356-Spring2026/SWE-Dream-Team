@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
 from user_profile.models import Profile
 
 
@@ -40,3 +43,25 @@ def profile_detail(request, pk):
             "profile": profile,
         },
     )
+
+
+@require_POST
+@login_required
+def toggle_ban(request, pk):
+    if not request.user.is_staff:
+        return HttpResponseForbidden()
+    profile = get_object_or_404(Profile, pk=pk)
+    profile.banned = not profile.banned
+    profile.save()
+    return redirect(request.POST.get("next", "/"))
+
+
+@require_POST
+@login_required
+def toggle_hidden(request, pk):
+    if not request.user.is_staff:
+        return HttpResponseForbidden()
+    profile = get_object_or_404(Profile, pk=pk)
+    profile.hidden = not profile.hidden
+    profile.save()
+    return redirect(request.POST.get("next", "/"))
