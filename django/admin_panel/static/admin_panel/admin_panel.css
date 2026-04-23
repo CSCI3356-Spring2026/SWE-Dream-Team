@@ -303,6 +303,44 @@
     word-break: break-word;
 }
 
+.moderated-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.moderated-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1.5px solid #1a1a1a;
+    border-radius: 999px;
+    cursor: pointer;
+    background: #fff;
+    color: #1a1a1a;
+    line-height: 1;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.moderated-btn:hover {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.moderated-btn--danger {
+    border-color: #d31313;
+    color: #d31313;
+    background: #fff;
+}
+
+.moderated-btn--danger:hover {
+    background: #d31313;
+    color: #fff;
+}
+
 @media (max-width: 700px) {
     .admin-row {
         flex-direction: column;

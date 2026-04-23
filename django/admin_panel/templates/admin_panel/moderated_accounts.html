@@ -1,0 +1,71 @@
+{% extends 'theme/base.html' %}
+{% load static %}
+
+{% block title %}Moderated Accounts{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/admin_panel.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="admin-shell">
+    <div class="admin-card admin-reported-card">
+        <div class="admin-row admin-reported-top">
+            <div>
+                <h1>Admin Panel</h1>
+            </div>
+        </div>
+
+        <h2 class="reported-accounts-title">Moderated Accounts</h2>
+
+        <div class="reported-filter-row">
+            <label for="status-filter">Status:</label>
+            <select id="status-filter" class="reported-filter" onchange="window.location.href='?status=' + this.value">
+                <option value="all" {% if selected_status == "all" %}selected{% endif %}>Hidden or Banned</option>
+                <option value="hidden" {% if selected_status == "hidden" %}selected{% endif %}>Hidden only</option>
+                <option value="banned" {% if selected_status == "banned" %}selected{% endif %}>Banned only</option>
+            </select>
+        </div>
+
+        <div class="reported-table-wrap">
+            <table class="reported-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Profile</th>
+                        <th>Hidden</th>
+                        <th>Banned</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.user_type }}</td>
+                        <td><a href="{{ row.link }}">View</a></td>
+                        <td>{% if row.hidden %}Yes{% else %}No{% endif %}</td>
+                        <td>{% if row.banned %}Yes{% else %}No{% endif %}</td>
+                        <td class="moderated-actions">
+                            <form method="post" action="{% url 'profile-toggle-hidden' row.profile_pk %}">
+                                {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}?status={{ selected_status }}">
+                                <button type="submit" class="moderated-btn">{% if row.hidden %}Unhide{% else %}Hide{% endif %}</button>
+                            </form>
+                            <form method="post" action="{% url 'profile-toggle-ban' row.profile_pk %}">
+                                {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}?status={{ selected_status }}">
+                                <button type="submit" class="moderated-btn moderated-btn--danger">{% if row.banned %}Unban{% else %}Ban{% endif %}</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No moderated accounts match the current filter.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -106,3 +106,38 @@ def reported_accounts(request):
 		"empty_label": "No reported houses match the current filter." if mode == "listings" else "No reported roommates match the current filter.",
 	}
 	return render(request, "admin_panel/reported_accounts.html", context)
+
+
+@staff_only
+def moderated_accounts(request):
+	from django.db.models import Q
+
+	selected_status = request.GET.get("status", "all")
+	if selected_status not in {"all", "hidden", "banned"}:
+		selected_status = "all"
+
+	profiles = Profile.objects.select_related("user")
+
+	if selected_status == "hidden":
+		profiles = profiles.filter(hidden=True)
+	elif selected_status == "banned":
+		profiles = profiles.filter(banned=True)
+	else:
+		profiles = profiles.filter(Q(hidden=True) | Q(banned=True))
+
+	rows = []
+	for profile in profiles[:200]:
+		rows.append({
+			"name": profile.user.get_full_name() or profile.user.username,
+			"link": reverse("profile-public-by-user", args=[profile.user.pk]),
+			"user_type": profile.get_user_type_display(),
+			"hidden": profile.hidden,
+			"banned": profile.banned,
+			"profile_pk": profile.pk,
+		})
+
+	context = {
+		"rows": rows,
+		"selected_status": selected_status,
+	}
+	return render(request, "admin_panel/moderated_accounts.html", context)
