@@ -71,7 +71,8 @@ def dismiss_report(request, report_pk):
         return HttpResponseForbidden()
     report = get_object_or_404(Report, pk=report_pk)
     profile = report.reported_profile
-    report.delete()
+    report_type = report.report_type
+    Report.objects.filter(reported_profile=profile, report_type=report_type).delete()
     if not Report.objects.filter(reported_profile=profile).exists():
         profile.hidden = False
         profile.save()
