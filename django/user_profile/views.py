@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from report_user.models import Report
@@ -52,6 +53,33 @@ def profile_detail(request, pk):
     })
 
 
+def _home_url_for_user(user):
+    try:
+        user_type = user.profile.user_type
+    except Exception:
+        return "/"
+    if user_type == "renter":
+        return reverse("listings-explore-housing")
+    return reverse("roommates-explore")
+
+
+def _moderation_result_context(request, profile, action):
+    profile_name = profile.user.get_full_name() or profile.user.username
+    status_label = "banned" if profile.banned else "not banned"
+    visibility_label = "hidden" if profile.hidden else "visible"
+    if action in {"unhidden", "unbanned"}:
+        back_url = reverse("admin_panel:moderated-accounts")
+    else:
+        back_url = _home_url_for_user(request.user)
+    return {
+        "title": "Moderation Update",
+        "message": f"{profile_name} has been {action}.",
+        "status_label": status_label,
+        "visibility_label": visibility_label,
+        "back_url": back_url,
+    }
+
+
 @require_POST
 @login_required
 def toggle_ban(request, pk):
@@ -61,7 +89,12 @@ def toggle_ban(request, pk):
     profile.banned = not profile.banned
     profile.hidden = profile.banned
     profile.save()
-    return redirect(request.POST.get("next", "/"))
+    action = "banned" if profile.banned else "unbanned"
+    return render(
+        request,
+        "user_profile/moderation_result.html",
+        _moderation_result_context(request, profile, action),
+    )
 
 
 @require_POST
@@ -87,4 +120,9 @@ def toggle_hidden(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     profile.hidden = not profile.hidden
     profile.save()
-    return redirect(request.POST.get("next", "/"))
+    action = "hidden" if profile.hidden else "unhidden"
+    return render(
+        request,
+        "user_profile/moderation_result.html",
+        _moderation_result_context(request, profile, action),
+    )
