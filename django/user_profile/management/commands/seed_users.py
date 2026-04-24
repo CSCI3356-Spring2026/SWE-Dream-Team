@@ -90,7 +90,10 @@ def _fill_common_fields(profile, username):
     profile.rent_start_date = rent_start
     profile.rent_end_date = rent_end
     profile.ideal_housing_vibe = random.choice(VIBES)
-    profile.roommate_dealbreakers = random.sample(DEALBREAKER_OPTIONS, k=random.randint(0, 4))
+    profile.roommate_dealbreakers = random.sample(
+        DEALBREAKER_OPTIONS,
+        k=random.randint(1, min(4, len(DEALBREAKER_OPTIONS))),
+    )
     profile.cleanliness = random.choice(CLEANLINESS)
     profile.weekend_bedtime = random.choice(BEDTIMES)
     profile.weeknight_bedtime = random.choice(BEDTIMES)
@@ -106,8 +109,9 @@ def _fill_common_fields(profile, username):
     profile.utilities = random.choice(UTILITIES)
     profile.parking_needed = random.choice(YES_NO)
     profile.already_furnished = random.choice(YES_NO)
-    profile.roommate_match = round(random.uniform(40, 99), 1)
-    profile.housing_match = round(random.uniform(40, 99), 1)
+    # Pairwise scores are computed at request time on explore pages; keep DB fields null.
+    profile.roommate_match = None
+    profile.housing_match = None
 
 
 class Command(BaseCommand):

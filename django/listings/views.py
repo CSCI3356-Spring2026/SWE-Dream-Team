@@ -3,6 +3,15 @@ from django.shortcuts import get_object_or_404, render
 from report_user.models import Report
 from user_profile.models import Profile
 
+from user_profile.matching import (
+    attach_pairwise_to_profiles,
+    pairwise_housing_score,
+    pairwise_roommate_score,
+    sort_profiles_by_pairwise,
+    viewer_profile_for_pairwise,
+)
+
+
 def _listing_queryset():
     return (
         Profile.objects.filter(user_type="sublettor", has_onboarded=True, banned=False, hidden=False)
@@ -69,11 +78,15 @@ def explore_housing(request):
         "no_mixed_gender": no_mixed_gender,
     }
 
+    profile_rows = list(profiles)
+    seeker = viewer_profile_for_pairwise(request.user)
+    profile_rows = sort_profiles_by_pairwise(profile_rows, seeker)
+
     return render(
         request,
         "listings/explore_housing.html",
         {
-            "profiles": profiles,
+            "profiles": profile_rows,
             "search_query": q,
             "filters": {
                 "max_rent": max_rent,
@@ -83,7 +96,6 @@ def explore_housing(request):
             },
         },
     )
-
 
 def _sublettor_queryset():
     return (
@@ -108,6 +120,15 @@ def listing_detail(request, pk):
         report_id = request.GET.get("report")
         if report_id:
             report = Report.objects.filter(pk=report_id, reported_profile=profile).first()
+
+    seeker = viewer_profile_for_pairwise(request.user)
+    if seeker:
+        profile.pairwise_roommate_score = pairwise_roommate_score(seeker, profile)
+        profile.pairwise_housing_score = pairwise_housing_score(seeker, profile)
+    else:
+        profile.pairwise_roommate_score = None
+        profile.pairwise_housing_score = None
+    attach_pairwise_to_profiles(other_listings, seeker)
 
     return render(
         request,
