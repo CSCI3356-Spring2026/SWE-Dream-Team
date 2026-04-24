@@ -4,28 +4,10 @@
 {% block title %}{{ profile.preferred_location|truncatechars:40 }} — SubLink{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'listings/listing_detail.css' %}">
+<link rel="stylesheet" href="{% static 'flagged_listings/flagged_listings_detail.css' %}">
 {% endblock %}
 
 {% block content %}
-{% if report %}
-<div class="report-banner">
-    <div class="report-banner__body">
-        <strong class="report-banner__label">Reported:</strong>
-        <span class="report-banner__reason">{{ report.reason|default:"No reason provided" }}</span>
-    </div>
-    <div class="report-banner__actions">
-        <form method="post" action="{% url 'report-dismiss' report.pk %}">
-            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
-            <button type="submit" class="report-banner__btn report-banner__btn--dismiss">Remove Report &amp; Unhide</button>
-        </form>
-        <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
-            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
-            <button type="submit" class="report-banner__btn report-banner__btn--ban">{% if profile.banned %}Unban{% else %}Ban{% endif %} Account</button>
-        </form>
-    </div>
-</div>
-{% endif %}
 <article class="listing-detail">
     <div class="listing-detail__hero">
         <div class="listing-detail__media-column">
@@ -42,6 +24,7 @@
                     <div class="listing-detail__placeholder">No listing photo</div>
                 {% endif %}
             </div>
+            <a href="{% url 'report_user:report-form' 'listing' profile.pk %}" class="listing-detail__report-btn" role="button">Report Listing</a>
         </div>
 
         <div class="listing-detail__main">
@@ -83,7 +66,7 @@
                         Roommate match
                     </dt>
                     <dd class="listing-detail__metric-value">
-                        {% if profile.pairwise_roommate_score is not None %}{{ profile.pairwise_roommate_score|floatformat:1 }}/10{% else %}—{% endif %}
+                        {% if profile.roommate_match is not None %}{{ profile.roommate_match }}%{% else %}—{% endif %}
                     </dd>
                 </div>
                 <div class="listing-detail__metric">
@@ -94,68 +77,29 @@
                         Housing match
                     </dt>
                     <dd class="listing-detail__metric-value">
-                        {% if profile.pairwise_housing_score is not None %}{{ profile.pairwise_housing_score|floatformat:1 }}/10{% else %}—{% endif %}
+                        {% if profile.housing_match is not None %}{{ profile.housing_match }}%{% else %}—{% endif %}
                     </dd>
                 </div>
             </dl>
 
-            <div class="listing-detail__toolbar">
-                <button class="listing-detail__toolbar-btn" title="Share" onclick="copyPageLink(this)">↗</button>
-                <div class="listing-detail__more-wrap">
-                    <button class="listing-detail__toolbar-btn" title="More" onclick="toggleMoreMenu(this)">⋯</button>
-                    <div class="listing-detail__more-menu">
-                        {% if request.user != profile.user %}
-                        <a href="{% url 'report_user:report-form' 'listing' profile.pk %}" class="listing-detail__more-item listing-detail__more-item--danger">Report Listing</a>
-                        {% endif %}
-                        {% if request.user.is_staff %}
-                        <form method="post" action="{% url 'profile-toggle-hidden' profile.pk %}">
-                            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
-                            <button type="submit" class="listing-detail__more-item">{% if profile.hidden %}Unhide Listing{% else %}Hide Listing{% endif %}</button>
-                        </form>
-                        <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
-                            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
-                            <button type="submit" class="listing-detail__more-item listing-detail__more-item--danger">{% if profile.banned %}Unban User{% else %}Ban User{% endif %}</button>
-                        </form>
-                        {% endif %}
-                    </div>
-                </div>
+            <div class="listing-detail__toolbar" aria-hidden="true">
+                <span class="listing-detail__toolbar-btn" title="Share">↗</span>
+                <span class="listing-detail__toolbar-btn" title="More">⋯</span>
             </div>
         </div>
     </div>
 
     <section class="listing-detail__related" aria-labelledby="related-heading">
-        <h2 class="listing-detail__related-title" id="related-heading">Other housing you may like</h2>
+        <h2 class="listing-detail__related-title" id="related-heading">Other flagged listings</h2>
         {% if other_listings %}
             <ul class="listing-detail__related-grid">
                 {% for p in other_listings %}
-                    {% include "listings/includes/mini_listing_card.html" with profile=p %}
+                    {% include "flagged_listings/includes/mini_flagged_listings_card.html" with profile=p %}
                 {% endfor %}
             </ul>
         {% else %}
-            <p class="listing-detail__related-empty">No other listings yet.</p>
+            <p class="listing-detail__related-empty">No other flagged listings yet.</p>
         {% endif %}
     </section>
 </article>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-function copyPageLink(btn) {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-        const orig = btn.textContent;
-        btn.textContent = '✓';
-        setTimeout(() => btn.textContent = orig, 1500);
-    });
-}
-function toggleMoreMenu(btn) {
-    const menu = btn.nextElementSibling;
-    menu.classList.toggle('show');
-}
-window.addEventListener('click', function(e) {
-    if (!e.target.closest('.listing-detail__more-wrap')) {
-        document.querySelectorAll('.listing-detail__more-menu.show')
-            .forEach(m => m.classList.remove('show'));
-    }
-});
-</script>
 {% endblock %}

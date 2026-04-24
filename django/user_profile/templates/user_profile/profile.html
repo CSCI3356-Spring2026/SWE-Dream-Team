@@ -8,6 +8,24 @@
 {% endblock %}
 
 {% block content %}
+{% if report %}
+<div class="report-banner">
+    <div class="report-banner__body">
+        <strong class="report-banner__label">Reported:</strong>
+        <span class="report-banner__reason">{{ report.reason|default:"No reason provided" }}</span>
+    </div>
+    <div class="report-banner__actions">
+        <form method="post" action="{% url 'report-dismiss' report.pk %}">
+            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="report-banner__btn report-banner__btn--dismiss">Remove Report &amp; Unhide</button>
+        </form>
+        <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
+            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="report-banner__btn report-banner__btn--ban">{% if profile.banned %}Unban{% else %}Ban{% endif %} Account</button>
+        </form>
+    </div>
+</div>
+{% endif %}
 <section class="profile-container">
     <div class="profile-info">
         <h1 class="profile-name">
@@ -69,7 +87,50 @@
             {% if request.user == profile.user %}
                 <a href="{% url 'forms-get-to-know-you' %}" class="action-btn-edit" role="button" title="Edit profile">Edit My Profile</a>
             {% endif %}
+            <div class="profile-toolbar">
+                <button class="profile-toolbar__btn" title="Share" onclick="copyPageLink(this)">↗</button>
+                {% if request.user != profile.user %}
+                <div class="profile-more-wrap">
+                    <button class="profile-toolbar__btn" title="More" onclick="toggleMoreMenu(this)">⋯</button>
+                    <div class="profile-more-menu">
+                        <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="profile-more-item profile-more-item--danger">Report User</a>
+                        {% if request.user.is_staff %}
+                        <form method="post" action="{% url 'profile-toggle-hidden' profile.pk %}">
+                            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" class="profile-more-item">{% if profile.hidden %}Unhide Profile{% else %}Hide Profile{% endif %}</button>
+                        </form>
+                        <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
+                            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" class="profile-more-item profile-more-item--danger">{% if profile.banned %}Unban User{% else %}Ban User{% endif %}</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyPageLink(btn) {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓';
+        setTimeout(() => btn.textContent = orig, 1500);
+    });
+}
+function toggleMoreMenu(btn) {
+    const menu = btn.nextElementSibling;
+    menu.classList.toggle('show');
+}
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('.profile-more-wrap')) {
+        document.querySelectorAll('.profile-more-menu.show')
+            .forEach(m => m.classList.remove('show'));
+    }
+});
+</script>
 {% endblock %}

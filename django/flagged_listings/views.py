@@ -1,20 +1,11 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
-from report_user.models import Report
 from user_profile.models import Profile
 
-from user_profile.matching import (
-    attach_pairwise_to_profiles,
-    pairwise_housing_score,
-    pairwise_roommate_score,
-    sort_profiles_by_pairwise,
-    viewer_profile_for_pairwise,
-)
 
-
-def _listing_queryset():
+def _flagged_queryset():
     return (
-        Profile.objects.filter(user_type="sublettor", has_onboarded=True, banned=False, hidden=False)
+        Profile.objects.filter(user_type="sublettor", has_onboarded=True)
         .filter(
             Q(preferred_location__gt="")
             | (Q(listing_image__isnull=False) & ~Q(listing_image="")),
@@ -24,12 +15,8 @@ def _listing_queryset():
     )
 
 
-def explore_housing(request):
-    """
-    Public grid of sublettor listings backed by Profile rows
-    (house location, listing photo, lease dates, match scores).
-    """
-    profiles = _listing_queryset()
+def explore_flagged_listings(request):
+    profiles = _flagged_queryset()
 
     q = (request.GET.get("q") or "").strip()
     if q:
@@ -47,7 +34,6 @@ def explore_housing(request):
     if date_to:
         profiles = profiles.filter(rent_start_date__lte=date_to)
 
-    # Inverted checkbox filters — checking means "exclude" the trait
     no_smoking = request.GET.get("no_smoking") == "yes"
     no_pets = request.GET.get("no_pets") == "yes"
     no_doubles = request.GET.get("no_doubles") == "yes"
@@ -61,7 +47,6 @@ def explore_housing(request):
         profiles = profiles.filter(share_double="no")
     if no_mixed_gender:
         profiles = profiles.filter(live_opposite_sex="no")
-        # Also match the viewer's gender so only same-gender listings appear
         viewer_gender = None
         if request.user.is_authenticated:
             try:
@@ -78,15 +63,11 @@ def explore_housing(request):
         "no_mixed_gender": no_mixed_gender,
     }
 
-    profile_rows = list(profiles)
-    seeker = viewer_profile_for_pairwise(request.user)
-    profile_rows = sort_profiles_by_pairwise(profile_rows, seeker)
-
     return render(
         request,
-        "listings/explore_housing.html",
+        "flagged_listings/explore_flagged_listings.html",
         {
-            "profiles": profile_rows,
+            "profiles": profiles,
             "search_query": q,
             "filters": {
                 "max_rent": max_rent,
@@ -97,45 +78,15 @@ def explore_housing(request):
         },
     )
 
-def _sublettor_queryset():
-    return (
-        Profile.objects.filter(user_type="sublettor", has_onboarded=True, banned=False, hidden=False)
-        .filter(
-            Q(preferred_location__gt="")
-            | (Q(listing_image__isnull=False) & ~Q(listing_image=""))
-        )
-        .select_related("user")
-        .order_by("-id")
-    )
 
-
-def listing_detail(request, pk):
-    """Single listing: image, location, lease, amenities, matches, related listings."""
-    qs = Profile.objects.filter(user_type="sublettor", has_onboarded=True) if request.user.is_staff else _listing_queryset()
-    profile = get_object_or_404(qs, pk=pk)
-    other_listings = list(_listing_queryset().exclude(pk=profile.pk)[:3])
-
-    report = None
-    if request.user.is_staff:
-        report_id = request.GET.get("report")
-        if report_id:
-            report = Report.objects.filter(pk=report_id, reported_profile=profile).first()
-
-    seeker = viewer_profile_for_pairwise(request.user)
-    if seeker:
-        profile.pairwise_roommate_score = pairwise_roommate_score(seeker, profile)
-        profile.pairwise_housing_score = pairwise_housing_score(seeker, profile)
-    else:
-        profile.pairwise_roommate_score = None
-        profile.pairwise_housing_score = None
-    attach_pairwise_to_profiles(other_listings, seeker)
-
+def flagged_listings_detail(request, pk):
+    profile = get_object_or_404(_flagged_queryset(), pk=pk)
+    other_listings = list(_flagged_queryset().exclude(pk=profile.pk)[:3])
     return render(
         request,
-        "listings/listing_detail.html",
+        "flagged_listings/flagged_listings_detail.html",
         {
             "profile": profile,
             "other_listings": other_listings,
-            "report": report,
         },
     )

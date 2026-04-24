@@ -80,6 +80,36 @@
     width: 100%;
     align-self: stretch;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+main .profile-container .profile-card-column .profile-actions .action-btn-report-user,
+.profile-container .profile-card-column .profile-actions .action-btn-report-user {
+    display: inline-flex;
+    box-sizing: border-box;
+    width: auto;
+    min-width: 130px;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff !important;
+    background: #ef1717;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+main .profile-container .profile-card-column .profile-actions .action-btn-report-user:hover,
+.profile-container .profile-card-column .profile-actions .action-btn-report-user:hover {
+    background: #d31313;
 }
 
 /* Bar control (not a plain link): high specificity beats global `a` / visited styles */
@@ -119,6 +149,139 @@ main .profile-container .profile-card-column .profile-actions a.action-btn-edit:
     background: #141414 !important;
 }
 
+
+.report-banner {
+    max-width: var(--container-width);
+    margin: 1rem auto 0;
+    padding: 0.85rem 1.25rem;
+    background: #fff8e1;
+    border: 1px solid #f0c040;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.report-banner__body {
+    font-size: 0.95rem;
+    color: #5a4000;
+}
+
+.report-banner__label {
+    margin-right: 0.4rem;
+}
+
+.report-banner__actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.report-banner__btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.report-banner__btn--dismiss {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.report-banner__btn--dismiss:hover {
+    background: #333;
+}
+
+.report-banner__btn--ban {
+    background: #d31313;
+    color: #fff;
+}
+
+.report-banner__btn--ban:hover {
+    background: #b00e0e;
+}
+
+.profile-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.profile-toolbar__btn {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.25rem 0.4rem;
+    border-radius: 4px;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.profile-toolbar__btn:hover {
+    background: #f0f0f0;
+    color: var(--color-text-main);
+}
+
+.profile-more-wrap {
+    position: relative;
+}
+
+.profile-more-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    min-width: 160px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.profile-more-menu.show {
+    display: block;
+}
+
+.profile-more-item {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    text-align: left;
+    text-decoration: none !important;
+    color: var(--color-text-main);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    box-sizing: border-box;
+}
+
+.profile-more-item:hover {
+    background: #f5f5f5;
+}
+
+.profile-more-item--danger {
+    color: #d31313 !important;
+}
+
+.profile-more-item--danger:hover {
+    background: #fff0f0;
+}
 
 @media (min-width: 992px) {
     .profile-container {

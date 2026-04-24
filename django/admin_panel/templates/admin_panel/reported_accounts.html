@@ -1,0 +1,124 @@
+{% extends 'theme/base.html' %}
+{% load static %}
+
+{% block title %}Reported Accounts{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/admin_panel.css' %}">
+<style>
+    /* Fallback: force the Listings/Users segmented toggle to render as buttons. */
+    .admin-reported-top .reported-toggle {
+        display: inline-flex !important;
+        border: 1px solid #6f7d86 !important;
+        border-radius: 999px !important;
+        overflow: hidden !important;
+        background: #fff !important;
+    }
+
+    .admin-reported-top .reported-toggle .reported-toggle__item {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 98px !important;
+        padding: 0.42rem 1.05rem !important;
+        text-decoration: none !important;
+        color: #25282b !important;
+        background: #fff !important;
+        border-right: 1px solid #6f7d86 !important;
+        font-weight: 500 !important;
+        line-height: 1 !important;
+    }
+
+    .admin-reported-top .reported-toggle .reported-toggle__item:last-child {
+        border-right: 0 !important;
+    }
+
+    .admin-reported-top .reported-toggle .reported-toggle__item.is-active {
+        background: #d4d4d4 !important;
+        color: #000 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="admin-shell">
+    <div class="admin-card admin-reported-card">
+        <div class="admin-row admin-reported-top">
+            <div>
+                <h1>Admin Panel</h1>
+            </div>
+            <div class="reported-toggle" role="tablist" aria-label="Reported account types">
+                <a class="reported-toggle__item {% if mode == 'listings' %}is-active{% endif %}" href="?mode=listings&speed={{ selected_speed }}&banned={{ selected_banned }}&hidden={{ selected_hidden }}">Listings</a>
+                <a class="reported-toggle__item {% if mode == 'users' %}is-active{% endif %}" href="?mode=users&speed={{ selected_speed }}&banned={{ selected_banned }}&hidden={{ selected_hidden }}">Users</a>
+            </div>
+        </div>
+
+        <h2 class="reported-accounts-title">Reported Accounts</h2>
+
+        <div class="reported-filter-row">
+            <label for="speed-filter">Speed:</label>
+            <select id="speed-filter" class="reported-filter" onchange="applyFilters()">
+                {% for value, label in speed_choices %}
+                <option value="{{ value }}" {% if selected_speed == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <label for="banned-filter">Banned:</label>
+            <select id="banned-filter" class="reported-filter" onchange="applyFilters()">
+                <option value="all" {% if selected_banned == "all" %}selected{% endif %}>All</option>
+                <option value="yes" {% if selected_banned == "yes" %}selected{% endif %}>Yes</option>
+                <option value="no" {% if selected_banned == "no" %}selected{% endif %}>No</option>
+            </select>
+            <label for="hidden-filter">Hidden:</label>
+            <select id="hidden-filter" class="reported-filter" onchange="applyFilters()">
+                <option value="all" {% if selected_hidden == "all" %}selected{% endif %}>All</option>
+                <option value="yes" {% if selected_hidden == "yes" %}selected{% endif %}>Yes</option>
+                <option value="no" {% if selected_hidden == "no" %}selected{% endif %}>No</option>
+            </select>
+        </div>
+
+        <div class="reported-table-wrap">
+            <table class="reported-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Link</th>
+                        <th>Reason</th>
+                        <th>Speed</th>
+                        <th>Hidden</th>
+                        <th>Banned</th>
+                        <th>Reported By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td><a href="{{ row.link }}">{{ row.link }}</a></td>
+                        <td>{{ row.reason|default:"-" }}</td>
+                        <td>{{ row.speed }}</td>
+                        <td>{% if row.hidden %}Yes{% else %}No{% endif %}</td>
+                        <td>{% if row.banned %}Yes{% else %}No{% endif %}</td>
+                        <td>{% if row.reporter_link %}<a href="{{ row.reporter_link }}">{{ row.reporter_name }}</a>{% else %}{{ row.reporter_name }}{% endif %}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">{{ empty_label }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function applyFilters() {
+    const speed = document.getElementById('speed-filter').value;
+    const banned = document.getElementById('banned-filter').value;
+    const hidden = document.getElementById('hidden-filter').value;
+    window.location.href = '?mode={{ mode }}&speed=' + speed + '&banned=' + banned + '&hidden=' + hidden;
+}
+</script>
+{% endblock %}

@@ -246,6 +246,16 @@ class Profile(models.Model):
         help_text="Photo of the sublet listing."
     )
 
+    hidden = models.BooleanField(
+        default=False,
+        editable=False,
+    )
+
+    banned = models.BooleanField(
+        default= False,
+        editable= False,
+    )
+
 
     def __str__(self):
         return f"Profile: {self.user.get_username()}"
