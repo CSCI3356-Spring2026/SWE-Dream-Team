@@ -37,5 +37,8 @@ urlpatterns = [
     path("report/", include("report_user.urls")),
     path("settings/", include("settings.urls")),
 ]
+
+handler404 = 'django.views.defaults.page_not_found'
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -44,7 +44,7 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 SECRET_KEY = 'django-insecure-=xp+syd97y8$23(kdz5fi81#y3!j#wqgyu0%57oc@@%&r3dk0j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Local dev: allow browser + runserver + Django test client. Add your LAN hostname if needed.
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver"]
