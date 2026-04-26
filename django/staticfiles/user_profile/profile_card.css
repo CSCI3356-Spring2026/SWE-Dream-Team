@@ -1,0 +1,115 @@
+/* Standalone profile card preview (profile_card.html) */
+
+body {
+    margin: 0;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a1a;
+    background: #fafafa;
+}
+
+.profile-topbar {
+    min-height: 8px;
+    background: linear-gradient(90deg, #99f2d1, #a8e6fc);
+}
+
+.profile-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+}
+
+.profile-card__main {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (min-width: 900px) {
+    .profile-card__main {
+        grid-template-columns: 1fr minmax(260px, 380px);
+    }
+}
+
+.profile-card__name {
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    margin: 0 0 0.35rem;
+}
+
+.profile-card__meta {
+    color: #666;
+    margin: 0 0 1.5rem;
+}
+
+.profile-card__section-title {
+    font-size: 1.1rem;
+    margin: 1.25rem 0 0.5rem;
+}
+
+.profile-card__bio p,
+.profile-card__contact {
+    line-height: 1.55;
+    margin: 0 0 0.65rem;
+}
+
+.profile-card__right {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+}
+
+.profile-card__photo-wrap {
+    width: 100%;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card__photo--placeholder {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8e8e8;
+    color: #888;
+    font-weight: 600;
+}
+
+.profile-card__actions {
+    margin-top: 1.25rem;
+    width: 100%;
+    align-self: stretch;
+}
+
+.profile-card__right .profile-card__actions a.profile-card__edit-btn--large {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #fff !important;
+    background: #1a1a1a !important;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none !important;
+    transition: background 0.15s ease;
+}
+
+.profile-card__right .profile-card__actions a.profile-card__edit-btn--large:visited {
+    color: #fff !important;
+}
+
+.profile-card__right .profile-card__actions a.profile-card__edit-btn--large:hover {
+    background: #2d2d2d !important;
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+.profile-card__right .profile-card__actions a.profile-card__edit-btn--large:active {
+    background: #141414 !important;
+}

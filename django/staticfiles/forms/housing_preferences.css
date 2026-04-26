@@ -1,0 +1,52 @@
+/*
+  Housing preferences — uses get_to_know_you + roommate_preferences base classes.
+*/
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.forms-card__fieldset--rent {
+    padding-bottom: 1rem;
+}
+
+.housing-rent__group {
+    margin-bottom: 1rem;
+}
+
+.housing-rent__group:last-child {
+    margin-bottom: 0;
+}
+
+.housing-rent__label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 0.4rem;
+}
+
+.housing-rent__selects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: stretch;
+}
+
+.housing-rent__month {
+    flex: 1 1 140px;
+    min-width: 0;
+}
+
+.housing-rent__year {
+    flex: 1 1 100px;
+    min-width: 0;
+}

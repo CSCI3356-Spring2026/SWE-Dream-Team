@@ -1,0 +1,152 @@
+/*
+  Uses CSS variables from theme/static/css/base.css (:root).
+  Loaded after base.css in the template so variables apply.
+*/
+
+.forms-page {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+}
+
+.forms-page__intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Override global h1 from base.css for this flow */
+.forms-page__title {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary-blue);
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+}
+
+.forms-page__subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.forms-card {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--color-bg-light);
+    border: 1px solid #e5e5e5;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.forms-card__field {
+    margin-bottom: 1.25rem;
+}
+
+.forms-card__field:last-of-type {
+    margin-bottom: 1.5rem;
+}
+
+.forms-card__label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: 0.35rem;
+}
+
+.forms-card__hint {
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.forms-card__input,
+.forms-card__textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    font-size: 1rem;
+    font-family: var(--font-family);
+    border: 1px solid #d0d0d0;
+    border-radius: var(--radius-md);
+    background: #fff;
+}
+
+.forms-card__input:focus,
+.forms-card__textarea:focus {
+    outline: 2px solid rgba(0, 102, 255, 0.35);
+    outline-offset: 1px;
+    border-color: var(--color-primary-blue);
+}
+
+.forms-card__textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.forms-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: stretch;
+    margin-top: 0.25rem;
+}
+
+.forms-card__back {
+    flex: 1 1 160px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-family);
+    color: var(--color-text-main);
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.forms-card__back:hover {
+    background: #f7f7f7;
+    border-color: #b8b8b8;
+}
+
+.forms-card__submit {
+    display: block;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-family);
+    color: #fff;
+    background: var(--color-primary-blue);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.forms-card__actions .forms-card__submit {
+    flex: 1 1 160px;
+    width: auto;
+}
+
+.forms-card__submit:hover {
+    opacity: 0.92;
+}
+
+.profile-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .forms-page__title {
+        font-size: 2.25rem;
+    }
+}

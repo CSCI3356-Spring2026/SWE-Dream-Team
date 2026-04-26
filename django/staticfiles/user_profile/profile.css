@@ -1,0 +1,306 @@
+
+/* Main Container */
+.profile-container {
+    max-width: var(--container-width);
+    margin: 20px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr; /* Single column for mobile */
+    gap: 30px;
+    align-items: start;
+}
+
+/* Typography & Content */
+.profile-name {
+    font-size: 2.5rem; /* Responsive sizing */
+    color: var(--color-text-main);
+    margin-bottom: 8px;
+    font-weight: var(--font-weight-bold);
+}
+
+.profile-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+.profile-bio h3, 
+.profile-contact h3 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-main);
+}
+
+.profile-bio p {
+    margin-bottom: 15px;
+    color: var(--color-text-main);
+    line-height: 1.6;
+}
+
+.profile-contact ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-contact li {
+    margin-bottom: 5px;
+    color: var(--color-text-main);
+}
+
+/* Profile Card (Right Column) — photo and edit share one width */
+.profile-card-column {
+    order: -1; /* Moves image to top on mobile */
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.profile-image-wrapper {
+    width: 100%;
+    flex-shrink: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.profile-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+}
+
+/* Edit profile — same width as .profile-image-wrapper above */
+.profile-actions {
+    margin-top: 1.25rem;
+    width: 100%;
+    align-self: stretch;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+main .profile-container .profile-card-column .profile-actions .action-btn-report-user,
+.profile-container .profile-card-column .profile-actions .action-btn-report-user {
+    display: inline-flex;
+    box-sizing: border-box;
+    width: auto;
+    min-width: 130px;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff !important;
+    background: #ef1717;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+main .profile-container .profile-card-column .profile-actions .action-btn-report-user:hover,
+.profile-container .profile-card-column .profile-actions .action-btn-report-user:hover {
+    background: #d31313;
+}
+
+/* Bar control (not a plain link): high specificity beats global `a` / visited styles */
+main .profile-container .profile-card-column .profile-actions a.action-btn-edit,
+.profile-container .profile-card-column .profile-actions a.action-btn-edit {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #fff !important;
+    background: #1a1a1a !important;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none !important;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+main .profile-container .profile-card-column .profile-actions a.action-btn-edit:visited,
+.profile-container .profile-card-column .profile-actions a.action-btn-edit:visited {
+    color: #fff !important;
+}
+
+main .profile-container .profile-card-column .profile-actions a.action-btn-edit:hover,
+.profile-container .profile-card-column .profile-actions a.action-btn-edit:hover {
+    background: #2d2d2d !important;
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+main .profile-container .profile-card-column .profile-actions a.action-btn-edit:active,
+.profile-container .profile-card-column .profile-actions a.action-btn-edit:active {
+    background: #141414 !important;
+}
+
+
+.report-banner {
+    max-width: var(--container-width);
+    margin: 1rem auto 0;
+    padding: 0.85rem 1.25rem;
+    background: #fff8e1;
+    border: 1px solid #f0c040;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.report-banner__body {
+    font-size: 0.95rem;
+    color: #5a4000;
+}
+
+.report-banner__label {
+    margin-right: 0.4rem;
+}
+
+.report-banner__actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.report-banner__btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.report-banner__btn--dismiss {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.report-banner__btn--dismiss:hover {
+    background: #333;
+}
+
+.report-banner__btn--ban {
+    background: #d31313;
+    color: #fff;
+}
+
+.report-banner__btn--ban:hover {
+    background: #b00e0e;
+}
+
+.profile-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.profile-toolbar__btn {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.25rem 0.4rem;
+    border-radius: 4px;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.profile-toolbar__btn:hover {
+    background: #f0f0f0;
+    color: var(--color-text-main);
+}
+
+.profile-more-wrap {
+    position: relative;
+}
+
+.profile-more-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    min-width: 160px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.profile-more-menu.show {
+    display: block;
+}
+
+.profile-more-item {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    text-align: left;
+    text-decoration: none !important;
+    color: var(--color-text-main);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    box-sizing: border-box;
+}
+
+.profile-more-item:hover {
+    background: #f5f5f5;
+}
+
+.profile-more-item--danger {
+    color: #d31313 !important;
+}
+
+.profile-more-item--danger:hover {
+    background: #fff0f0;
+}
+
+@media (min-width: 992px) {
+    .profile-container {
+        grid-template-columns: 1fr 400px; /* Two columns */
+        gap: 80px;
+        margin: 60px auto;
+    }
+
+    .profile-card-column {
+        order: 0; /* Returns image to right side */
+        position: sticky; /* Card stays in view while scrolling bio */
+        top: 40px;
+    }
+
+    .profile-name {
+        font-size: 4rem;
+    }
+
+    .profile-info {
+        padding-top: 10px;
+    }
+}
