@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from google.auth.transport import requests
@@ -26,12 +27,25 @@ def _build_unique_username(email: str, fallback_seed: str) -> str:
 
 @login_not_required
 def landing(request):
+    explore_url = None
+    if request.user.is_authenticated:
+        try:
+            profile = request.user.profile
+        except Profile.DoesNotExist:
+            profile = None
+        if profile is not None:
+            if profile.user_type == "renter":
+                explore_url = reverse("listings-explore-housing")
+            elif profile.user_type == "sublettor":
+                explore_url = reverse("roommates-explore")
+
     return render(
         request,
         "landing_page/landing.html",
         {
             "google_oauth_client_id": settings.GOOGLE_OAUTH_CLIENT_ID,
             "auth_receiver_url": request.build_absolute_uri("/auth-receiver"),
+            "explore_url": explore_url,
         },
     )
 
@@ -124,7 +138,7 @@ def auth_receiver(request):
     request.session["google_picture"] = user_data.get("picture")
 
     if profile.has_onboarded:
-        return redirect("home")
+        return redirect("listings-explore-housing") if profile.user_type == 'renter' else redirect("roommates-explore")
     return redirect("forms-set-card")
 
 

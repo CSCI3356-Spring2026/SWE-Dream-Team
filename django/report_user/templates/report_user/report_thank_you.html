@@ -1,0 +1,20 @@
+{% extends "theme/base.html" %}
+{% load static %}
+
+{% block title %}Report Submitted — SubLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'report_user/report_user_thank_you.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="report-user-thank-you" aria-labelledby="report-thanks-title">
+    <h1 id="report-thanks-title" class="report-user-thank-you__title">Thank you for informing us!</h1>
+
+    {% if request.user.profile.user_type == 'renter' %}
+    <a class="report-user-thank-you__home" href="{% url 'listings-explore-housing' %}">Return Home</a>
+    {% else %}
+    <a class="report-user-thank-you__home" href="{% url 'roommates-explore' %}">Return Home</a>
+    {% endif %}
+</section>
+{% endblock %}

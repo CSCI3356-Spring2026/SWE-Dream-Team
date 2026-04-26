@@ -13,6 +13,12 @@ html {
     flex-direction: column;
 }
 
+.landing-page-wrapper *,
+.landing-page-wrapper *::before,
+.landing-page-wrapper *::after {
+    box-sizing: border-box;
+}
+
 /* ----- Header: gradient band + logo ----- */
 .landing-header {
     background: linear-gradient(90deg, #99F2D1 0%, #B9F2D8 50%, #a8e6fc 100%);
@@ -38,25 +44,26 @@ html {
     display: flex;
     flex-direction: row;
     flex: 1;
-    min-height: 60vh;
+    min-height: min(60vh, 720px);
     width: 100%;
 }
 
 /* Left column: hero + branding – subtle shadow */
 .left {
     flex: 1.25;
+    min-width: 0;
     background-color: #f8faf8;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2.5rem;
+    padding: clamp(1rem, 3vw, 2.5rem);
     text-align: left;
     box-shadow: inset -8px 0 24px rgba(0, 0, 0, 0.06);
 }
 
 .content-wrapper {
     width: 100%;
-    max-width: 620px;
+    max-width: min(620px, 100%);
 }
 
 .hero-image-wrap {
@@ -74,36 +81,41 @@ html {
 }
 
 .logo {
-    font-size: 4rem;
+    font-size: clamp(2.25rem, 4vw + 1.25rem, 4rem);
     font-weight: 800;
     margin: 0 0 0.35rem;
     color: #0066FF;
+    line-height: 1.05;
+    word-wrap: break-word;
 }
 
 .tagline {
-    font-size: 1.55rem;
+    font-size: clamp(1rem, 1.2vw + 0.85rem, 1.55rem);
     color: #147A62;
     margin: 0;
     font-weight: 600;
+    line-height: 1.35;
 }
 
 /* Right column: auth – equal width with left */
 .right {
     flex: 1;
+    min-width: 0;
     background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: clamp(1rem, 3vw, 2rem);
 }
 
 .auth-box {
     width: 100%;
-    max-width: 600px;
+    max-width: min(600px, 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 0 0.25rem;
 }
 
 .auth-instruction {
@@ -118,6 +130,25 @@ html {
     flex-direction: column;
     align-items: center;
     width: 100%;
+}
+
+.user-signed-in {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    gap: 0.75rem;
+}
+
+.user-signed-in .submit-btn {
+    margin-top: 0;
+}
+
+a.submit-btn {
+    display: block;
+    text-decoration: none;
+    text-align: center;
 }
 
 .sr-only {
@@ -137,10 +168,13 @@ html {
 }
 
 .auth-headline {
-    font-size: 4.5rem;
-    margin-bottom: 1.5rem;
-    color: #1a1a1a;
+    font-size: clamp(1.65rem, 3.5vw + 0.85rem, 4.5rem);
+    line-height: 1.08;
+    margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+    max-width: 100%;
     font-weight: 700;
+    word-wrap: break-word;
+    hyphens: auto;
 
     /* Gradient background */
     background: linear-gradient(
@@ -159,6 +193,18 @@ html {
     animation: gradientShift 1.5s linear infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .auth-headline {
+        animation: none;
+        background: linear-gradient(
+            90deg,
+            var(--color-gradient-start),
+            var(--color-gradient-end)
+        );
+        background-size: 100% auto;
+    }
+}
+
 @keyframes gradientShift {
     0% {
         background-position: 200% center;
@@ -172,6 +218,186 @@ html {
 /* Forms */
 .auth-forms {
     position: relative;
+    width: 100%;
+}
+
+.toggle-bar {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.toggle-btn {
+    flex: 1;
+    min-width: 0;
+    padding: 0.7rem 0.75rem;
+    text-align: center;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    font-weight: 600;
+    cursor: pointer;
+    background: #f0f0f0;
+    color: #444;
+    transition: background 0.2s, color 0.2s;
+}
+
+.toggle-btn:hover {
+    background: #e8e8e8;
+}
+
+#loginToggle:checked ~ .toggle-bar .toggle-btn--login,
+#signupToggle:checked ~ .toggle-bar .toggle-btn--signup {
+    background: #147A62;
+    color: #fff;
+}
+
+.auth-forms .form {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+    gap: 0.65rem;
+}
+
+#loginToggle:checked ~ .auth-forms .login-form {
+    display: flex;
+}
+
+#signupToggle:checked ~ .auth-forms .signup-form {
+    display: flex;
+}
+
+.input-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.input-field {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 0.15rem;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.35rem;
+}
+
+.submit-btn--primary {
+    background: #147A62;
+    color: #fff;
+}
+
+.submit-btn--primary:hover {
+    opacity: 0.95;
+}
+
+.submit-btn--secondary {
+    background: #fff;
+    color: #147a62;
+    border: 2px solid #147a62;
+}
+
+.submit-btn--secondary:hover {
+    background: rgba(20, 122, 98, 0.08);
+}
+
+.forgot-link {
+    display: block;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #0066ff;
+}
+
+.google-btn__icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+/* ----- Split / hero: small screens ----- */
+@media (max-width: 900px) {
+    .split-screen {
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .left {
+        flex: none;
+        box-shadow: none;
+        border-bottom: 1px solid #e8ebe8;
+        text-align: center;
+        padding: 1.5rem 1.25rem 1.75rem;
+    }
+
+    .content-wrapper {
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    .right {
+        flex: 1;
+        padding: 1.5rem 1.25rem 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .left,
+    .right {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .landing-footer {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* ----- Footer: narrow screens ----- */
+@media (max-width: 640px) {
+    .landing-footer__inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .landing-footer__right {
+        text-align: left;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .landing-footer__nav {
+        line-height: 1.5;
+    }
+
+    .landing-footer__nav a {
+        margin-left: 0;
+        margin-right: 0.5rem;
+    }
 }
 
 .google-btn {

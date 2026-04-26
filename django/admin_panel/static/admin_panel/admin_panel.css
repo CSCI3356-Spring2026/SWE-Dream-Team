@@ -127,9 +127,244 @@
     color: #355364;
 }
 
+.admin-reported-top h1 {
+    margin: 0;
+    font-size: 3rem;
+}
+
+.admin-reported-top h2 {
+    margin: 0.25rem 0 0;
+    font-size: 1.2rem;
+    color: #355364;
+}
+
+.admin-reported-card {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+}
+
+.reported-accounts-title {
+    margin: 0.75rem 0 0;
+    font-size: 2rem;
+    font-weight: 700;
+    border-top: 1px solid #ccd6dd;
+    padding-top: 0.85rem;
+}
+
+.reported-controls {
+    margin-top: 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-reported-top .reported-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    border: 1px solid #76828b;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.admin-reported-top .reported-toggle__item {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 98px;
+    text-decoration: none !important;
+    color: #25282b !important;
+    background: #ffffff !important;
+    padding: 0.4rem 1.05rem;
+    font-weight: 500;
+    line-height: 1;
+    border-right: 1px solid #76828b;
+}
+
+.admin-reported-top .reported-toggle__item:last-child {
+    border-right: 0;
+}
+
+.admin-reported-top .reported-toggle__item:hover {
+    background: #f1f4f6 !important;
+}
+
+.admin-reported-top .reported-toggle__item.is-active {
+    background: #e8eef2 !important;
+    color: #111111 !important;
+}
+
+.reported-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.reported-filter label {
+    font-weight: 500;
+    color: #2f3e48;
+}
+
+.reported-filter select {
+    border: 1px solid #bdcad6;
+    border-radius: 8px;
+    padding: 0.42rem 0.55rem;
+    min-width: 210px;
+    background: #ffffff;
+}
+
+.reported-filter-row {
+    margin: 1.5rem 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.reported-filter-row label {
+    font-weight: 600;
+    color: #25282b;
+    font-size: 0.95rem;
+}
+
+.reported-filter {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #bdcad6;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background: white;
+}
+
+.reported-filter:hover {
+    border-color: #79a9b9;
+}
+
+.reported-table-wrap {
+    margin-top: 1.5rem;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.reported-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #79a9b9;
+}
+
+.reported-table thead th {
+    background-color: #4ab79a;
+    color: #102024;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 1px solid #3f9781;
+}
+
+.reported-table tbody td {
+    padding: 12px 15px;
+    text-align: left;
+    background-color: #b9e8f2;
+    border: 1px solid #79a9b9;
+    font-size: 0.95rem;
+}
+
+.reported-table tbody td a {
+    color: #143949;
+    text-decoration: underline;
+}
+
+.reported-table tbody td a:hover {
+    color: #0f3f5e;
+}
+
+.reported-table th:nth-child(1),
+.reported-table td:nth-child(1) {
+    width: 22%;
+    min-width: 120px;
+    font-weight: 500;
+}
+
+.reported-table th:nth-child(2),
+.reported-table td:nth-child(2) {
+    width: 43%;
+    min-width: 220px;
+}
+
+.reported-table th:nth-child(3),
+.reported-table td:nth-child(3) {
+    width: 35%;
+    min-width: 170px;
+    word-break: break-word;
+}
+
+.moderated-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.moderated-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1.5px solid #1a1a1a;
+    border-radius: 999px;
+    cursor: pointer;
+    background: #fff;
+    color: #1a1a1a;
+    line-height: 1;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.moderated-btn:hover {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.moderated-btn--danger {
+    border-color: #d31313;
+    color: #d31313;
+    background: #fff;
+}
+
+.moderated-btn--danger:hover {
+    background: #d31313;
+    color: #fff;
+}
+
 @media (max-width: 700px) {
     .admin-row {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .admin-reported-top h1 {
+        font-size: 2.2rem;
+    }
+
+    .reported-accounts-title {
+        font-size: 1.5rem;
+    }
+
+    .reported-controls {
+        align-items: flex-start;
+    }
+
+    .reported-toggle {
+        width: 100%;
+    }
+
+    .reported-toggle__item {
+        text-align: center;
+        flex: 1;
     }
 }

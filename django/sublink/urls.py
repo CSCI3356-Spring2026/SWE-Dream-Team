@@ -31,7 +31,10 @@ urlpatterns = [
     path("", include("user_profile.urls")),
     path("forms/", include("forms.urls")),
     path("listings/", include("listings.urls")),
+    path("listings/flagged/", include("flagged_listings.urls")),
     path("roommates/", include("roomate_listing_page.urls")),
+    path("roommates/flagged/", include("flagged_users.urls")),
+    path("report/", include("report_user.urls")),
     path("settings/", include("settings.urls")),
 ]
 

@@ -2,6 +2,64 @@
   Single listing + related — uses theme base.css variables.
 */
 
+.report-banner {
+    max-width: 1100px;
+    margin: 1rem auto 0;
+    padding: 0.85rem 1.25rem;
+    background: #fff8e1;
+    border: 1px solid #f0c040;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.report-banner__body {
+    font-size: 0.95rem;
+    color: #5a4000;
+}
+
+.report-banner__label {
+    margin-right: 0.4rem;
+}
+
+.report-banner__actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.report-banner__btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.report-banner__btn--dismiss {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.report-banner__btn--dismiss:hover {
+    background: #333;
+}
+
+.report-banner__btn--ban {
+    background: #d31313;
+    color: #fff;
+}
+
+.report-banner__btn--ban:hover {
+    background: #b00e0e;
+}
+
 .listing-detail {
     max-width: 1100px;
     margin: 0 auto;
@@ -14,6 +72,12 @@
     gap: 1.5rem;
     margin-bottom: 2.5rem;
     align-items: start;
+}
+
+.listing-detail__media-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 @media (min-width: 900px) {
@@ -46,6 +110,28 @@
     justify-content: center;
     color: var(--color-text-muted);
     font-size: 1rem;
+}
+
+.listing-detail__report-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    border: none;
+    border-radius: 6px;
+    background: #ef1717;
+    color: #fff !important;
+    min-width: 130px;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+.listing-detail__report-btn:hover {
+    background: #d31313;
 }
 
 .listing-detail__title {
@@ -157,6 +243,7 @@
 .listing-detail__toolbar {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 0.75rem;
     padding-top: 0.25rem;
 }
@@ -164,8 +251,69 @@
 .listing-detail__toolbar-btn {
     font-size: 1.1rem;
     color: var(--color-text-muted);
-    cursor: default;
+    cursor: pointer;
     user-select: none;
+    background: none;
+    border: none;
+    padding: 0.25rem 0.4rem;
+    border-radius: 4px;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.listing-detail__toolbar-btn:hover {
+    background: #f0f0f0;
+    color: var(--color-text-main);
+}
+
+.listing-detail__more-wrap {
+    position: relative;
+}
+
+.listing-detail__more-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    min-width: 160px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.listing-detail__more-menu.show {
+    display: block;
+}
+
+.listing-detail__more-item {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    text-align: left;
+    text-decoration: none !important;
+    color: var(--color-text-main);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    box-sizing: border-box;
+}
+
+.listing-detail__more-item:hover {
+    background: #f5f5f5;
+}
+
+.listing-detail__more-item--danger {
+    color: #d31313 !important;
+}
+
+.listing-detail__more-item--danger:hover {
+    background: #fff0f0;
 }
 
 .listing-detail__related {

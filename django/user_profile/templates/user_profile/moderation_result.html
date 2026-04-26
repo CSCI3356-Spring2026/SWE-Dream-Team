@@ -1,0 +1,15 @@
+{% extends "theme/base.html" %}
+
+{% block title %}Moderation Update{% endblock %}
+
+{% block content %}
+<section style="max-width: 760px; margin: 2rem auto; padding: 0 1rem;">
+    <div style="background: #fff; border: 1px solid #d7e1e8; border-radius: 12px; padding: 1.2rem;">
+        <h1 style="margin: 0 0 0.7rem;">{{ title }}</h1>
+        <p style="margin: 0 0 0.8rem; font-size: 1.05rem;">{{ message }}</p>
+        <p style="margin: 0 0 0.35rem;"><strong>Ban status:</strong> {{ status_label }}</p>
+        <p style="margin: 0 0 1rem;"><strong>Visibility:</strong> {{ visibility_label }}</p>
+        <a href="{{ back_url }}" style="display: inline-block; padding: 0.55rem 0.9rem; border: 1px solid #8ca0ad; border-radius: 999px; text-decoration: none; color: #1b2b35;">Back</a>
+    </div>
+</section>
+{% endblock %}

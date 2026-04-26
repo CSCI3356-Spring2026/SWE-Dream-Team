@@ -50,18 +50,20 @@
         </div>
 
         <div class="listing-detail__aside">
-            <div class="listing-detail__media listing-detail__media--square">
-                {% if profile.photo %}
-                    <img
-                        class="listing-detail__img"
-                        src="{{ profile.photo.url }}"
-                        alt=""
-                        width="400"
-                        height="400"
-                    >
-                {% else %}
-                    <div class="listing-detail__placeholder">No photo</div>
-                {% endif %}
+            <div class="listing-detail__media-column">
+                <div class="listing-detail__media listing-detail__media--square">
+                    {% if profile.photo %}
+                        <img
+                            class="listing-detail__img"
+                            src="{{ profile.photo.url }}"
+                            alt=""
+                            width="400"
+                            height="400"
+                        >
+                    {% else %}
+                        <div class="listing-detail__placeholder">No photo</div>
+                    {% endif %}
+                </div>
             </div>
             <div class="listing-detail__aside-footer">
                 <dl class="listing-detail__metrics">
@@ -74,7 +76,7 @@
                             Roommate match
                         </dt>
                         <dd class="listing-detail__metric-value">
-                            {% if profile.roommate_match is not None %}{{ profile.roommate_match }}%{% else %}—{% endif %}
+                            {% if profile.pairwise_roommate_score is not None %}{{ profile.pairwise_roommate_score|floatformat:1 }}/10{% else %}—{% endif %}
                         </dd>
                     </div>
                     <div class="listing-detail__metric">
@@ -85,13 +87,30 @@
                             Housing match
                         </dt>
                         <dd class="listing-detail__metric-value">
-                            {% if profile.housing_match is not None %}{{ profile.housing_match }}%{% else %}—{% endif %}
+                            {% if profile.pairwise_housing_score is not None %}{{ profile.pairwise_housing_score|floatformat:1 }}/10{% else %}—{% endif %}
                         </dd>
                     </div>
                 </dl>
-                <div class="listing-detail__toolbar" aria-hidden="true">
-                    <span class="listing-detail__toolbar-btn" title="Share">↗</span>
-                    <span class="listing-detail__toolbar-btn" title="More">⋯</span>
+                <div class="listing-detail__toolbar">
+                    <button class="listing-detail__toolbar-btn" title="Share" onclick="copyPageLink(this)">↗</button>
+                    {% if request.user != profile.user %}
+                    <div class="listing-detail__more-wrap">
+                        <button class="listing-detail__toolbar-btn" title="More" onclick="toggleMoreMenu(this)">⋯</button>
+                        <div class="listing-detail__more-menu">
+                            <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="listing-detail__more-item listing-detail__more-item--danger">Report User</a>
+                            {% if request.user.is_staff %}
+                            <form method="post" action="{% url 'profile-toggle-hidden' profile.pk %}">
+                                {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit" class="listing-detail__more-item">{% if profile.hidden %}Unhide Profile{% else %}Hide Profile{% endif %}</button>
+                            </form>
+                            <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
+                                {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit" class="listing-detail__more-item listing-detail__more-item--danger">{% if profile.banned %}Unban User{% else %}Ban User{% endif %}</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -110,4 +129,26 @@
         {% endif %}
     </section>
 </article>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyPageLink(btn) {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓';
+        setTimeout(() => btn.textContent = orig, 1500);
+    });
+}
+function toggleMoreMenu(btn) {
+    const menu = btn.nextElementSibling;
+    menu.classList.toggle('show');
+}
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('.listing-detail__more-wrap')) {
+        document.querySelectorAll('.listing-detail__more-menu.show')
+            .forEach(m => m.classList.remove('show'));
+    }
+});
+</script>
 {% endblock %}

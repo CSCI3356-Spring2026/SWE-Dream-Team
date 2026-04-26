@@ -1,10 +1,20 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
+from report_user.models import Report
 from user_profile.models import Profile
+
+from user_profile.matching import (
+    attach_pairwise_to_profiles,
+    pairwise_housing_score,
+    pairwise_roommate_score,
+    sort_profiles_by_pairwise,
+    viewer_profile_for_pairwise,
+)
+
 
 def _listing_queryset():
     return (
-        Profile.objects.filter(user_type="sublettor")
+        Profile.objects.filter(user_type="sublettor", has_onboarded=True, banned=False, hidden=False)
         .filter(
             Q(preferred_location__gt="")
             | (Q(listing_image__isnull=False) & ~Q(listing_image="")),
@@ -68,11 +78,15 @@ def explore_housing(request):
         "no_mixed_gender": no_mixed_gender,
     }
 
+    profile_rows = list(profiles)
+    seeker = viewer_profile_for_pairwise(request.user)
+    profile_rows = sort_profiles_by_pairwise(profile_rows, seeker)
+
     return render(
         request,
         "listings/explore_housing.html",
         {
-            "profiles": profiles,
+            "profiles": profile_rows,
             "search_query": q,
             "filters": {
                 "max_rent": max_rent,
@@ -83,10 +97,9 @@ def explore_housing(request):
         },
     )
 
-
 def _sublettor_queryset():
     return (
-        Profile.objects.filter(user_type="sublettor")
+        Profile.objects.filter(user_type="sublettor", has_onboarded=True, banned=False, hidden=False)
         .filter(
             Q(preferred_location__gt="")
             | (Q(listing_image__isnull=False) & ~Q(listing_image=""))
@@ -97,30 +110,25 @@ def _sublettor_queryset():
 
 
 def listing_detail(request, pk):
-    """Single sublettor listing detail page."""
-    profile = get_object_or_404(_sublettor_queryset(), pk=pk)
-    other_listings = list(_sublettor_queryset().exclude(pk=profile.pk)[:3])
-
-    return render(
-        request,
-        "listings/listing_detail.html",
-        {
-            "profile": profile,
-            "other_listings": other_listings,
-        },
-    )
-
-
-def listing_detail(request, pk):
     """Single listing: image, location, lease, amenities, matches, related listings."""
-    profile = get_object_or_404(
-        _listing_queryset(),
-        pk=pk,
-    )
+    qs = Profile.objects.filter(user_type="sublettor", has_onboarded=True) if request.user.is_staff else _listing_queryset()
+    profile = get_object_or_404(qs, pk=pk)
+    other_listings = list(_listing_queryset().exclude(pk=profile.pk)[:3])
 
-    other_listings = list(
-        _listing_queryset().exclude(pk=profile.pk)[:3],
-    )
+    report = None
+    if request.user.is_staff:
+        report_id = request.GET.get("report")
+        if report_id:
+            report = Report.objects.filter(pk=report_id, reported_profile=profile).first()
+
+    seeker = viewer_profile_for_pairwise(request.user)
+    if seeker:
+        profile.pairwise_roommate_score = pairwise_roommate_score(seeker, profile)
+        profile.pairwise_housing_score = pairwise_housing_score(seeker, profile)
+    else:
+        profile.pairwise_roommate_score = None
+        profile.pairwise_housing_score = None
+    attach_pairwise_to_profiles(other_listings, seeker)
 
     return render(
         request,
@@ -128,5 +136,6 @@ def listing_detail(request, pk):
         {
             "profile": profile,
             "other_listings": other_listings,
+            "report": report,
         },
     )

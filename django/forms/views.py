@@ -53,7 +53,7 @@ class SetUserTypeCardsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["cards"] = [
             {
-                "title": "Renter",
+                "title": " Student Renter",
                 "description": [
                     "Need to find off-campus housing",
                     "Looking to find compatible roommates",
@@ -166,7 +166,7 @@ def housing_preferences(request):
             form.save()
             profile.has_onboarded = True
             profile.save(update_fields=["has_onboarded"])
-            return redirect("landing")
+            return redirect("listings-explore-housing")
     else:
         form = HousingPreferencesForm(instance=profile, rent_years=rent_years)
 
@@ -217,7 +217,7 @@ def sublettor_listing_details(request):
             form.save()
             profile.has_onboarded = True
             profile.save(update_fields=["has_onboarded"])
-            return redirect("landing")
+            return redirect("roommates-explore")
     else:
         form = SublettorListingDetailsForm(instance=profile, rent_years=rent_years)
 
