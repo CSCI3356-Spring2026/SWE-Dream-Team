@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
+from admin_panel.views import staff_only
 from user_profile.models import Profile
 
 
@@ -12,6 +13,7 @@ def _renter_queryset():
     )
 
 
+@staff_only
 def explore_flagged_users(request):
     """Grid of renter profiles for the flagged users queue."""
     profiles = _renter_queryset()
@@ -46,6 +48,7 @@ def explore_flagged_users(request):
     )
 
 
+@staff_only
 def flagged_users_detail(request, pk):
     """Single flagged-user profile detail; related users at bottom."""
     profile = get_object_or_404(_renter_queryset(), pk=pk)

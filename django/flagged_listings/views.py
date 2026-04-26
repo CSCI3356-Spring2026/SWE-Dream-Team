@@ -1,5 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
+
+from admin_panel.views import staff_only
 from user_profile.models import Profile
 
 
@@ -15,6 +17,7 @@ def _flagged_queryset():
     )
 
 
+@staff_only
 def explore_flagged_listings(request):
     profiles = _flagged_queryset()
 
@@ -79,6 +82,7 @@ def explore_flagged_listings(request):
     )
 
 
+@staff_only
 def flagged_listings_detail(request, pk):
     profile = get_object_or_404(_flagged_queryset(), pk=pk)
     other_listings = list(_flagged_queryset().exclude(pk=profile.pk)[:3])
