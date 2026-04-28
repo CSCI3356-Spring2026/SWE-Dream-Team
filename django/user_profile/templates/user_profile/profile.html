@@ -89,10 +89,15 @@
             {% endif %}
             <div class="profile-toolbar">
                 <button class="profile-toolbar__btn" title="Share" onclick="copyPageLink(this)">↗</button>
-                {% if request.user != profile.user %}
                 <div class="profile-more-wrap">
                     <button class="profile-toolbar__btn" title="More" onclick="toggleMoreMenu(this)">⋯</button>
                     <div class="profile-more-menu">
+                        {% if request.user == profile.user %}
+                        <form method="post" action="{% url 'profile-self-hide' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="profile-more-item">{% if profile.user_hidden %}Unhide My Profile{% else %}Hide My Profile{% endif %}</button>
+                        </form>
+                        {% else %}
                         <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="profile-more-item profile-more-item--danger">Report User</a>
                         {% if request.user.is_staff %}
                         <form method="post" action="{% url 'profile-toggle-hidden' profile.pk %}">
@@ -104,9 +109,9 @@
                             <button type="submit" class="profile-more-item profile-more-item--danger">{% if profile.banned %}Unban User{% else %}Ban User{% endif %}</button>
                         </form>
                         {% endif %}
+                        {% endif %}
                     </div>
                 </div>
-                {% endif %}
             </div>
         </div>
     </div>

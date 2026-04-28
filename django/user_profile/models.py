@@ -246,6 +246,11 @@ class Profile(models.Model):
         help_text="Photo of the sublet listing."
     )
 
+    user_hidden = models.BooleanField(
+        default=False,
+        editable=False,
+    )
+
     hidden = models.BooleanField(
         default=False,
         editable=False,

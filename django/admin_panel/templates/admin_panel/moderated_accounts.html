@@ -21,9 +21,10 @@
         <div class="reported-filter-row">
             <label for="status-filter">Status:</label>
             <select id="status-filter" class="reported-filter" onchange="window.location.href='?status=' + this.value">
-                <option value="all" {% if selected_status == "all" %}selected{% endif %}>Hidden or Banned</option>
-                <option value="hidden" {% if selected_status == "hidden" %}selected{% endif %}>Hidden only</option>
-                <option value="banned" {% if selected_status == "banned" %}selected{% endif %}>Banned only</option>
+                <option value="all" {% if selected_status == "all" %}selected{% endif %}>All Moderated</option>
+                <option value="hidden" {% if selected_status == "hidden" %}selected{% endif %}>Admin Hidden</option>
+                <option value="banned" {% if selected_status == "banned" %}selected{% endif %}>Banned</option>
+                <option value="user_hidden" {% if selected_status == "user_hidden" %}selected{% endif %}>User Hidden</option>
             </select>
         </div>
 
@@ -34,7 +35,8 @@
                         <th>Name</th>
                         <th>Type</th>
                         <th>Profile</th>
-                        <th>Hidden</th>
+                        <th>Admin Hidden</th>
+                        <th>User Hidden</th>
                         <th>Banned</th>
                         <th>Actions</th>
                     </tr>
@@ -46,6 +48,7 @@
                         <td>{{ row.user_type }}</td>
                         <td><a href="{{ row.link }}">View</a></td>
                         <td>{% if row.hidden %}Yes{% else %}No{% endif %}</td>
+                        <td>{% if row.user_hidden %}Yes{% else %}No{% endif %}</td>
                         <td>{% if row.banned %}Yes{% else %}No{% endif %}</td>
                         <td class="moderated-actions">
                             <form method="post" action="{% url 'profile-toggle-hidden' row.profile_pk %}">
@@ -60,7 +63,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6">No moderated accounts match the current filter.</td>
+                        <td colspan="7">No moderated accounts match the current filter.</td>
                     </tr>
                     {% endfor %}
                 </tbody>

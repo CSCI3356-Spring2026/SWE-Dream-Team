@@ -12,5 +12,6 @@ urlpatterns = [
     ),
     path("profile/<int:pk>/ban/", views.toggle_ban, name="profile-toggle-ban"),
     path("profile/<int:pk>/hide/", views.toggle_hidden, name="profile-toggle-hidden"),
+    path("profile/self/hide/", views.toggle_user_hidden, name="profile-self-hide"),
     path("report/<int:report_pk>/dismiss/", views.dismiss_report, name="report-dismiss"),
 ]
