@@ -37,7 +37,7 @@ _SELECT_MULTI = {'class': 'forms-card__select forms-card__select--multi', 'size'
 class RoommatePreferencesForm(forms.ModelForm):
     roommate_dealbreakers = forms.MultipleChoiceField(
         choices=ROOMMATE_DEALBREAKER_CHOICES,
-        required=True,
+        required=False,
         widget=forms.SelectMultiple(attrs=_SELECT_MULTI),
     )
 
@@ -111,8 +111,6 @@ class RoommatePreferencesForm(forms.ModelForm):
 
     def clean_roommate_dealbreakers(self):
         data = self.cleaned_data.get('roommate_dealbreakers') or []
-        if not data:
-            raise ValidationError('Select at least one dealbreaker.')
         allowed = {c[0] for c in ROOMMATE_DEALBREAKER_CHOICES}
         for item in data:
             if item not in allowed:

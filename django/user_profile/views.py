@@ -35,7 +35,11 @@ def profile_card_preview(request):
 def public_profile_by_user(request, user_id):
     """Read-only profile for a listing owner (lessor / sublettor)."""
     user = get_object_or_404(get_user_model(), pk=user_id)
-    qs = Profile.objects if request.user.is_staff else Profile.objects.filter(banned=False)
+    is_own = request.user.is_authenticated and request.user.pk == user_id
+    if request.user.is_staff or is_own:
+        qs = Profile.objects
+    else:
+        qs = Profile.objects.filter(banned=False, user_hidden=False)
     profile = get_object_or_404(qs, user=user)
     return render(request, "user_profile/profile.html", {
         "profile": profile,
@@ -45,7 +49,10 @@ def public_profile_by_user(request, user_id):
 
 def profile_detail(request, pk):
     """Backward-compatible profile detail route by Profile primary key."""
-    qs = Profile.objects if request.user.is_staff else Profile.objects.filter(banned=False)
+    if request.user.is_staff:
+        qs = Profile.objects
+    else:
+        qs = Profile.objects.filter(banned=False, user_hidden=False)
     profile = get_object_or_404(qs, pk=pk)
     return render(request, "user_profile/profile.html", {
         "profile": profile,
@@ -126,3 +133,13 @@ def toggle_hidden(request, pk):
         "user_profile/moderation_result.html",
         _moderation_result_context(request, profile, action),
     )
+
+
+@require_POST
+@login_required
+def toggle_user_hidden(request):
+    """Lets a user hide or unhide their own profile."""
+    profile = get_object_or_404(Profile, user=request.user)
+    profile.user_hidden = not profile.user_hidden
+    profile.save()
+    return redirect("profile-card-preview")

@@ -5,117 +5,132 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'listings/listing_detail.css' %}">
+<link rel="stylesheet" href="{% static 'user_profile/profile.css' %}">
 {% endblock %}
 
 {% block content %}
-<article class="listing-detail">
-    <div class="listing-detail__hero listing-detail__hero--roommate">
-        <div class="listing-detail__main">
-            <h1 class="listing-detail__title">
-                {{ profile.user.get_full_name|default:profile.user.username }}
-            </h1>
-            <p class="listing-detail__subtitle">
-                Boston College — {{ profile.grad_year }} — {{ profile.major_minor }}
-            </p>
+{% if report %}
+<div class="report-banner">
+    <div class="report-banner__body">
+        <strong class="report-banner__label">Reported:</strong>
+        <span class="report-banner__reason">{{ report.reason|default:"No reason provided" }}</span>
+    </div>
+    <div class="report-banner__actions">
+        <form method="post" action="{% url 'report-dismiss' report.pk %}">
+            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="report-banner__btn report-banner__btn--dismiss">Remove Report &amp; Unhide</button>
+        </form>
+        <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
+            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="report-banner__btn report-banner__btn--ban">{% if profile.banned %}Unban{% else %}Ban{% endif %} Account</button>
+        </form>
+    </div>
+</div>
+{% endif %}
+<section class="profile-container">
+    <div class="profile-info">
+        <h1 class="profile-name">
+            {{ profile.user.first_name }} {{ profile.user.last_name|default:"" }}
+        </h1>
 
-            <h2 class="listing-detail__bio-title">
-                {{ profile.user.first_name|default:profile.user.username }}&rsquo;s Bio:
-            </h2>
-            <div class="listing-detail__body-text">
-                {% if profile.bio %}
-                    {{ profile.bio|linebreaks }}
-                {% else %}
-                    <p class="listing-detail__empty-inline">No bio yet.</p>
-                {% endif %}
-            </div>
+        <p class="profile-subtitle">
+            Boston College — Class of {{ profile.grad_year|default:"TBD" }} — {{ profile.major_minor|default:"Undeclared" }}
+        </p>
 
-            <h2 class="listing-detail__contact-title">Contact me</h2>
-            <div class="listing-detail__contact">
-                <p class="listing-detail__contact-pref">
-                    My outreach preference is {{ profile.get_outreach_preference_display }}:
-                </p>
-                <ul class="listing-detail__contact-list">
-                    <li><strong>Phone:</strong> {{ profile.phone|default:"—" }}</li>
-                    <li><strong>Email:</strong> {{ profile.user.email|default:"—" }}</li>
-                    <li>
-                        <strong>Instagram:</strong>
-                        {% if profile.instagram %}
-                            <a href="https://instagram.com/{{ profile.instagram|cut:'@' }}" target="_blank" rel="noopener noreferrer">@{{ profile.instagram|cut:"@" }}</a>
-                        {% else %}
-                            —
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
+        <div class="profile-bio">
+            <h3>About {{ profile.user.first_name }}:</h3>
+            {% if profile.bio %}
+                <div class="bio-text">{{ profile.bio|linebreaks }}</div>
+            {% else %}
+                <p class="text-muted">No bio provided yet.</p>
+            {% endif %}
         </div>
 
-        <div class="listing-detail__aside">
-            <div class="listing-detail__media-column">
-                <div class="listing-detail__media listing-detail__media--square">
-                    {% if profile.photo %}
-                        <img
-                            class="listing-detail__img"
-                            src="{{ profile.photo.url }}"
-                            alt=""
-                            width="400"
-                            height="400"
-                        >
-                    {% else %}
-                        <div class="listing-detail__placeholder">No photo</div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="listing-detail__aside-footer">
-                <dl class="listing-detail__metrics">
-                    <div class="listing-detail__metric">
-                        <dt class="listing-detail__metric-label">
-                            <svg class="listing-detail__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4"/>
-                            </svg>
-                            Roommate match
-                        </dt>
-                        <dd class="listing-detail__metric-value">
-                            {% if profile.pairwise_roommate_score is not None %}{{ profile.pairwise_roommate_score|floatformat:1 }}/10{% else %}—{% endif %}
-                        </dd>
-                    </div>
-                    <div class="listing-detail__metric">
-                        <dt class="listing-detail__metric-label">
-                            <svg class="listing-detail__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
-                            </svg>
-                            Housing match
-                        </dt>
-                        <dd class="listing-detail__metric-value">
-                            {% if profile.pairwise_housing_score is not None %}{{ profile.pairwise_housing_score|floatformat:1 }}/10{% else %}—{% endif %}
-                        </dd>
-                    </div>
-                </dl>
-                <div class="listing-detail__toolbar">
-                    <button class="listing-detail__toolbar-btn" title="Share" onclick="copyPageLink(this)">↗</button>
-                    {% if request.user != profile.user %}
-                    <div class="listing-detail__more-wrap">
-                        <button class="listing-detail__toolbar-btn" title="More" onclick="toggleMoreMenu(this)">⋯</button>
-                        <div class="listing-detail__more-menu">
-                            <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="listing-detail__more-item listing-detail__more-item--danger">Report User</a>
-                            {% if request.user.is_staff %}
-                            <form method="post" action="{% url 'profile-toggle-hidden' profile.pk %}">
-                                {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
-                                <button type="submit" class="listing-detail__more-item">{% if profile.hidden %}Unhide Profile{% else %}Hide Profile{% endif %}</button>
-                            </form>
-                            <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
-                                {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
-                                <button type="submit" class="listing-detail__more-item listing-detail__more-item--danger">{% if profile.banned %}Unban User{% else %}Ban User{% endif %}</button>
-                            </form>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
+        <div class="profile-contact">
+            <h3>Contact Info</h3>
+            <ul class="contact-list">
+                <li>
+                    <strong>Preferred Method:</strong>
+                    <span class="badge-preference">{{ profile.get_outreach_preference_display }}</span>
+                </li>
+                {% if profile.phone %}
+                    <li><strong>Phone:</strong> {{ profile.phone }}</li>
+                {% endif %}
+                <li><strong>Email:</strong> {{ profile.user.email }}</li>
+                {% if profile.instagram %}
+                    <li>
+                        <strong>Instagram:</strong>
+                        <a href="https://instagram.com/{{ profile.instagram|cut:'@' }}" target="_blank" rel="noopener noreferrer">
+                            @{{ profile.instagram|cut:"@" }}
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 
+    <div class="profile-card-column">
+        <div class="profile-image-wrapper">
+            {% if profile.photo %}
+                <img src="{{ profile.photo.url }}" alt="{{ profile.user.first_name }}" class="profile-img">
+            {% else %}
+                <img src="{% static 'images/default-avatar.png' %}" alt="Default Profile" class="profile-img">
+            {% endif %}
+        </div>
+
+        <dl class="listing-detail__metrics">
+            <div class="listing-detail__metric">
+                <dt class="listing-detail__metric-label">
+                    <svg class="listing-detail__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Roommate match
+                </dt>
+                <dd class="listing-detail__metric-value">
+                    {% if profile.pairwise_roommate_score is not None %}{{ profile.pairwise_roommate_score|floatformat:1 }}/10{% else %}—{% endif %}
+                </dd>
+            </div>
+            <div class="listing-detail__metric">
+                <dt class="listing-detail__metric-label">
+                    <svg class="listing-detail__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
+                    </svg>
+                    Housing match
+                </dt>
+                <dd class="listing-detail__metric-value">
+                    {% if profile.pairwise_housing_score is not None %}{{ profile.pairwise_housing_score|floatformat:1 }}/10{% else %}—{% endif %}
+                </dd>
+            </div>
+        </dl>
+
+        <div class="profile-actions">
+            <div class="profile-toolbar">
+                <button class="profile-toolbar__btn" title="Share" onclick="copyPageLink(this)">↗</button>
+                {% if request.user != profile.user %}
+                <div class="profile-more-wrap">
+                    <button class="profile-toolbar__btn" title="More" onclick="toggleMoreMenu(this)">⋯</button>
+                    <div class="profile-more-menu">
+                        <a href="{% url 'report_user:report-form' 'profile' profile.pk %}" class="profile-more-item profile-more-item--danger">Report User</a>
+                        {% if request.user.is_staff %}
+                        <form method="post" action="{% url 'profile-toggle-hidden' profile.pk %}">
+                            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" class="profile-more-item">{% if profile.hidden %}Unhide Profile{% else %}Hide Profile{% endif %}</button>
+                        </form>
+                        <form method="post" action="{% url 'profile-toggle-ban' profile.pk %}">
+                            {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" class="profile-more-item profile-more-item--danger">{% if profile.banned %}Unban User{% else %}Ban User{% endif %}</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="listing-detail">
     <section class="listing-detail__related" aria-labelledby="related-heading">
         <h2 class="listing-detail__related-title" id="related-heading">Other users you may be interested in</h2>
         {% if other_roommates %}
@@ -128,7 +143,7 @@
             <p class="listing-detail__related-empty">No other renters to show yet.</p>
         {% endif %}
     </section>
-</article>
+</div>
 {% endblock %}
 
 {% block extra_js %}
@@ -145,8 +160,8 @@ function toggleMoreMenu(btn) {
     menu.classList.toggle('show');
 }
 window.addEventListener('click', function(e) {
-    if (!e.target.closest('.listing-detail__more-wrap')) {
-        document.querySelectorAll('.listing-detail__more-menu.show')
+    if (!e.target.closest('.profile-more-wrap')) {
+        document.querySelectorAll('.profile-more-menu.show')
             .forEach(m => m.classList.remove('show'));
     }
 });

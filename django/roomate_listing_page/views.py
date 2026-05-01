@@ -13,7 +13,7 @@ from user_profile.models import Profile
 
 def _renter_queryset():
     return (
-        Profile.objects.filter(user_type="renter", has_onboarded=True, banned=False, hidden=False)
+        Profile.objects.filter(user_type="renter", has_onboarded=True, banned=False, hidden=False, user_hidden=False)
         .select_related("user")
         .order_by("-id")
     )

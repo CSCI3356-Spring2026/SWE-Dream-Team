@@ -113,7 +113,7 @@ def moderated_accounts(request):
 	from django.db.models import Q
 
 	selected_status = request.GET.get("status", "all")
-	if selected_status not in {"all", "hidden", "banned"}:
+	if selected_status not in {"all", "hidden", "banned", "user_hidden"}:
 		selected_status = "all"
 
 	profiles = Profile.objects.select_related("user")
@@ -122,8 +122,10 @@ def moderated_accounts(request):
 		profiles = profiles.filter(hidden=True)
 	elif selected_status == "banned":
 		profiles = profiles.filter(banned=True)
+	elif selected_status == "user_hidden":
+		profiles = profiles.filter(user_hidden=True)
 	else:
-		profiles = profiles.filter(Q(hidden=True) | Q(banned=True))
+		profiles = profiles.filter(Q(hidden=True) | Q(banned=True) | Q(user_hidden=True))
 
 	rows = []
 	for profile in profiles[:200]:
@@ -133,6 +135,7 @@ def moderated_accounts(request):
 			"user_type": profile.get_user_type_display(),
 			"hidden": profile.hidden,
 			"banned": profile.banned,
+			"user_hidden": profile.user_hidden,
 			"profile_pk": profile.pk,
 		})
 
